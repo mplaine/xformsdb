@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui-instance [
+<!ENTITY deg    "&#176;"> <!-- degree sign, U+00B0 ISOnum -->
+]>
+<ui-instance xml:lang="fi" xmlns="">
+	<header-error>Virhe</header-error>
+	<header-settings>Asetukset</header-settings>
+	<itemset-language>
+		<item>
+			<label>In English</label>
+			<value>en</value>
+		</item>
+		<item>
+			<label>Suomeksi</label>
+			<value>fi</value>
+		</item>
+	</itemset-language>
+	<itemset-show-forecast>
+		<item>
+			<label>Kyllä</label>
+			<value>yes</value>
+		</item>
+		<item>
+			<label>Ei</label>
+			<value>no</value>
+		</item>
+	</itemset-show-forecast>	
+	<itemset-temperature>
+		<item>
+			<label>&deg;C</label>
+			<value>c</value>
+		</item>
+		<item>
+			<label>&deg;F</label>
+			<value>f</value>
+		</item>
+	</itemset-temperature>
+	<label-city>Kaupunki:</label-city>
+	<label-temperature>Lämpötila:</label-temperature>
+	<label-show-forecast>Näytä ennuste:</label-show-forecast>
+	<label-language>Kieli:</label-language>
+	<message-not-found-error>Valitettavasti yksikään kaupunki ei vastannut hakuehtojasi.</message-not-found-error>
+	<message-default-error>Ole hyvä ja yritä myöhemmin uudelleen.</message-default-error>
+	<message-authorization-error>Valitettavasti sinulla ei ole riittäviä oikeuksia käyttää tätä vimpainta.</message-authorization-error>
+	<trigger-edit-settings>Muuta asetuksia</trigger-edit-settings>
+	<trigger-done>Valmis</trigger-done>
+</ui-instance>

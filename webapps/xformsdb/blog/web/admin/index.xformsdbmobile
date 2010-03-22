@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+			<!-- XFormsDB security view for non-logged in users -->
+
+		<xformsdb:secview>
+			<title>Access Denied</title>
+			<xforms:model />
+		</xformsdb:secview>
+		<!-- XFormsDB security view for logged in users having one of the roles: admin -->
+		<xformsdb:secview roles="admin">
+			<title>XFormsDB Blog Admin</title>
+			<xforms:model>
+				<!-- Utility variables -->
+				<xforms:instance id="util-instance">
+					<util xmlns="">
+						<date/>
+						<table-header/>
+						<manage-posts-view-id />
+						<manage-posts-edit-id />
+						<manage-posts-delete-id />
+						<manage-comments-view-id />
+						<manage-comments-edit-id />
+						<manage-comments-delete-id />
+					</util>
+				</xforms:instance>
+				<!-- Posts -->
+				<xforms:instance id="posts-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Archives -->
+				<xforms:instance id="archives-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Manage posts (filtered) -->
+				<xforms:instance id="manage-posts-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Manage comments (filtered) -->
+				<xforms:instance id="manage-comments-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Comment -->
+				<xforms:instance id="comment-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Comments -->
+				<xforms:instance id="comments-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Actions -->
+				<xforms:instance id="actions-instance">
+<actions xmlns="">
+	<action>Write a post</action>
+	<action>Manage posts</action>
+	<action>Manage comments</action>
+</actions>
+				</xforms:instance>
+				<!-- Post template -->
+				<xforms:instance id="post-instance">
+<post xmlns="">
+	<headline />
+	<creationtime />
+	<content />
+	<author />
+	<comments />
+</post>
+				</xforms:instance>
+				
+				<!-- User interface texts -->
+				<xforms:instance id="ui-instance">
+<ui xmlns="">
+	<months>
+		<month>January</month>
+		<month>February</month>
+		<month>March</month>
+		<month>April</month>
+		<month>May</month>
+		<month>June</month>
+		<month>July</month>
+		<month>August</month>
+		<month>September</month>
+		<month>October</month>
+		<month>November</month>
+		<month>December</month>
+	</months>
+	<mobile>
+		<please-wait>Please Wait...</please-wait>
+		<column-edit>Edit</column-edit>
+		<column-del>Del</column-del>
+		<column-headline>Headline</column-headline>
+		<table-edit-button>Edit</table-edit-button>
+		<table-delete-button>Del</table-delete-button>
+		<edit-title>Edit Post</edit-title>
+		<delete-title>Delete Post</delete-title>
+		<menu-title>Main Menu</menu-title>
+		<menu-new-post>New Post</menu-new-post>
+		<menu-manage-posts>Manage Posts</menu-manage-posts>
+		<post-label>Post</post-label>
+		<cancel-button>Cancel</cancel-button>
+		<delete-button>Delete</delete-button>
+	</mobile>
+	<header-link-xformsdb-blog-administration>XFormsDB Blog Admin</header-link-xformsdb-blog-administration>
+	<message-error-1>Error (</message-error-1>
+	<message-error-2>):</message-error-2>
+	<write-a-post-message-select-posts-for-update-error>Failed to retrieve posts.</write-a-post-message-select-posts-for-update-error>
+	<manage-posts-message-select-posts-for-update-error>Failed to retrieve posts.</manage-posts-message-select-posts-for-update-error>
+	<manage-posts-message-select-posts-for-table-error>Failed to retrieve posts.</manage-posts-message-select-posts-for-table-error>
+	<manage-posts-message-select-post-archives-error>Failed to retrieve archives.</manage-posts-message-select-post-archives-error>
+	<manage-comments-message-select-comments-for-table-error>Failed to retrieve comments.</manage-comments-message-select-comments-for-table-error>
+	<manage-comments-message-select-comment-archives-error>Failed to retrieve archives.</manage-comments-message-select-comment-archives-error>
+	<logout-error>Failed to logout.</logout-error>
+	<write-a-post-message-publish-post-error>Failed to publish post.</write-a-post-message-publish-post-error>
+	<write-a-post-message-publish-post-success>Post has been successfully published.</write-a-post-message-publish-post-success>
+	<write-a-post-label-name>Name</write-a-post-label-name>
+	<write-a-post-label-headline>Headline</write-a-post-label-headline>
+	<write-a-post-link-submit>Submit</write-a-post-link-submit>
+	<manage-posts-message-delete-post-error>Failed to delete post.</manage-posts-message-delete-post-error>
+	<manage-posts-message-delete-post-success>Post has been successfully deleted.</manage-posts-message-delete-post-success>
+	<manage-posts-message-edit-post-error>Failed to save changes.</manage-posts-message-edit-post-error>
+	<manage-posts-message-edit-post-success>Changes have been successfully saved.</manage-posts-message-edit-post-success>
+	<manage-posts-content-no-posts>Sorry, no posts matched your criteria.</manage-posts-content-no-posts>
+	<manage-posts-header-browse-archive>Browse archive...</manage-posts-header-browse-archive>
+	<manage-posts-link-browse-archive-submit>Submit</manage-posts-link-browse-archive-submit>
+	<manage-posts-header-headline>Headline</manage-posts-header-headline>
+	<manage-posts-header-actions>Actions</manage-posts-header-actions>
+	<manage-posts-link-edit>Edit</manage-posts-link-edit>
+	<manage-posts-link-delete>Delete</manage-posts-link-delete>
+	<manage-posts-content-anonymous>Anonymous</manage-posts-content-anonymous>
+	<manage-posts-content-separator>//</manage-posts-content-separator>
+	<manage-posts-content-comments-1>Comments (</manage-posts-content-comments-1>
+	<manage-posts-content-comments-2>)</manage-posts-content-comments-2>
+	<manage-posts-label-name>Name</manage-posts-label-name>
+	<manage-posts-label-headline>Headline</manage-posts-label-headline>
+	<manage-posts-link-edit-post-submit>Submit</manage-posts-link-edit-post-submit>
+	<manage-posts-content-results>Results</manage-posts-content-results>
+	<manage-posts-content-of>of</manage-posts-content-of>
+</ui>
+				</xforms:instance>
+				<!-- XFormsDB request instances -->
+				<xformsdb:instance id="select-and-update-posts-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xpath/select_and_update_posts.xpath" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<xformsdb:instance id="select-post-archives-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xq/select_post_archives.xq" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<xformsdb:instance id="select-manage-posts-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xq/select_manage_posts.xq" />
+						<xformsdb:var name="date" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<xformsdb:instance id="select-manage-comments-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xq/select_manage_comments.xq" />
+						<xformsdb:var name="date" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<xformsdb:instance id="select-comment-archives-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xq/select_comment_archives.xq" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<xformsdb:instance id="select-comment-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xq/select_comment.xq" />
+						<xformsdb:var name="id" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<xformsdb:instance id="select-and-update-comments-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xpath/select_and_update_comments.xpath" />
+						<xformsdb:xmlns prefix="xformsdb" uri="http://www.tml.tkk.fi/2007/xformsdb" />
+						<xformsdb:var name="id" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<!-- Logout request instance -->
+				<xformsdb:instance id="logout-request-instance">
+					<xformsdb:logout />
+				</xformsdb:instance>
+				<!-- XFormsDB request submissions -->
+				<!-- Write a post: Select posts for update -->
+	 			<xformsdb:submission id="write-a-post-select-posts-for-update-request-submission" replace="instance" instance="posts-instance" requestinstance="select-and-update-posts-request-instance" expressiontype="select">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="progress" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+				 		<xforms:toggle case="write-post" />
+						<xforms:setvalue ref="instance( 'post-instance' )/@id" value="''"/>
+						<xforms:setvalue ref="instance( 'post-instance' )/headline" value="''"/>
+						<xforms:setvalue ref="instance( 'post-instance' )/author" value="''"/>
+						<xforms:setvalue ref="instance( 'post-instance' )/content" value="''"/>
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="menu" />
+						<xforms:message value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-posts-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/write-a-post-message-select-posts-for-update-error )" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Write a post: Publish post -->
+	 			<xformsdb:submission id="write-a-post-publish-post-request-submission" replace="instance" instance="posts-instance" requestinstance="select-and-update-posts-request-instance" expressiontype="update">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="progress" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+	 					<xforms:message ref="instance( 'ui-instance' )/write-a-post-message-publish-post-success" />
+						<xforms:setvalue ref="instance( 'post-instance' )/@id" value="''"/>
+						<xforms:setvalue ref="instance( 'post-instance' )/headline" value="''"/>
+						<xforms:setvalue ref="instance( 'post-instance' )/author" value="''"/>
+						<xforms:setvalue ref="instance( 'post-instance' )/content" value="''"/>
+						<xforms:toggle case="write-post" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:message value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-comments-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/write-a-post-message-publish-post-error )" />
+						<xforms:toggle case="write-post" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage posts: Select posts for update -->
+	 			<xformsdb:submission id="manage-posts-select-posts-for-update-request-submission" replace="instance" instance="posts-instance" requestinstance="select-and-update-posts-request-instance" expressiontype="select">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="progress" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="manage-posts" />
+						<xforms:send submission="manage-posts-select-posts-for-table-request-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="menu" />
+			        	<xforms:message value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-posts-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-posts-message-select-posts-for-update-error )" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage posts: Select posts for table list view -->
+	 			<xformsdb:submission id="manage-posts-select-posts-for-table-request-submission" replace="instance" instance="manage-posts-instance" requestinstance="select-manage-posts-request-instance" expressiontype="select">
+	 				<xforms:action ev:event="xforms-submit">
+	 					<xforms:toggle case="manage-posts"/>
+						<xforms:toggle case="manage-posts-progress" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:send submission="manage-posts-select-post-archives-request-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="manage-posts" />
+						<xforms:message value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-manage-posts-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-posts-message-select-posts-for-table-error )" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage posts: Select post archives -->
+	 			<xformsdb:submission id="manage-posts-select-post-archives-request-submission" replace="instance" instance="archives-instance" requestinstance="select-post-archives-request-instance" expressiontype="select">
+	 				<xforms:action ev:event="xforms-submit">
+	 					<xforms:toggle case="manage-posts"/>
+						<xforms:toggle case="manage-posts-progress" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="manage-posts-table" />
+						<xforms:setvalue if="instance( 'select-manage-posts-request-instance' )/xformsdb:var[ @name = 'date' ] = ''" 
+							ref="instance( 'select-manage-posts-request-instance' )/xformsdb:var[ @name = 'date' ]" value="instance( 'archives-instance' )/archive[1]"/>
+	 					<xforms:setvalue ref="instance('util-instance')/table-header"
+	 					value="concat(month-name(instance( 'select-manage-posts-request-instance' )/xformsdb:var[ @name = 'date' ],instance('ui-instance')/months/month),' ',substring(instance( 'select-manage-posts-request-instance' )/xformsdb:var[ @name = 'date' ],1,4))"/>
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-view-id" value="''" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-edit-id" value="''" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-delete-id" value="''" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="manage-posts" />
+						<xforms:message value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-post-archives-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-posts-message-select-post-archives-error )" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage posts: Delete post -->
+	 			<xformsdb:submission id="manage-posts-delete-post-request-submission" replace="instance" instance="posts-instance" requestinstance="select-and-update-posts-request-instance" expressiontype="update">
+	 				<xforms:action ev:event="xforms-submit">
+	 					<xforms:toggle case="manage-posts"/>
+						<xforms:toggle case="manage-posts-progress" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="manage-posts" />
+						<xforms:message ref="instance( 'ui-instance' )/manage-posts-message-delete-post-success" />
+						<xforms:delete context="instance( 'manage-posts-instance' )" nodeset="post[ @id = instance( 'util-instance' )/manage-posts-delete-id ]" at="1" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-delete-id" value="''" />
+						<xforms:send submission="manage-posts-select-posts-for-table-request-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="manage-posts-table" />
+						<xforms:message value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-posts-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-posts-message-edit-post-error )" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-delete-id" value="''" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage posts: Edit post -->
+	 			<xformsdb:submission id="manage-posts-edit-post-request-submission" replace="instance" instance="posts-instance" requestinstance="select-and-update-posts-request-instance" expressiontype="update">
+	 				<xforms:action ev:event="xforms-submit">
+		 				<xforms:toggle case="manage-posts"/>
+						<xforms:toggle case="manage-posts-progress" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="manage-posts" />
+						<xforms:message ref="instance( 'ui-instance' )/manage-posts-message-edit-post-success" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-edit-id" value="''" />
+						<xforms:send submission="manage-posts-select-posts-for-table-request-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="manage-posts-edit" />
+						<xforms:message value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-posts-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-posts-message-edit-post-error )" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-edit-id" value="''" />
+					</xforms:action>
+	 			</xformsdb:submission>
+
+	 			<!-- Initialize the web page -->
+	 			<xforms:toggle case="menu" ev:event="xforms-ready" />
+			</xforms:model>
+ 		</xformsdb:secview>
+	</head>
+	<body>
+			<!-- XFormsDB security view for non-logged in users -->
+ 
+		<xformsdb:secview>
+			<xforms:trigger>
+				<xforms:label>Log In</xforms:label>
+				<xforms:action ev:event="DOMActivate">
+					<xforms:load resource="../login.xformsdbmobile" show="replace" />
+				</xforms:action>
+			</xforms:trigger>
+		</xformsdb:secview>
+
+				<!-- XFormsDB security view for logged in users having one of the roles: admin -->
+
+ 		<xformsdb:secview roles="admin">
+		
+						<xforms:trigger>
+							<xforms:label ref="instance( 'ui-instance' )/header-link-xformsdb-blog-administration"/>
+							<xforms:action ev:event="DOMActivate">
+								<xforms:toggle case="menu"/>
+							</xforms:action>								
+						</xforms:trigger>
+								
+						<xforms:switch id="content-switcher">
+							<xforms:case id="progress">
+								<hr/>
+								<xforms:output ref="instance('ui-instance')/mobile/please-wait" />
+							</xforms:case>
+						
+							<xforms:case id="menu">
+								<hr>
+									<xforms:label ref="instance('ui-instance')/mobile/menu-title"/>
+								</hr>								
+								<xforms:trigger>
+									<xforms:label ref="instance('ui-instance')/mobile/menu-new-post"/>
+									<xforms:action ev:event="DOMActivate">
+										<xforms:send submission="write-a-post-select-posts-for-update-request-submission" />
+									</xforms:action>								
+								</xforms:trigger>
+								<xforms:trigger>
+									<xforms:label ref="instance('ui-instance')/mobile/menu-manage-posts"/>
+									<xforms:action ev:event="DOMActivate">
+										<xforms:setvalue ref="instance( 'select-manage-posts-request-instance' )/xformsdb:var[ @name = 'date' ]" value="''"  />
+										<xforms:send submission="manage-posts-select-posts-for-update-request-submission" />									
+									</xforms:action>								
+								</xforms:trigger>
+							
+							</xforms:case>
+						
+							<!-- :::: BEGIN: Write a post :::: -->
+							<xforms:case id="write-post">
+								<hr>
+									<xforms:label ref="instance('ui-instance')/mobile/menu-new-post"/>
+								</hr>
+								<xforms:group ref="instance( 'post-instance' )">
+									<xforms:input ref="author">
+										<xforms:label ref="instance( 'ui-instance' )/write-a-post-label-name" />
+									</xforms:input>
+									
+									<xforms:input ref="headline">
+										<xforms:label ref="instance( 'ui-instance' )/write-a-post-label-headline"/>
+									</xforms:input>
+									
+									<xforms:input ref="content">
+										<xforms:label ref="instance('ui-instance')/mobile/post-label"/>
+									</xforms:input>
+									<xforms:trigger>
+										<xforms:label ref="instance( 'ui-instance' )/write-a-post-link-submit" />
+										<xforms:action ev:event="DOMActivate">
+											<xforms:toggle case="progress-content-switcher" />
+											<xforms:setvalue ref="instance( 'post-instance' )/@id" value="digest( string( random( true ) ), 'MD5', 'hex' )" />
+	 										<xforms:setvalue ref="instance( 'post-instance' )/creationtime" value="substring( string( now() ), 1, 10 )" />
+											<xforms:insert origin="instance( 'post-instance' )" nodeset="*" context="instance( 'posts-instance' )" />
+											<xforms:send submission="write-a-post-publish-post-request-submission" />
+										</xforms:action>
+									</xforms:trigger>
+								</xforms:group>
+							</xforms:case>
+							<xforms:case id="manage-posts">
+								<hr>
+									<xforms:label ref="instance('ui-instance')/mobile/menu-manage-posts"/>
+								</hr>
+
+								<xforms:select1 ref="instance( 'select-manage-posts-request-instance' )/xformsdb:var[ @name = 'date' ]" appearance="minimal">
+									<xforms:itemset nodeset="instance( 'archives-instance' )/archive">
+										<xforms:item>
+							                <xforms:label value="concat(month-name(.,instance('ui-instance')/months/month),' ',substring(.,1,4))" />
+				        			        <xforms:value ref="." />
+				        			    </xforms:item>
+									</xforms:itemset>
+								</xforms:select1>
+								<xforms:trigger>
+									<xforms:label ref="instance( 'ui-instance' )/manage-posts-link-browse-archive-submit" />
+									<xforms:action ev:event="DOMActivate">
+										<xforms:send submission="manage-posts-select-posts-for-update-request-submission" />
+									</xforms:action>
+								</xforms:trigger>
+								
+								<xforms:switch>
+								<xforms:case id="manage-posts-progress">
+									<hr/>
+									<xforms:output ref="instance('ui-instance')/mobile/please-wait" />
+								</xforms:case>
+								<xforms:case id="manage-posts-table">
+									<hr>
+										<xforms:label ref="instance('util-instance')/table-header"/>
+									</hr>
+ 									<xforms:group ref="instance( 'ui-instance' )[ count( instance( 'manage-posts-instance' )/post ) = 0 ]">
+				  						<xforms:output ref="instance( 'ui-instance' )/manage-posts-content-no-posts" />
+ 									</xforms:group>
+
+  
+									<xforms:group ref="instance( 'ui-instance' )[ count( instance( 'manage-posts-instance' )/post ) &gt; 0 and not( instance( 'manage-posts-select-posts-for-table-request-submission' )/xformsdb:error ) ]">
+
+										<table>
+											<thead>
+												<tr>
+													<th><xforms:output ref="instance('ui-instance')/mobile/column-edit" /></th>
+													<th><xforms:output ref="instance('ui-instance')/mobile/column-del" /></th>
+													<th><xforms:output ref="instance('ui-instance')/mobile/column-headline" /></th>
+												</tr>
+											</thead>
+											<tbody repeat-nodeset="instance( 'manage-posts-instance' )/post" id="manage-posts-post-repeat">
+													<tr>
+														<td>
+																<xforms:trigger>
+																	<xforms:label ref="instance('ui-instance')/mobile/table-edit-button"/>
+																	<xforms:action ev:event="DOMActivate">
+																		<xforms:toggle case="edit-post" />
+																		<xforms:setfocus control="edit-post-entry"/>
+							 											<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-edit-id" value="instance( 'manage-posts-instance' )/post[ index( 'manage-posts-post-repeat' ) ]/@id" />
+																	</xforms:action>
+																</xforms:trigger>
+														</td>
+														<td>
+															<xforms:trigger>
+																<xforms:label ref="instance('ui-instance')/mobile/table-delete-button"/>
+																<xforms:action ev:event="DOMActivate">
+																	<xforms:toggle case="delete-post" />
+																	<xforms:setfocus control="delete-post-entry"/>
+						 											<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-delete-id" value="instance( 'manage-posts-instance' )/post[ index( 'manage-posts-post-repeat' ) ]/@id" />
+		 														</xforms:action>
+															</xforms:trigger>
+														</td>
+														<td>
+															<xforms:output ref="headline" />
+														</td>
+													</tr>
+											</tbody>
+										</table>
+  									</xforms:group>
+
+								</xforms:case>
+
+								</xforms:switch>
+
+							</xforms:case>
+							
+								<xforms:case id="edit-post">
+									<hr>
+										<xforms:label ref="instance('ui-instance')/mobile/edit-title"/>
+									</hr>
+									<xforms:input id="edit-post-entry" ref="instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-edit-id ]/author" >
+										<xforms:label ref="instance( 'ui-instance' )/manage-posts-label-name" />
+									</xforms:input>
+									<xforms:input ref="instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-edit-id ]/headline">
+										<xforms:label ref="instance( 'ui-instance' )/manage-posts-label-headline" />
+									</xforms:input>
+									<xforms:input ref="instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-edit-id ]/content">
+										<xforms:label ref="instance('ui-instance')/mobile/post-label"/>
+									</xforms:input>
+									<xforms:trigger>
+										<xforms:label ref="instance( 'ui-instance' )/manage-posts-link-edit-post-submit" />
+										<xforms:action ev:event="DOMActivate">
+											<xforms:toggle case="manage-posts"/>
+											<xforms:send submission="manage-posts-edit-post-request-submission" />
+										</xforms:action>
+									</xforms:trigger>
+									<xforms:trigger>
+										<xforms:label ref="instance('ui-instance')/mobile/cancel-button"/>
+										<xforms:action ev:event="DOMActivate">
+											<xforms:toggle case="manage-posts"/>
+											<xforms:send submission="manage-posts-select-posts-for-update-request-submission" />
+										</xforms:action>
+									</xforms:trigger>
+
+								</xforms:case>
+								<xforms:case id="delete-post">
+									<hr>
+										<xforms:label ref="instance('ui-instance')/mobile/delete-title"/>
+									</hr>
+									<xforms:output ref="instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-delete-id ]/author" >
+										<xforms:label ref="instance( 'ui-instance' )/manage-posts-label-name" />
+									</xforms:output>
+									<xforms:output ref="instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-delete-id ]/headline">
+										<xforms:label ref="instance( 'ui-instance' )/manage-posts-label-headline" />
+									</xforms:output>
+									<xforms:output ref="instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-delete-id ]/content">
+										<xforms:label>Post</xforms:label>
+									</xforms:output>
+									<xforms:trigger>
+										<xforms:label ref="instance('ui-instance')/mobile/delete-button"/>
+										<xforms:action ev:event="DOMActivate">
+											<xforms:delete context="instance( 'posts-instance' )" nodeset="post[ @id = instance( 'util-instance' )/manage-posts-delete-id ]" at="1" />
+											<xforms:send submission="manage-posts-delete-post-request-submission" />
+										</xforms:action>
+									</xforms:trigger>
+									<xforms:trigger id="delete-post-entry">
+										<xforms:label ref="instance('ui-instance')/mobile/cancel-button"/>
+										<xforms:action ev:event="DOMActivate">
+											<xforms:toggle case="manage-posts"/>
+										</xforms:action>
+									</xforms:trigger>
+									
+								</xforms:case>
+
+
+						</xforms:switch>
+
+ 	</xformsdb:secview>
+	</body>
+</html>

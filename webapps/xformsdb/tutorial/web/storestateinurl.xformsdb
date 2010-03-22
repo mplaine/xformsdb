@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - State Maintenance - Store State in URL</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, State, Maintenance, Store, State, in, URL" />
+		<meta name="description" content="XFormsDB Tutorial - State Maintenance - Store State in URL" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2008, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- Languages instance -->
+			<xforms:instance id="languages-instance">
+				<languages xmlns="">
+					<language>
+						<label>Finnish</label>
+						<value>fi</value>
+					</language>
+					<language>
+						<label>Swedish</label>
+						<value>se</value>
+					</language>
+					<language>
+						<label>Engligh</label>
+						<value>en</value>
+					</language>
+				</languages>
+			</xforms:instance>
+			<!-- Text-sizes instance -->
+			<xforms:instance id="text-sizes-instance">
+				<text-sizes xmlns="">
+					<text-size>
+						<label>Largest</label>
+						<value>xl</value>
+					</text-size>
+					<text-size>
+						<label>Larger</label>
+						<value>l</value>
+					</text-size>
+					<text-size>
+						<label>Medium</label>
+						<value>m</value>
+					</text-size>
+					<text-size>
+						<label>Smaller</label>
+						<value>s</value>
+					</text-size>
+					<text-size>
+						<label>Smallest</label>
+						<value>xs</value>
+					</text-size>
+				</text-sizes>
+			</xforms:instance>
+			<!-- State instance -->
+			<xforms:instance id="state-instance">
+				<state xmlns="">
+					<lang>en</lang>
+					<ts>m</ts>
+				</state>
+			</xforms:instance>
+			<!-- Submissions -->
+			<xforms:submission id="store-state-in-url-request-submission" replace="all" ref="instance( 'state-instance' )" separator="&amp;" action="retrievestatefromurl.xformsdb" method="get" />
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>State Maintenance - Store State in URL</h1>
+		       	<xforms:switch id="message-switcher">
+		        	<xforms:case id="default-message-switcher" />
+		        </xforms:switch>
+				<table>
+					<tr>
+						<td><b>Language (lang):</b>&nbsp;</td>
+						<td>
+							<xforms:select1 ref="instance( 'state-instance' )/lang" appearance="full">
+								<xforms:itemset nodeset="instance( 'languages-instance' )/language">
+									<xforms:label ref="label" />
+									<xforms:value ref="value" />
+								</xforms:itemset>
+		        			</xforms:select1>
+						</td>
+					</tr>
+					<tr>
+						<td><b>Text size (ts):</b>&nbsp;</td>
+						<td>
+							<xforms:select1 ref="instance( 'state-instance' )/ts" appearance="full">
+								<xforms:itemset nodeset="instance( 'text-sizes-instance' )/text-size">
+									<xforms:label ref="label" />
+									<xforms:value ref="value" />
+								</xforms:itemset>
+		        			</xforms:select1>
+						</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>
+							<xforms:trigger>
+								<xforms:label>Store state in URL</xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:send submission="store-state-in-url-request-submission" />
+								</xforms:action>
+							</xforms:trigger>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

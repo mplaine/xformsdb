@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Files - Select by IDs</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, Files, Select, by, IDs" />
+		<meta name="description" content="XFormsDB Tutorial - Files - Select by IDs" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2008, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- IDs instance -->
+			<xforms:instance id="ids-instance">
+				<ids xmlns="">
+					<id>64b51ad2-c9ab-42ac-a5d7-4c5304feced2</id>
+					<id>699e4cd3-43d8-41a2-acb2-5b64f31f7cd4</id>
+					<id>1bd554a7-3b6d-4be9-8ac3-69f20febe077</id>
+					<id>94cbf070-5fc5-49ba-a390-c541a1494312</id>
+				</ids>
+			</xforms:instance>
+			<!-- Files instance -->
+			<xforms:instance id="files-instance">
+				<dummy xmlns="" />
+			</xforms:instance>
+			<!-- XFormsDB request instances -->
+			<!-- Select/Update/Insert/Delete files request instance -->
+			<xformsdb:instance id="suid-files-request-instance">
+				<xformsdb:file>
+					<xformsdb:var name="ids" />
+				</xformsdb:file>
+			</xformsdb:instance>
+			<!-- XFormsDB request submissions -->
+			<!-- Select files request submission -->
+ 			<xformsdb:submission id="select-files-request-submission" replace="instance" instance="files-instance" requestinstance="suid-files-request-instance" filetype="select">
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="error-message-switcher" />
+				</xforms:action>
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:toggle if="count( instance( 'files-instance' )/xformsdb:file ) = 0" case="empty-message-switcher" />
+					<xforms:toggle if="count( instance( 'files-instance' )/xformsdb:file ) &gt; 0" case="success-message-switcher" />
+				</xforms:action>
+			</xformsdb:submission>
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Files - Select by IDs</h1>
+		       	<xforms:switch id="message-switcher">
+		        	<xforms:case id="default-message-switcher" />
+		        	<xforms:case id="success-message-switcher">
+				        <div class="message-success">
+				        	<xforms:output value="'List of files (selected by IDs) has been successfully retrieved from XFormsDB.'" />
+				        </div>
+		        	</xforms:case>
+		        	<xforms:case id="empty-message-switcher">
+				        <div class="message-error">
+				   	    	<xforms:output value="'Error: XFormsDB does not hold any files (selected by IDs).'" />
+				       	</div>
+		        	</xforms:case>
+		        	<xforms:case id="error-message-switcher">
+				        <div class="message-error">
+				   	    	<xforms:output value="concat( 'Error (', ' ', instance( 'suid-files-request-instance' )/xformsdb:error/xformsdb:code, ' ): ', instance( 'suid-files-request-instance' )/xformsdb:error/xformsdb:description )" />
+				       	</div>
+		        	</xforms:case>
+		        </xforms:switch>
+				<table>
+					<tr>
+						<td><b>List of files (selected by IDs):</b>&nbsp;</td>
+						<td>
+							<xforms:group ref=".[ count( instance( 'files-instance' )/xformsdb:file ) &gt; 0 ]">
+								<xforms:repeat nodeset="instance( 'files-instance' )/xformsdb:file" id="files-file-repeat">
+									<!-- Hack: xforms:load show="new"... /> may not work in IE7 if the "Automatic prompting for file downloads" in security options is disabled (default) -->
+									<!--<div>-->
+										<!--<xforms:trigger appearance="minimal">-->
+											<!--<xforms:label><xforms:output ref="@displayname" /></xforms:label>-->
+											<!--<xforms:action ev:event="DOMActivate">-->
+												<!--<xforms:load ref="@download" show="new" />-->
+											<!--</xforms:action>-->
+										<!--</xforms:trigger>-->
+									<!--</div>-->
+									<div>
+										<a href="{@download}"><xforms:output ref="@displayname" /></a>
+									</div>
+			    		    	</xforms:repeat>
+		    		    	</xforms:group>
+						</td>
+					</tr>
+					<tr>
+						<td><b>IDs:</b></td>
+						<td>
+							<xforms:select class="checkboxlist" ref="instance( 'suid-files-request-instance' )/xformsdb:var[ @name = 'ids' ]" appearance="full">
+								<xforms:itemset nodeset="instance( 'ids-instance' )/id">
+									<xforms:label ref="." />
+									<xforms:value ref="." />
+								</xforms:itemset>
+							</xforms:select>
+						</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>
+							<xforms:trigger>
+								<xforms:label>Retrieve list of files (selected by IDs) from XFormsDB</xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:send submission="select-files-request-submission" />
+								</xforms:action>
+							</xforms:trigger>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

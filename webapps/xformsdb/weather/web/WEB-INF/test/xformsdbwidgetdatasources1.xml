@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xformsdb:widget-data-sources xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb">
+	<xformsdb:widget-data-source id="shared">
+		<xformsdb:type>2</xformsdb:type>
+		<xformsdb:uri>xmldb:exist://localhost:8080/exist/xmlrpc</xformsdb:uri>
+		<xformsdb:username>uspace</xformsdb:username>
+		<xformsdb:password>uspace1234</xformsdb:password>
+		<xformsdb:collection>/db/uspace/widgets/weather/shared</xformsdb:collection>
+	</xformsdb:widget-data-source>
+	<xformsdb:widget-data-source id="group">
+		<xformsdb:type>2</xformsdb:type>
+		<xformsdb:uri>xmldb:exist://localhost:8080/exist/xmlrpc</xformsdb:uri>
+		<xformsdb:username>uspace</xformsdb:username>
+		<xformsdb:password>uspace1234</xformsdb:password>
+		<xformsdb:collection>/db/uspace/widgets/weather/group/99b22c1b-2559-4522-a061-ffbb7097d1f0</xformsdb:collection>
+	</xformsdb:widget-data-source>
+	<xformsdb:widget-data-source id="user">
+		<xformsdb:type>2</xformsdb:type>
+		<xformsdb:uri>xmldb:exist://localhost:8080/exist/xmlrpc</xformsdb:uri>
+		<xformsdb:username>uspace</xformsdb:username>
+		<xformsdb:password>uspace1234</xformsdb:password>
+		<xformsdb:collection>/db/uspace/widgets/weather/user/4PCA1F.pl.NQEkuzVaM7R7S08muiiA.eq.</xformsdb:collection>
+	</xformsdb:widget-data-source>
+</xformsdb:widget-data-sources>

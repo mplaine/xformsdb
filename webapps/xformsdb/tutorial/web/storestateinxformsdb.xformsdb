@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - State Maintenance - Store State in XFormsDB</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, State, Maintenance, Store, State, in, XFormsDB" />
+		<meta name="description" content="XFormsDB Tutorial - State Maintenance - Store State in XFormsDB" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2008, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- Messages instance -->
+			<xforms:instance id="messages-instance">
+				<messages xmlns="">
+					<success>Web application's state has been successfully stored in XFormsDB.</success>
+				</messages>
+			</xforms:instance>
+			<!-- Languages instance -->
+			<xforms:instance id="languages-instance">
+				<languages xmlns="">
+					<language>
+						<label>Finnish</label>
+						<value>fi</value>
+					</language>
+					<language>
+						<label>Swedish</label>
+						<value>se</value>
+					</language>
+					<language>
+						<label>Engligh</label>
+						<value>en</value>
+					</language>
+				</languages>
+			</xforms:instance>
+			<!-- Text-sizes instance -->
+			<xforms:instance id="text-sizes-instance">
+				<text-sizes xmlns="">
+					<text-size>
+						<label>Largest</label>
+						<value>xl</value>
+					</text-size>
+					<text-size>
+						<label>Larger</label>
+						<value>l</value>
+					</text-size>
+					<text-size>
+						<label>Medium</label>
+						<value>m</value>
+					</text-size>
+					<text-size>
+						<label>Smaller</label>
+						<value>s</value>
+					</text-size>
+					<text-size>
+						<label>Smallest</label>
+						<value>xs</value>
+					</text-size>
+				</text-sizes>
+			</xforms:instance>
+			<!-- State instance -->
+			<xforms:instance id="state-instance">
+				<state xmlns="">
+					<lang>en</lang>
+					<ts>m</ts>
+				</state>
+			</xforms:instance>
+			<!-- XFormsDB request instances -->
+			<!-- State request instance -->
+			<xformsdb:instance id="state-request-instance">
+				<xformsdb:state />
+			</xformsdb:instance>
+			<!-- XFormsDB request submissions -->
+			<!-- Set state request submission -->
+ 			<xformsdb:submission id="set-state-request-submission" replace="instance" instance="state-instance" requestinstance="state-request-instance" statetype="set">
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="error-message-switcher" />
+				</xforms:action>
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:toggle case="success-message-switcher" />
+				</xforms:action>
+			</xformsdb:submission>
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>State Maintenance - Store State in XFormsDB</h1>
+		        <xforms:switch id="message-switcher">
+		        	<xforms:case id="default-message-switcher" />
+		        	<xforms:case id="success-message-switcher">
+				        <div class="message-success">
+				        	<xforms:output ref="instance( 'messages-instance' )/success" />
+				        </div>
+		        	</xforms:case>
+		        	<xforms:case id="error-message-switcher">
+				        <div class="message-error">
+				   	    	<xforms:output value="concat( 'Error (', ' ', instance( 'state-request-instance' )/xformsdb:error/xformsdb:code, ' ): ', instance( 'state-request-instance' )/xformsdb:error/xformsdb:description )" />
+				       	</div>
+		        	</xforms:case>
+		        </xforms:switch>
+				<table>
+					<tr>
+						<td><b>Language (lang):</b>&nbsp;</td>
+						<td>
+							<xforms:select1 ref="instance( 'state-instance' )/lang" appearance="full">
+								<xforms:itemset nodeset="instance( 'languages-instance' )/language">
+									<xforms:label ref="label" />
+									<xforms:value ref="value" />
+								</xforms:itemset>
+		        			</xforms:select1>
+						</td>
+					</tr>
+					<tr>
+						<td><b>Text size (ts):</b>&nbsp;</td>
+						<td>
+							<xforms:select1 ref="instance( 'state-instance' )/ts" appearance="full">
+								<xforms:itemset nodeset="instance( 'text-sizes-instance' )/text-size">
+									<xforms:label ref="label" />
+									<xforms:value ref="value" />
+								</xforms:itemset>
+		        			</xforms:select1>
+						</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>
+							<xforms:trigger>
+								<xforms:label>Store state in XFormsDB</xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:send submission="set-state-request-submission" />
+								</xforms:action>
+							</xforms:trigger>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

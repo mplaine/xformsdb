@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+	<city>Helsinki</city>
+	<temperature>c</temperature>
+	<show-forecast>yes</show-forecast>
+	<language>en</language>
+</settings>

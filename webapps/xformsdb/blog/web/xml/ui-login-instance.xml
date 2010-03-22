@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui [
+<!ENTITY copy   "&#169;"> <!-- copyright sign, U+00A9 ISOnum -->
+]>
+<ui xmlns="">
+	<header-link-xformsdb-blog-login>XFormsDB Blog - Login</header-link-xformsdb-blog-login>
+	<login-header-login>Login</login-header-login>
+	<message-error-1>Error (</message-error-1>
+	<message-error-2>):</message-error-2>
+	<login-message-login-error>Failed to login the user.</login-message-login-error>
+	<login-label-username>Username</login-label-username>
+	<login-label-password>Password</login-label-password>
+	<login-link-submit>Submit</login-link-submit>
+	<footer-content-copyright>Copyright &copy; XFormsDB 2007. All rights reserved. |</footer-content-copyright>
+	<footer-link-public>Public</footer-link-public>
+</ui>

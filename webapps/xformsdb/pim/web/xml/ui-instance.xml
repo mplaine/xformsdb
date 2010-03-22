@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="">
+	<language type="en">
+		<header-pim>Personal Information Management (PIM): Contacts</header-pim>
+		<link-language-en>In English</link-language-en>
+		<link-language-fi>Suomeksi</link-language-fi>
+		<link-language-se>På svenska</link-language-se>
+		<message-error-1>Error (</message-error-1>
+		<message-error-2>):</message-error-2>
+		<message-select-error>Failed to retrieve contacts.</message-select-error>
+		<message-update-success>Contacts have been successfully saved.</message-update-success>
+		<message-update-error>Failed to save contacts.</message-update-error>
+		<link-action-add-contact>Add contact</link-action-add-contact>
+		<link-action-save-contacts>Save contacts</link-action-save-contacts>
+		<header-contacts>Contacts</header-contacts>
+		<header-name>Name</header-name>
+		<header-actions>Actions</header-actions>
+		<link-edit>Edit</link-edit>
+		<link-delete>Delete</link-delete>
+		<content-delete-question>Delete?</content-delete-question>
+		<content-delete-answer-yes>yes</content-delete-answer-yes>
+		<content-delete-separator>or</content-delete-separator>
+		<content-delete-answer-no>no</content-delete-answer-no>
+		<label-name>Name:</label-name>
+		<label-title>Title:</label-title>
+		<label-company>Company:</label-company>
+		<label-street>Street:</label-street>
+		<label-city>City:</label-city>
+		<label-state>State:</label-state>
+		<label-zip>ZIP:</label-zip>
+		<label-country>Country:</label-country>
+		<label-telephone>Telephone:</label-telephone>
+		<label-fax>Fax:</label-fax>
+		<label-mobilephone>Mobile phone:</label-mobilephone>
+		<label-email>Email:</label-email>
+		<content-results>Results</content-results>
+		<content-of> of </content-of>
+	</language>
+	<language type="fi">
+		<header-pim>Henkilökohtaisten Tietojen Hallinta (PIM): Yhteyshenkilöt</header-pim>
+		<link-language-en>In English</link-language-en>
+		<link-language-fi>Suomeksi</link-language-fi>
+		<link-language-se>På svenska</link-language-se>
+		<message-error-1>Virhe (</message-error-1>
+		<message-error-2>):</message-error-2>
+		<message-select-error>Yhteyshenkilöiden hakeminen epäonnistui.</message-select-error>
+		<message-update-success>Yhteyshenkilöiden tallentaminen onnistui.</message-update-success>
+		<message-update-error>Yhteyshenkilöiden tallentaminen epäonnistui.</message-update-error>
+		<link-action-add-contact>Lisää yhteyshenkilö</link-action-add-contact>
+		<link-action-save-contacts>Tallenna yhteyshenkilöt</link-action-save-contacts>
+		<header-contacts>Yhteyshenkilöt</header-contacts>
+		<header-name>Nimi</header-name>
+		<header-actions>Toiminnot</header-actions>
+		<link-edit>Muuta</link-edit>
+		<link-delete>Poista</link-delete>
+		<content-delete-question>Poista?</content-delete-question>
+		<content-delete-answer-yes>kyllä</content-delete-answer-yes>
+		<content-delete-separator>tai</content-delete-separator>
+		<content-delete-answer-no>ei</content-delete-answer-no>
+		<label-name>Nimi:</label-name>
+		<label-title>Titteli:</label-title>
+		<label-company>Yritys:</label-company>
+		<label-street>Katuosoite:</label-street>
+		<label-city>Kaupunki:</label-city>
+		<label-state>Osavaltio:</label-state>
+		<label-zip>Postinumero:</label-zip>
+		<label-country>Maa:</label-country>
+		<label-telephone>Puhelin:</label-telephone>
+		<label-fax>Faksi:</label-fax>
+		<label-mobilephone>Matkapuhelin:</label-mobilephone>
+		<label-email>Sähköposti:</label-email>
+		<content-results>Tulokset</content-results>
+		<content-of>, yhteensä </content-of>
+	</language>
+	<language type="se">
+		<header-pim>Hantering av Personlig Information (PIM): Kontaktpersoner</header-pim>
+		<link-language-en>In English</link-language-en>
+		<link-language-fi>Suomeksi</link-language-fi>
+		<link-language-se>På svenska</link-language-se>
+		<message-error-1>Fel (</message-error-1>
+		<message-error-2>):</message-error-2>
+		<message-select-error>Sökning av kontaktpersoner misslyckades.</message-select-error>
+		<message-update-success>Sparandet av kontaktpersoner lyckades.</message-update-success>
+		<message-update-error>Sparandet av kontaktpersoner misslyckades.</message-update-error>
+		<link-action-add-contact>Lägg till kontaktperson</link-action-add-contact>
+		<link-action-save-contacts>Spara kontaktpersoner</link-action-save-contacts>
+		<header-contacts>Kontaktpersoner</header-contacts>
+		<header-name>Namn</header-name>
+		<header-actions>Funktioner</header-actions>
+		<link-edit>Ändra</link-edit>
+		<link-delete>Radera</link-delete>
+		<content-delete-question>Radera?</content-delete-question>
+		<content-delete-answer-yes>ja</content-delete-answer-yes>
+		<content-delete-separator>eller</content-delete-separator>
+		<content-delete-answer-no>nej</content-delete-answer-no>
+		<label-name>Namn:</label-name>
+		<label-title>Titel:</label-title>
+		<label-company>Företag:</label-company>
+		<label-street>Gatuadress:</label-street>
+		<label-city>Stad:</label-city>
+		<label-state>Delstat:</label-state>
+		<label-zip>Postnummer:</label-zip>
+		<label-country>Land:</label-country>
+		<label-telephone>Telefon:</label-telephone>
+		<label-fax>Fax:</label-fax>
+		<label-mobilephone>Mobiltelefon:</label-mobilephone>
+		<label-email>E-post:</label-email>
+		<content-results>Resultat</content-results>
+		<content-of> av </content-of>
+	</language>
+</ui>

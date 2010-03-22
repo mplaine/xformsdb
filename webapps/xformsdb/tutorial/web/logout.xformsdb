@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Access Control - Logout</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, Access, Control, Logout" />
+		<meta name="description" content="XFormsDB Tutorial - Access Control - Logout" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2008, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- User instance -->
+			<xforms:instance id="user-instance">
+				<dummy xmlns="" />
+			</xforms:instance>
+			<!-- XFormsDB request instances -->
+			<!-- User request instance -->
+			<xformsdb:instance id="user-request-instance">
+				<xformsdb:user />
+			</xformsdb:instance>
+			<!-- Logout request instance -->
+			<xformsdb:instance id="logout-request-instance">
+				<xformsdb:logout />
+			</xformsdb:instance>
+			<!-- XFormsDB request submissions -->
+			<!-- User request submission -->
+ 			<xformsdb:submission id="user-request-submission" replace="instance" instance="user-instance" requestinstance="user-request-instance">
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<!--<xforms:toggle case="user-error-message-switcher" />-->
+				</xforms:action>
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:toggle case="user-success-message-switcher" />
+				</xforms:action>
+			</xformsdb:submission>
+			<!-- Logout request submission -->
+ 			<xformsdb:submission id="logout-request-submission" replace="instance" instance="user-instance" requestinstance="logout-request-instance">
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="logout-error-message-switcher" />
+				</xforms:action>
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:toggle case="logout-success-message-switcher" />
+				</xforms:action>
+			</xformsdb:submission>
+			<xforms:send submission="user-request-submission" ev:event="xforms-ready" />
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Access Control - Logout</h1>
+		        <xforms:switch id="message-switcher">
+		        	<xforms:case id="default-message-switcher" />
+		        	<!--
+		        	<xforms:case id="user-success-message-switcher">
+				        <div class="message-success">
+				        	<xforms:output value="'User has been successfully retrieved from XFormsDB.'" />
+				        </div>
+		        	</xforms:case>
+		        	-->
+		        	<xforms:case id="user-error-message-switcher">
+				        <div class="message-error">
+				   	    	<xforms:output value="concat( 'Error (', ' ', instance( 'user-request-instance' )/xformsdb:error/xformsdb:code, ' ): ', instance( 'user-request-instance' )/xformsdb:error/xformsdb:description )" />
+				       	</div>
+		        	</xforms:case>
+		        	<xforms:case id="logout-success-message-switcher">
+				        <div class="message-success">
+				        	<xforms:output value="'User has been successfully logged out from XFormsDB.'" />
+				        </div>
+		        	</xforms:case>
+		        	<xforms:case id="logout-error-message-switcher">
+				        <div class="message-error">
+				   	    	<xforms:output value="concat( 'Error (', ' ', instance( 'logout-request-instance' )/xformsdb:error/xformsdb:code, ' ): ', instance( 'logout-request-instance' )/xformsdb:error/xformsdb:description )" />
+				       	</div>
+		        	</xforms:case>
+		        </xforms:switch>
+		        <table>
+		        	<tr>
+		        		<td><b>Logged in as:</b>&nbsp;</td>
+		        		<td><xforms:output ref="instance( 'user-instance' )/@username" /></td>
+		        	</tr>
+		        	<tr>
+		        		<td>&nbsp;</td>
+		        		<td>
+							<xforms:trigger>
+								<xforms:label>Logout</xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:send submission="logout-request-submission" />
+								</xforms:action>
+							</xforms:trigger>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

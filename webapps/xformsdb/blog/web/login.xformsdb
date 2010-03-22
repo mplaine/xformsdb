@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb">
+	<head>
+		<title>XFormsDB Blog - Login</title>
+		<script type="text/javascript">
+			var timestamp_firstbyte	= Number( new Date() );
+		</script>
+		<script id="episodesscript" type="text/javascript" src="js/episodes.js"></script>
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:mark:episodes.js", "*" );
+			window.postMessage( "EPISODES:mark:firstbyte:" + timestamp_firstbyte, "*" );
+			window.postMessage( "EPISODES:measure:episode.js:firstbyte:episodes.js", "*" );
+			window.postMessage( "EPISODES:measure:backend:starttime:firstbyte", "*" );
+
+			function doPageReady() {
+				window.postMessage( "EPISODES:measure:frontend:firstbyte", "*" );			
+				window.postMessage( "EPISODES:measure:pageready:starttime", "*" );			
+				window.postMessage( "EPISODES:measure:totaltime:starttime", "*" );			
+				window.postMessage( "EPISODES:done", "*" );			
+			}
+			function handleEpisodeResults( event ) {
+				if ( "EPISODES:done" === event.data ) {
+					var beaconUrl	= EPISODES.sendBeacon( "gfx/beacon.gif" );
+			
+					// write the beacon URL in the doc
+					if ( beaconUrl ) {
+						//document.getElementById( "episodesresults" ).innerHTML = "<code>" + beaconUrl + "</code>";
+					}
+				}
+			}
+			EPISODES.addEventListener( "load", doPageReady, false );
+			EPISODES.addEventListener( "message", handleEpisodeResults, false );			
+		</script>
+		<meta name="keywords" content="XFormsDB, Blog, Login" />
+		<meta name="description" content="XFormsDB Blog - Login" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2007, XFormsDB" />
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:mark:blog.css", "*" );
+		</script>
+		<link rel="stylesheet" type="text/css" href="css/blog.css" media="all" />
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:measure:blog.css:blog.css", "*" );
+		</script>
+		<xforms:model>
+			<!-- Instances -->
+			<!-- User interface texts -->
+			<xforms:instance id="ui-instance" src="xml/ui-login-instance.xml" />
+			<!-- User instance -->
+			<xforms:instance id="user-instance">
+				<dummy xmlns="" />
+			</xforms:instance>
+			<!-- Login instance -->
+			<xforms:instance id="login-instance">
+				<login xmlns="">
+					<username />
+					<password />
+				</login>
+			</xforms:instance>
+			<!-- XFormsDB request instances -->
+			<!-- Login request instance -->
+			<xformsdb:instance id="login-request-instance">
+				<xformsdb:login datasrc="exist-realm-data-source" doc="xformsdb_users.xml">
+					<xformsdb:var name="username" />
+					<xformsdb:var name="password" />
+				</xformsdb:login>
+			</xformsdb:instance>
+			<!-- XFormsDB request submissions -->
+			<!-- Login request submission -->
+ 			<xformsdb:submission id="login-request-submission" replace="instance" instance="user-instance" requestinstance="login-request-instance">
+ 				<xforms:action ev:event="xforms-submit">
+					<xforms:toggle case="on-progress-working-switcher" />
+				</xforms:action>
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:toggle case="off-progress-working-switcher" />
+					<xforms:toggle if="not( exists( instance( 'user-instance' )/@username ) )" case="login-login-empty-message-switcher" />
+					<xforms:load if="exists( instance( 'user-instance' )/@username )" resource="admin/index.xformsdb" show="replace" />
+				</xforms:action>
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="off-progress-working-switcher" />
+					<xforms:toggle case="login-login-error-message-switcher" />
+				</xforms:action>
+			</xformsdb:submission>
+ 			<!-- Initialize the web page -->
+			<xforms:toggle case="off-progress-working-switcher" ev:event="xforms-ready" />
+			<xforms:toggle case="login-default-message-switcher" ev:event="xforms-ready" />
+		</xforms:model>
+	</head>
+	<body>
+		<div id="page">
+			<div id="container">
+				<!-- :::: BEGIN: Header :::: -->
+				<div id="header">
+					<!-- :::: BEGIN: Progress working :::: -->
+			        <xforms:switch id="progress-working-switcher">
+			        	<xforms:case id="off-progress-working-switcher" />
+			        	<xforms:case id="on-progress-working-switcher">
+							<div class="process-working" />
+			        	</xforms:case>
+					</xforms:switch>					
+					<!-- :::: END: Progress working :::: -->
+					<h1>
+						<xforms:trigger appearance="minimal">
+							<xforms:label><xforms:output ref="instance( 'ui-instance' )/header-link-xformsdb-blog-login" /></xforms:label>
+							<xforms:action ev:event="DOMActivate">
+								<xforms:toggle case="login-default-message-switcher" />
+								<xforms:setvalue ref="instance( 'login-instance' )/username" value="''" />
+								<xforms:setvalue ref="instance( 'login-instance' )/password" value="''" />
+								<xforms:setvalue ref="instance( 'login-request-instance' )/xformsdb:var[ @name = 'username' ]" value="''" />
+								<xforms:setvalue ref="instance( 'login-request-instance' )/xformsdb:var[ @name = 'password' ]" value="''" />
+							</xforms:action>
+						</xforms:trigger>
+					</h1>
+					<div id="headerimage" />
+				</div>
+				<!-- :::: END: Header :::: -->
+				<!-- :::: BEGIN: Content :::: -->
+				<div id="content">
+					<!-- :::: BEGIN: Login :::: -->
+					<h2 class="headline"><xforms:output ref="instance( 'ui-instance' )/login-header-login" /></h2>
+			        <!-- :::: BEGIN: Login messages :::: -->
+			        <xforms:switch id="login-message-switcher">
+			        	<xforms:case id="login-default-message-switcher" />
+						<xforms:case id="login-login-empty-message-switcher">
+							<div class="message-error">
+								<xforms:output value="'Error: Incorrect username/password combination.'" />
+							</div>
+						</xforms:case>
+			        	<xforms:case id="login-login-error-message-switcher">
+					        <div class="message-error">
+					        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'login-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/login-message-login-error )" />
+					        </div>
+			        	</xforms:case>
+			        </xforms:switch>
+			        <!-- :::: END: Login messages :::: -->
+			        <p class="loginusername"><xforms:input ref="instance( 'login-instance' )/username" /><span class="loginusername"><xforms:output ref="instance( 'ui-instance' )/login-label-username" /></span></p>
+					<p class="loginpassword"><xforms:secret ref="instance( 'login-instance' )/password" /><span class="loginpassword"><xforms:output ref="instance( 'ui-instance' )/login-label-password" /></span></p>
+					<p class="loginsubmit">
+						<xforms:trigger appearance="full">
+							<xforms:label><xforms:output ref="instance( 'ui-instance' )/login-link-submit" /></xforms:label>
+							<xforms:action ev:event="DOMActivate">
+								<xforms:toggle case="login-default-message-switcher" ev:event="xforms-ready" />
+								<!-- Retrieve credentials (copy username plus copy and hash password) from the login (temporary) instance -->
+								<xforms:setvalue ref="instance( 'login-request-instance' )/xformsdb:var[ @name = 'username' ]" value="instance( 'login-instance' )/username" />
+								<xforms:setvalue ref="instance( 'login-request-instance' )/xformsdb:var[ @name = 'password' ]" value="digest( concat( instance( 'login-instance' )/password, 'XXX3bnwNf2rbdfbrHrBVAWygzmaRZ99Npd2HCCQQDxgGYHWwxYKqv7KkX8Aqcdku' ), 'SHA-512', 'hex' )" />
+								<xforms:send submission="login-request-submission" />
+							</xforms:action>
+						</xforms:trigger>
+					</p>
+  				</div>
+				<!-- :::: END: Content :::: -->
+				<!-- :::: BEGIN: Sidebar :::: -->				
+				<div id="sidebar" />
+				<!-- :::: END: Sidebar :::: -->				
+				<!-- :::: BEGIN: Footer :::: -->
+				<div id="footer">
+					<div id="footerimage" />
+					<p><xforms:output value="instance( 'ui-instance' )/footer-content-copyright" />
+						<xforms:trigger appearance="minimal">
+							<xforms:label><xforms:output ref="instance( 'ui-instance' )/footer-link-public" /></xforms:label>
+							<xforms:action ev:event="DOMActivate">
+								<xforms:load resource="index.xformsdb" show="replace" />
+							</xforms:action>
+						</xforms:trigger>
+					</p>
+				</div>
+				<!-- :::: END: Footer :::: -->
+				<!-- Episodes Results (beacon) -->
+				<!--<div id="episodesresults" />-->
+				<!-- Orbeon Forms XForms Instance Inspector -->
+				<!--<widget:xforms-instance-inspector xmlns:widget="http://orbeon.org/oxf/xml/widget" />-->
+			</div>
+		</div>
+	</body>
+</html>

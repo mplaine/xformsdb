@@ -1,0 +1,322 @@
+@charset "UTF-8";
+
+
+/* -------------- IMPORTED STYLE SHEETS ---- */
+@import url( "xforms_of.css" );
+
+
+/* -------------- COMMONS ------------------ */
+body,
+html {
+	background-color: #ECECEC;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+body {
+	color: #666666;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	text-align: center;
+	height: 480px;
+}
+a {
+	color: #699215;
+	text-decoration: none;
+}
+a:hover {
+	color: #699215;
+	text-decoration: underline;
+}
+.disabled {
+	color: #999999;
+}
+pre {
+	color: #666666;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	overflow-x: auto;
+	overflow-y: hidden; /* Fixes the vertical scrollbar issue in IE (probably due to Orbeon Forms) */
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	width: 99%;
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.xforms-repeat-selected-item-3, .xforms-repeat-selected-item-2, .xforms-repeat-selected-item-1 {
+	background-color: transparent;
+}
+
+
+/* -------------- PAGE --------------------- */
+#page {
+	/*background: transparent url( "background_gradient.png" ) repeat-y;*/
+	background-color: #FFFFFF;
+	margin: 0px auto 0px 0px;
+	padding: 0px 0px 0px 0px;
+	width: 320px;
+	text-align: left;
+}
+
+
+/* -------------- CONTAINER ---------------- */
+.contentDiv {
+	float: left;
+	margin-left: 10px;
+	width: 300px;
+	background-color: #FFFFFF;
+}
+
+.backDiv {
+	height: 20px;
+	font-size: 14px;
+}
+
+
+/* -------------- HEADER ------------------- */
+
+
+/* -------------- HEADER OTHERS ------------ */
+#header {
+	float: left;
+	margin: 15px 44px 15px 10px;
+	width: 300px;
+	background-color: #FFFFFF;
+}
+#header h1 {
+	color: #999999;
+	font-family: Arial;
+	font-size: 20px;
+	font-weight: normal;
+	letter-spacing: 4px;
+	margin: 20px 10px 14px 10px;
+	text-transform: uppercase;
+}
+#header a {
+	color: #999999;
+}
+#header a:hover {
+	color: #999999;
+}
+
+
+/* -------------- CONTENT ------------------ */
+/* -------------- MESSAGES ----------------- */
+div.message-error {
+	align: left;
+	background-color: #FF6666;
+	background-image: url( "icon/forbidden_32x32.png" );
+	background-position: 5px 5px;
+	background-repeat: no-repeat;
+	border: 2px solid #CC0000;
+	color: #FFFFFF;
+	font-weight: bold;
+	padding: 12px 12px 12px 50px;
+	margin-bottom: 13px;
+	min-height: 20px;
+	text-align: left;
+}
+
+
+/* -------------- CONTENT OTHERS ----------- */
+.contentDiv h2.headline {
+	border-bottom: 1px solid #CCCCCC;
+	color: #666666;
+	font-size: 12px;
+	margin: 0px 0px 10px 0px;
+	padding: 0px 0px 2px 0px;
+	text-transform: uppercase;
+}
+.contentDiv h2.postheadline {
+	color: #699215;
+	font-size: 12px;
+	margin: 0px 5px 0px 5px;
+	padding: 5px 0px 5px 0px;
+}
+.contentDiv h2.postheadline a{
+	text-decoration: none;
+}
+.contentDiv h2.postheadline a:hover{
+	text-decoration: underline;
+}
+.contentDiv p.postcreationtime {
+	color: #CCCCCC;
+	font-size: 11px;
+	margin: 4px 0px 0px 0px;
+}
+.contentDiv p.postauthorandcreationtime {
+	color: #CCCCCC;
+	font-size: 9px;
+	margin-top: 0px;
+	padding: 0px 0px 0px 0px;
+	margin-left: 10px;
+}
+.contentDiv span.postauthor {
+	font-weight: bold;
+	text-transform: uppercase;
+}
+.contentDiv span.postcreationtime {
+	color: #CCCCCC;
+}
+.contentDiv div.postcontent {
+	color: #666666;
+	font-size: 11px;
+	text-align: justify;
+}
+.contentDiv p.postcomments {
+	font-size: 11px;
+	margin: 10px 0px 30px 0px;
+}
+.contentDiv span.commentsicon {
+	background: transparent url( "comments_icon.png" ) no-repeat;
+	float: left;
+	height: 12px;
+	margin: 2px 10px 0px 0px;
+	width: 12px;
+}
+.contentDiv p.commentauthorandcreationtime {
+	color: #666666;
+	font-size: 11px;
+	margin: 0px 5px 0px 5px;
+	padding: 0px 0px 0px 0px;
+}
+.contentDiv span.commentauthor {
+	font-weight: bold;
+	text-transform: uppercase;	
+}
+.contentDiv span.commentcreationtime {
+	color: #CCCCCC;
+}
+.contentDiv div.commentpointer {
+	background: transparent url( "comment_pointer.png" ) no-repeat;
+	height: 12px;
+	margin: 2px 0px 0px 0px;
+	width: 436px;
+}
+.contentDiv div.commentcontent {
+	background-color: #DFDFDF;
+	color: #666666;
+	font-size: 11px;
+	margin: 0px 0px 20px 0px;
+	padding: 15px 10px 15px 10px;
+	text-align: justify;
+}
+.contentDiv pre.commentcontent {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+.contentDiv h2.leaveacomment {
+	border-bottom: 1px solid #CCCCCC;
+	color: #666666;
+	font-size: 12px;
+	margin: 30px 0px 10px 0px;
+	padding: 0px 0px 5px 0px;
+	text-transform: uppercase;
+}
+.contentDiv p.newcommentauthor {
+	color: #666666;
+	font-size: 11px;
+	font-weight: bold;
+	margin: 0px 0px 5px 0px;
+}
+.contentDiv span.newcommentauthor {
+	margin: 0px 0px 0px -12px;
+}
+.contentDiv p.newcommentcontent {
+	margin: 0px 0px -12px 0px;
+}
+.contentDiv p.newcommentsubmit {
+	margin: 0px 0px 0px 0px;
+	text-align: right;
+}
+.contentDiv h2.action {
+	border-bottom: 1px solid #CCCCCC;
+	color: #666666;
+	font-size: 12px;
+	margin: 0px 0px 10px 0px;
+	padding: 0px 0px 8px 0px;
+	text-transform: uppercase;
+}
+.contentDiv p.newpostauthor {
+	color: #666666;
+	font-size: 11px;
+	font-weight: bold;
+	margin: 0px 0px 5px 0px;
+}
+.contentDiv span.newpostauthor {
+	margin: 0px 0px 0px -12px;
+}
+.contentDiv p.newpostheadline {
+	color: #666666;
+	font-size: 11px;
+	font-weight: bold;
+	margin: 0px 0px 5px 0px;
+}
+.contentDiv span.newpostheadline {
+	margin: 0px 0px 0px -12px;
+}
+.contentDiv p.newpostcontent {
+	margin: 0px 0px -12px 0px;
+}
+v p.newpostsubmit {
+	margin: 0px 0px 0px 0px;
+	text-align: right;
+}
+
+
+
+
+
+/* -------------- SIDEBAR ------------------ */
+#sidebar {
+	float: left;
+	margin: 15px 0px 15px 0px;
+	width: 226px;
+}
+.contentDiv h2 {
+	border-bottom: 1px solid #CCCCCC;
+	color: #666666;
+	font-size: 12px;
+	margin: 0px 5px 0px 5px;
+	padding: 5px 0px 5px 0px;
+	text-transform: capitalize;
+}
+.contentDiv p.archivemonth {
+	border-bottom: 1px solid #CCCCCC;
+	font-size: 12px;
+	margin: 0px 5px 0px 5px;
+	padding: 8px 0px 8px 0px;
+}
+.contentDiv span.archiveicon {
+	background: transparent url( "archive_icon.png" ) no-repeat;
+	float: left;
+	height: 9px;
+	margin: 2px 10px 0px 0px;
+	width: 9px;
+}
+
+.contentDiv span.commenticon {
+	background: transparent url( "comments_icon.png" ) no-repeat;
+	float: left;
+	height: 12px;
+	margin: 0px 10px 0px 0px;
+	width: 12px;
+}
+.contentDiv span.manageicon {
+	background: transparent url( "manage_icon.png" ) no-repeat;
+	float: left;
+	height: 12px;
+	margin: 0px 10px 0px 0px;
+	width: 12px;
+}
+
+.backImg {
+	margin-bottom: 3px;
+}

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (C) 2009 Orbeon, Inc.
+
+  This program is free software; you can redistribute it and/or modify it under the terms of the
+  GNU Lesser General Public License as published by the Free Software Foundation; either version
+  2.1 of the License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  See the GNU Lesser General Public License for more details.
+
+  The full text of the license is available at http://www.gnu.org/copyleft/lesser.html
+  -->
+<document xmlns:p="http://www.orbeon.com/oxf/pipeline" xmlns:xforms="http://www.w3.org/2002/xforms"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:xxforms="http://orbeon.org/oxf/xml/xforms"
+        xmlns:oxf="http://www.orbeon.com/oxf/processors" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:sql="http://orbeon.org/oxf/xml/sql" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:ev="http://www.w3.org/2001/xml-events">
+    <header>
+        <title>Changes in Version 3.7.2 (Developer Release)</title>
+    </header>
+    <body>
+        <a name="introduction"/>
+        <section>
+            <title>Introduction</title>
+            <p>
+                Orbeon Forms 3.7.2 (Developer Release) features over <a href="#changes-372-full">[TODO] improvements</a>
+                since <a href="home-changes-371">Orbeon Forms 3.7.1</a>, including [TODO].
+            </p>
+            <p>
+                This document describes changes made between Orbeon Forms 3.7.1 and Orbeon Forms 3.7.2.
+            </p>
+            <p>
+                <b>Please also make sure to check all releases on the <a
+                href="http://www.orbeon.com/forms/download">downloads page</a>.</b>
+            </p>
+            <p style="color: red">
+                NOTE: Orbeon Forms 3.7.2 is not yet released. These notes are a work in progress.
+            </p>
+        </section>
+        <a name="changes-372"/>
+        <section>
+            <title>Changes in Version 3.7.2 (Developer Release)</title>
+            <section>
+                <title>Noteworthy Changes</title>
+                <ul>
+                    <li>
+                        <p>
+                            <b>TODO.</b>
+                        </p>
+                    </li>
+                </ul>
+            </section>
+            <a name="changes-372-full"/>
+            <section>
+                <title>Complete List of Issues Addressed in this Release</title>
+                <p>
+                    Orbeon Forms 3.7.2 addresses the following bugs and features:
+                </p>
+                <!--
+Request to extract bugs from SourceForge with http://www.orbeon.com/ops/xquery-the-web/ :
+
+http://forge.objectweb.org/tracker/index.php?func=browse&group_id=168&atid=350207&set=custom&_assigned_to=0&_status=2&_category=100&_group=100&_sort_col=close_date&_sort_ord=DESC
+
+<ul>
+    {
+        for $table in //table[tr/td/span/strong[. = 'ID']]
+            let $latest-id := '308864'
+            let $latest-position := count(($table//tr)[td[normalize-space(.) = $latest-id]]/preceding-sibling::tr) + 1
+            return
+                for $row in ($table//tr)[position() ge 2 and position() lt $latest-position and normalize-space(td[7]) = 'Fixed'] return
+                <li>
+                    <a href="http://forge.objectweb.org/{$row/td[2]/a/@href}">#{string($row/td[1])}: {string($row/td[2]/a)}</a>
+                </li>
+    }
+</ul>
+-->
+                <ul>
+
+                </ul>
+            </section>
+        </section>
+        <a name="compatibility"/>
+        <section>
+            <title>Compatibility Notes</title>
+            <section>
+                <title>HTML elements used to represent help, hint, and alert XForms elements</title>
+                <p>
+                    [TODO: describe change from label to span for HHA elements; reason: screen readers and @for; mention
+                    XForms properties allowing to change this
+                    http://forge.ow2.org/tracker/index.php?func=detail&amp;aid=314375&amp;group_id=168&amp;atid=350207]
+                </p>
+                <xml-source>
+                    <property as="xs:string"  name="oxf.xforms.label-element" value="label"/>
+                    <property as="xs:string"  name="oxf.xforms.hint-element"  value="span"/>
+                    <property as="xs:string"  name="oxf.xforms.help-element"  value="span"/>
+                    <property as="xs:string"  name="oxf.xforms.alert-element" value="span"/>
+                </xml-source>
+                <xml-source>
+                    <xforms:model xxforms:hint-element="label">
+                        ...
+                    </xforms:model>
+                </xml-source>
+            </section>
+            <section>
+                <title>XSLT output location information</title>
+                <p>
+                    [TODO: describe location-mode, and issue that can be caused by XInclude after XSLT in "none" mode]
+                </p>
+                <xml-source>
+                    <property as="xs:string"  processor-name="oxf:saxon8"    name="location-mode"            value="none"/>
+                </xml-source>
+            </section>
+            <section>
+                <title>Java 1.5 or greater is now required</title>
+                <p>
+                    [TODO]
+                </p>
+            </section>
+            <section>
+                <title>Autocomplete appearance on xforms:select1 is deprecated</title>
+                <p>
+                    [TODO: explain fr:autocomplete and plan for future]
+                </p>
+            </section>
+            <section>
+                <title>Removal of Xalan and XSLTC from the standard distribution</title>
+                <p>
+                    [TODO]
+                </p>
+            </section>
+            <section>
+                <title>Configuration of XForms logging</title>
+                <p>
+                    [TODO]
+                </p>
+            </section>
+            <section>
+                <title>Deprecation and removal of Java classes</title>
+                <p>
+                    The following classes, usually referenced from <code>web.xml</code> and <code>portlet.xml</code>,
+                    are still available but deprecated:
+                </p>
+                <ul>
+                    <li>
+                        <code>OPSServletContextListener</code> and <code>OPSServletContextListenerDelegate</code>: use
+                        <code>OrbeonServletContextListener</code> and
+                        <code>OrbeonServletContextListenerDelegate</code> instead.
+                    </li>
+                    <li>
+                        <code>OPSSessionListener</code> and <code>OPSSessionListenerDelegate</code>: use
+                        <code>OrbeonSessionListener</code> and <code>OrbeonSessionListenerDelegate</code> instead.
+                    </li>
+                </ul>
+                <p>
+                    The following classes have been deprecated for a long time and are now removed:
+                </p>
+                <ul>
+                    <li>
+                        <code>OXFServletContextListener</code> and <code>OXFServletContextListenerDelegate</code>:
+                        use <code>OrbeonServletContextListener</code> and <code>OrbeonServletContextListenerDelegate</code> instead.
+                    </li>
+                    <li>
+                        <code>OXFSessionListener</code> and <code>OXFSessionListenerDelegate</code>: use
+                        <code>OrbeonSessionListener</code> and <code>OrbeonSessionListenerDelegate</code> instead.
+                    </li>
+                </ul>
+            </section>
+        </section>
+    </body>
+</document>

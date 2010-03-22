@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<users>
+		<user>
+			<displayname>XFormsDB</displayname>
+			<username>xformsdb</username>
+		</user>
+		<user>
+			<displayname>The Boss</displayname>
+			<username>boss</username>
+		</user>
+		<user>
+			<displayname>The Worker</displayname>
+			<username>worker</username>
+		</user>
+	</users>
+</root>

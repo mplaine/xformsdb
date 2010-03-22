@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions xmlns="">
+	<action>Write a post</action>
+	<action>Manage posts</action>
+	<action>Manage comments</action>
+</actions>

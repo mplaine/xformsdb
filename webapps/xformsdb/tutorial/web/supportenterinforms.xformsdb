@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Miscellaneous - Support Enter in Forms</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, Miscellaneous, Support, Enter, in, Forms" />
+		<meta name="description" content="XFormsDB Tutorial - Miscellaneous - Support Enter in Forms" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2009, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- Login instance -->
+			<xforms:instance id="login-instance">
+				<login xmlns="">
+					<username />
+					<password />
+				</login>
+			</xforms:instance>
+			<xforms:instance id="help-instance">
+				<help xmlns="">
+					<username>Fill in your username.</username>
+					<password>Fill in your password.</password>
+				</help>
+			</xforms:instance>
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Miscellaneous - Support Enter in Forms</h1>
+		        <table>
+		        	<xforms:group ref="instance( 'login-instance' )">
+						<xforms:action ev:event="DOMActivate">			
+							<xforms:dispatch name="DOMActivate" target="login-trigger" />
+						</xforms:action>
+			        	<tr>
+			        		<td><b>Username:</b>&nbsp;</td>
+			        		<td>
+			        			<xforms:input ref="username">
+			        				<xforms:help ref="instance( 'help-instance' )/username" />
+			        			</xforms:input>
+			        		</td>
+			        	</tr>
+			        	<tr>
+			        		<td><b>Password:</b>&nbsp;</td>
+			        		<td>
+			        			<xforms:secret ref="password">
+			        				<xforms:help ref="instance( 'help-instance' )/password" />
+			        			</xforms:secret>
+			        		</td>
+			        	</tr>
+		        	</xforms:group>
+		        	<tr>
+		        		<td>&nbsp;</td>
+		        		<td>
+							<xforms:trigger id="login-trigger">
+								<xforms:label>Login</xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:message level="modal">You have successfully submitted the login form.</xforms:message>
+								</xforms:action>
+							</xforms:trigger>
+						</td>
+					</tr>
+		        	<tr>
+		        		<td>&nbsp;</td>
+		        		<td>
+							<xforms:trigger appearance="minimal" id="forgot-password-trigger">
+								<xforms:label>Forgot password?</xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:message level="modal">You have successfully clicked the &quot;Forgot password?&quot; link.</xforms:message>
+								</xforms:action>
+							</xforms:trigger>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

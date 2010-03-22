@@ -1,0 +1,136 @@
+@charset "UTF-8";
+
+
+/* -------------- COMMON ----------------------- */
+body, html {
+	background-color: #FFFFFF;
+	margin: 5px 5px 5px 5px;
+	padding: 0px 0px 0px 0px;
+}
+body {
+	color: #666666;
+	font-family: verdana, helvetica, tahoma, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	text-align: left;
+}
+
+
+a, a:active, a:focus, a:visited {
+	color: #009900;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+code {
+	font-family: monospace;
+}
+h1, h2, h3, h4 {
+	color: #009900;
+	font-family: arial, verdana, helvetica, tahoma, sans-serif;
+	font-style: normal;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+h1 span, h2 span, h3 span {
+	background-color: #009900;
+	color: #FFFFFF;
+	padding: 4px 14px 4px 14px;
+}
+h1.note span, h2.note span {
+	background-color: #FF0000;
+	color: #FFFFFF;
+	padding: 4px 14px 4px 14px;
+}
+h4 span {
+	background-color: transparent;
+	color: #666666;
+	padding: 4px 0px 4px 0px;
+}
+h4 span.inprogress {
+	background-color: transparent;
+	color: #FF0000;
+	padding: 4px 0px 4px 0px;
+}
+h1 {
+	font-size: 24px;
+}
+h2 {
+	font-size: 18px;
+}
+h3 {
+	font-size: 14px;
+}
+h4 {
+	font-size: 12px;
+}
+
+
+/* -------------- CONTAINER -------------------- */
+#container {
+	max-width: 760px;
+}
+
+
+/* -------------- HEADER ----------------------- */
+#header ol {
+	list-style: none;
+}
+
+
+/* -------------- CONTENT ---------------------- */
+#content div.code {
+	border-color: #009900;
+	border-style: solid;
+	border-width: 2px;
+	margin: 0px;
+	padding: 4px;
+}
+#content div.code pre {
+	background-color: #CCFF99;
+	color: #666666;
+	font-family: monospace;
+	font-size: 12px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	margin: 0px;
+	overflow-x: auto;
+	overflow-y: hidden; /* Fixes the vertical scrollbar issue in IE (probably due to Orbeon Forms) */
+	padding: 10px;
+	text-align: left;
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+#content h1, #content h2, #content h3 {
+	margin-top: 60px;
+}
+#content h4 {
+	margin-top: 40px;
+}
+#content ol.toc, #content ol.namespaces, #content ol.attributes {
+	list-style: none;
+}
+#content ol.attributes li.attribute {
+	font-weight: bold;
+}
+#content ol.attributes li.description {
+	margin-bottom: 10px;
+	margin-left: 40px;
+}
+#content p.caption {
+	padding: 10px 0px 0px 0px;
+}
+#content ul.functionalities, #content ul.properties {
+	list-style: disc;
+	margin-left: 14px;
+}
+#content img {
+	padding-top: 20px;
+}

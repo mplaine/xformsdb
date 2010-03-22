@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Template</title>
+		<meta name="keywords" content="XFormsDB, Template" />
+		<meta name="description" content="XFormsDB Template" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2008, XFormsDB" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- User Interface (UI) instance -->
+			<xforms:instance id="ui-instance">
+				<ui-instance xmlns="">
+					<header>XFormsDB Template</header>
+					<content>This project acts as a template for XFormsDB-based Web applications.</content>
+				</ui-instance>
+			</xforms:instance>
+		</xforms:model>
+	</head>
+	<body>
+		<h1><xforms:output ref="instance( 'ui-instance' )/header" /></h1>
+		<p><xforms:output ref="instance( 'ui-instance' )/content" /></p>
+		<!--
+		<widget:xforms-instance-inspector xmlns:widget="http://orbeon.org/oxf/xml/widget" />
+		-->
+	</body>
+</html>

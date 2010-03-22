@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui [
+<!ENTITY copy   "&#169;"> <!-- copyright sign, U+00A9 ISOnum -->
+<!ENTITY raquo  "&#187;"> <!-- right-pointing double angle quotation mark = right pointing guillemet, U+00BB ISOnum -->
+]>
+<ui xmlns="">
+	<header-link-xformsdb-blog-administration>XFormsDB Blog - Administration</header-link-xformsdb-blog-administration>
+	<message-error-1>Error (</message-error-1>
+	<message-error-2>):</message-error-2>
+	<write-a-post-message-select-posts-for-update-error>Failed to retrieve posts.</write-a-post-message-select-posts-for-update-error>
+	<manage-posts-message-select-posts-for-update-error>Failed to retrieve posts.</manage-posts-message-select-posts-for-update-error>
+	<manage-posts-message-select-posts-for-table-error>Failed to retrieve posts.</manage-posts-message-select-posts-for-table-error>
+	<manage-posts-message-select-post-archives-error>Failed to retrieve archives.</manage-posts-message-select-post-archives-error>
+	<manage-comments-message-select-comments-for-table-error>Failed to retrieve comments.</manage-comments-message-select-comments-for-table-error>
+	<manage-comments-message-select-comment-archives-error>Failed to retrieve archives.</manage-comments-message-select-comment-archives-error>
+	<logout-error>Failed to logout.</logout-error>
+	<write-a-post-message-publish-post-error>Failed to publish post.</write-a-post-message-publish-post-error>
+	<write-a-post-message-publish-post-success>Post has been successfully published.</write-a-post-message-publish-post-success>
+	<write-a-post-label-name>Name</write-a-post-label-name>
+	<write-a-post-label-headline>Headline</write-a-post-label-headline>
+	<write-a-post-link-submit>Submit</write-a-post-link-submit>
+	<manage-posts-message-delete-post-error>Failed to delete post.</manage-posts-message-delete-post-error>
+	<manage-posts-message-delete-post-success>Post has been successfully deleted.</manage-posts-message-delete-post-success>
+	<manage-posts-message-edit-post-error>Failed to save changes.</manage-posts-message-edit-post-error>
+	<manage-posts-message-edit-post-success>Changes have been successfully saved.</manage-posts-message-edit-post-success>
+	<manage-posts-content-no-posts>Sorry, no posts matched your criteria.</manage-posts-content-no-posts>
+	<manage-posts-header-browse-archive>Browse archive...</manage-posts-header-browse-archive>
+	<manage-posts-link-browse-archive-submit>Submit</manage-posts-link-browse-archive-submit>
+	<manage-posts-header-headline>Headline</manage-posts-header-headline>
+	<manage-posts-header-actions>Actions</manage-posts-header-actions>
+	<manage-posts-link-edit>Edit</manage-posts-link-edit>
+	<manage-posts-link-delete>Delete</manage-posts-link-delete>
+	<manage-posts-content-anonymous>Anonymous</manage-posts-content-anonymous>
+	<manage-posts-content-separator>//</manage-posts-content-separator>
+	<manage-posts-content-comments-1>Comments (</manage-posts-content-comments-1>
+	<manage-posts-content-comments-2>)</manage-posts-content-comments-2>
+	<manage-posts-label-name>Name</manage-posts-label-name>
+	<manage-posts-label-headline>Headline</manage-posts-label-headline>
+	<manage-posts-link-edit-post-submit>Submit</manage-posts-link-edit-post-submit>
+	<manage-posts-content-results>Results</manage-posts-content-results>
+	<manage-posts-content-of>of</manage-posts-content-of>
+	<manage-comments-message-view-comment-error>Failed to retrieve comment.</manage-comments-message-view-comment-error>
+	<manage-comments-message-select-comments-for-delete-update-error>Failed to retrieve comments.</manage-comments-message-select-comments-for-delete-update-error>
+	<manage-comments-message-delete-comment-error>Failed to delete comment.</manage-comments-message-delete-comment-error>
+	<manage-comments-message-delete-comment-success>Comment has been successfully deleted.</manage-comments-message-delete-comment-success>
+	<manage-comments-message-select-comments-for-edit-update-error>Failed to retrieve comments.</manage-comments-message-select-comments-for-edit-update-error>
+	<manage-comments-message-edit-comment-error>Failed to save changes.</manage-comments-message-edit-comment-error>
+	<manage-comments-message-edit-comment-success>Changes have been successfully saved.</manage-comments-message-edit-comment-success>
+	<manage-comments-content-no-comments>Sorry, no comments matched your criteria.</manage-comments-content-no-comments>
+	<manage-comments-header-browse-archive>Browse archive...</manage-comments-header-browse-archive>
+	<manage-comments-link-browse-archive-submit>Submit</manage-comments-link-browse-archive-submit>
+	<manage-comments-header-comment>Comment</manage-comments-header-comment>
+	<manage-comments-header-actions>Actions</manage-comments-header-actions>
+	<manage-comments-link-edit>Edit</manage-comments-link-edit>
+	<manage-comments-link-delete>Delete</manage-comments-link-delete>
+	<manage-comments-content-anonymous>Anonymous</manage-comments-content-anonymous>
+	<manage-comments-content-separator>//</manage-comments-content-separator>
+	<manage-comments-label-name>Name</manage-comments-label-name>
+	<manage-comments-link-edit-comment-submit>Submit</manage-comments-link-edit-comment-submit>
+	<manage-comments-content-results>Results</manage-comments-content-results>
+	<manage-comments-content-of>of</manage-comments-content-of>
+	<actions-header-actions>ACTIONS</actions-header-actions>
+	<footer-content-copyright>Copyright &copy; XFormsDB 2007. All rights reserved. |</footer-content-copyright>
+	<footer-link-logout-public>Logout &raquo; Public</footer-link-logout-public>
+</ui>

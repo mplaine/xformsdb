@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Miscellaneous - Repeat</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, Miscellaneous, Repeat" />
+		<meta name="description" content="XFormsDB Tutorial - Miscellaneous - Repeat" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2009, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- Item instance -->
+			<xforms:instance id="item-instance">
+				<item xmlns="">
+					<name>New item</name>
+					<price>0</price>
+				</item>
+			</xforms:instance>
+			<!-- Items instance -->
+			<xforms:instance id="items-instance">
+				<items xmlns="">
+					<item>
+						<name>Car</name>
+						<price>300000</price>
+					</item>
+					<item>
+						<name>MP3 Player</name>
+						<price>200</price>
+					</item>
+					<item>
+						<name>Computer</name>
+						<price>1000</price>
+					</item>
+				</items>
+			</xforms:instance>
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Miscellaneous - Repeat</h1>
+				<xforms:trigger appearance="minimal">
+					<xforms:label>Insert new item</xforms:label>
+					<xforms:action ev:event="DOMActivate">
+						<xforms:insert origin="instance( 'item-instance' )" context="instance( 'items-instance' )" nodeset="*" />
+					</xforms:action>
+				</xforms:trigger>
+				|
+				<xforms:trigger appearance="minimal">
+					<xforms:label>Delete selected item</xforms:label>
+					<xforms:action ev:event="DOMActivate">
+						<xforms:delete nodeset="instance( 'items-instance' )/item" at="index( 'items-item-repeat' )" />
+					</xforms:action>
+				</xforms:trigger>
+				|
+				<xforms:trigger appearance="minimal">
+					<xforms:label>Delete all items</xforms:label>
+					<xforms:action ev:event="DOMActivate">
+						<xforms:action while="count( instance( 'items-instance' )/item ) &gt; 0"> 
+							<xforms:delete nodeset="instance( 'items-instance' )/item" at="last()" /> 
+						</xforms:action> 
+					</xforms:action>
+				</xforms:trigger>
+		        <h3>Items</h3>
+				<!-- IF clause: Check the amount of items -->
+				<xforms:group ref=".[ count( instance( 'items-instance' )/item ) &gt; 0 ]">
+			   		<table>
+						<xxforms:variable name="current-index" select="index( 'items-item-repeat' )"/>
+						<!-- Iterate over items -->
+						<xforms:repeat nodeset="instance( 'items-instance' )/item" id="items-item-repeat">
+							<tr>
+								<td>
+									<!-- Calculate the current position -->
+									<xforms:output value="concat( count( preceding-sibling::item ) + 1, ')' )" />
+									<xforms:group ref=".[ count( preceding-sibling::item ) + 1 = number( $current-index ) ]">
+											<xforms:input ref="name" /> (<xforms:input ref="price" /> &euro;)
+									</xforms:group>
+									<xforms:group ref=".[ not( count( preceding-sibling::item ) + 1 = number( $current-index ) ) ]">
+										<xforms:trigger appearance="minimal">
+											<xforms:label><xforms:output value="concat( name, ' (', price, ' &euro;)' )" /></xforms:label>
+										</xforms:trigger>
+									</xforms:group>
+								</td>
+							</tr>
+	    		    	</xforms:repeat>
+					</table>
+				</xforms:group>
+				<!-- ELSE clause: Check the amount of items -->
+				<xforms:group ref=".[ not( count( instance( 'items-instance' )/item ) &gt; 0 ) ]">
+					<xforms:output value="'Sorry, no items.'" />
+				</xforms:group>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

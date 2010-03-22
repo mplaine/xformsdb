@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>Weather</title>
+		<meta name="keywords" content="Weather, XFormsDB" />
+		<meta name="description" content="A simple XFormsDB-based weather widget utilizing the data from Google Weather." />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2009, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/reset_theme.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="css/index/index.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- User Interface (UI) instance -->
+			<xforms:instance id="ui-instance" src="data/index/ui-en-instance.xml" />
+			<!-- XFormsDB security view for logged in users having one of the roles: admin -->
+			<xformsdb:secview roles="admin">
+				<!-- Triggers instance -->
+				<xforms:instance id="triggers-instance" src="data/index/triggers-instance.xml" />
+				<!-- Settings instance -->
+				<xforms:instance id="settings-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Weather instance -->
+				<xforms:instance id="weather-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Search weather instance -->
+				<xforms:instance id="search-weather-instance">
+					<search-weather-instance xmlns="">
+						<city />
+						<language />
+					</search-weather-instance>
+				</xforms:instance>
+				
+				<!-- XFormsDB request instances -->
+				<!-- Select settings request instance -->
+				<xformsdb:instance id="select-settings-request-instance">
+					<xformsdb:widgetquery datasrc="user" doc="data/settings.xml">
+						<xformsdb:expression resource="query/index/select_settings.xq" />
+					</xformsdb:widgetquery>
+				</xformsdb:instance>
+				<!-- Update settings request instance -->
+				<xformsdb:instance id="update-settings-request-instance">
+					<xformsdb:widgetquery datasrc="user" doc="data/settings.xml">
+						<xformsdb:expression resource="query/index/update_settings.xq" />
+						<xformsdb:var name="city" />
+						<xformsdb:var name="temperature" />
+						<xformsdb:var name="show-forecast" />
+						<xformsdb:var name="language" />
+					</xformsdb:widgetquery>
+				</xformsdb:instance>
+				<!-- Hack: Cannot use XQuery because Google Weather's XML response uses incorrect encoding in the XML declaration -->
+				<!-- Search weather request instance -->
+				<!--<xformsdb:instance id="search-weather-request-instance">-->
+				<!--	<xformsdb:widgetquery datasrc="user" doc="data/settings.xml">-->
+				<!--		<xformsdb:expression resource="query/index/search_weather.xq" />-->
+				<!--		<xformsdb:var name="language" />-->
+				<!--		<xformsdb:var name="city" />-->
+				<!--	</xformsdb:widgetquery>-->
+				<!--</xformsdb:instance>-->
+				
+				<!-- Submissions -->
+	 			<!-- Change UI to English -->
+ 				<xforms:submission id="change-ui-en-submission" replace="instance" instance="ui-instance" ref="instance( 'ui-instance' )" action="data/index/ui-en-instance.xml" method="get" mediatype="application/xml" encoding="UTF-8" />
+	 			<!-- Change UI to Finnish -->
+ 				<xforms:submission id="change-ui-fi-submission" replace="instance" instance="ui-instance" ref="instance( 'ui-instance' )" action="data/index/ui-fi-instance.xml" method="get" mediatype="application/xml" encoding="UTF-8" />
+				<!-- Search weather submission -->
+ 				<xforms:submission id="search-weather-submission" replace="instance" instance="weather-instance" ref="instance( 'search-weather-instance' )" action="/weather" method="post" mediatype="application/xml" encoding="UTF-8">
+					<xforms:action ev:event="xforms-submit-error">
+						<xforms:toggle case="error-ui-switcher" />
+					</xforms:action>
+					<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle if=".[ not( instance( 'weather-instance' )/weather[ 1 ] ) ]" case="error-ui-switcher" />
+						<xforms:toggle if=".[ instance( 'weather-instance' )/weather[ 1 ]/problem_cause ]" case="not-found-weather-switcher" />
+						<xforms:toggle if=".[ not( instance( 'weather-instance' )/weather[ 1 ]/problem_cause ) ]" case="default-weather-switcher" />
+					</xforms:action>
+ 				</xforms:submission>
+				
+				<!-- XFormsDB request submissions -->
+				<!-- Select settings request submission -->
+				<xformsdb:submission id="select-settings-request-submission" replace="instance" instance="settings-instance" requestinstance="select-settings-request-instance" expressiontype="all">
+					<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="error-ui-switcher" />
+					</xforms:action>
+					<xforms:action ev:event="xforms-submit-done">
+						<!-- Hack: Cannot use XQuery because Google Weather's XML response uses incorrect encoding in the XML declaration -->
+						<!--<xforms:send submission="search-weather-request-submission" />-->
+						<xforms:send submission="search-weather-submission" />
+						<xforms:send submission="change-ui-en-submission" if="instance( 'settings-instance' )/language[ . = 'en' ]" />
+						<xforms:send submission="change-ui-fi-submission" if="instance( 'settings-instance' )/language[ . = 'fi' ]" />
+					</xforms:action>
+				</xformsdb:submission>
+				<!-- Update settings request submission -->
+				<xformsdb:submission id="update-settings-request-submission" replace="instance" instance="settings-instance" requestinstance="update-settings-request-instance" expressiontype="all">
+					<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="error-ui-switcher" />
+					</xforms:action>
+					<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="default-ui-switcher" />
+						<xforms:send submission="change-ui-en-submission" if="instance( 'settings-instance' )/language[ . = 'en' ]" />
+						<xforms:send submission="change-ui-fi-submission" if="instance( 'settings-instance' )/language[ . = 'fi' ]" />
+						<!-- Hack: Cannot use XQuery because Google Weather's XML response uses incorrect encoding in the XML declaration -->
+						<!--<xforms:send submission="search-weather-request-submission" />-->
+						<xforms:send submission="search-weather-submission" />
+					</xforms:action>
+				</xformsdb:submission>
+				<!-- Hack: Cannot use XQuery because Google Weather's XML response uses incorrect encoding in the XML declaration -->
+				<!-- Search weather request submission -->
+				<!--<xformsdb:submission id="search-weather-request-submission" replace="instance" instance="weather-instance" requestinstance="search-weather-request-instance" expressiontype="all">-->
+				<!--	<xforms:action ev:event="xformsdb-request-error">-->
+				<!--		<xforms:toggle case="error-ui-switcher" />-->
+				<!--	</xforms:action>-->
+				<!--	<xforms:action ev:event="xforms-submit-done">-->
+				<!--		<xforms:toggle if=".[ not( instance( 'weather-instance' )/weather[ 1 ] ) ]" case="error-ui-switcher" />-->
+				<!--		<xforms:toggle if=".[ instance( 'weather-instance' )/weather[ 1 ]/problem_cause ]" case="not-found-weather-switcher" />-->
+				<!--		<xforms:toggle if=".[ not( instance( 'weather-instance' )/weather[ 1 ]/problem_cause ) ]" case="default-weather-switcher" />-->
+				<!--	</xforms:action>-->
+				<!--</xformsdb:submission>-->
+
+				<!-- Bindings -->
+				<xforms:bind id="settings-done-trigger-bind" nodeset="instance( 'triggers-instance' )/settings-done-trigger" relevant=".[ not( instance( 'weather-instance' )/weather[ 1 ]/problem_cause ) ]" />
+				<!-- Hack: Cannot use XQuery because Google Weather's XML response uses incorrect encoding in the XML declaration -->
+				<!--<xforms:bind nodeset="instance( 'search-weather-request-instance' )/xformsdb:var[ @name = 'language' ]" calculate="instance( 'settings-instance' )/language" />-->
+				<!--<xforms:bind nodeset="instance( 'search-weather-request-instance' )/xformsdb:var[ @name = 'city' ]" calculate="instance( 'settings-instance' )/city" />-->
+				<xforms:bind nodeset="instance( 'search-weather-instance' )/city" calculate="instance( 'settings-instance' )/city" />
+				<xforms:bind nodeset="instance( 'search-weather-instance' )/language" calculate="instance( 'settings-instance' )/language" />
+				<xforms:bind nodeset="instance( 'update-settings-request-instance' )/xformsdb:var[ @name = 'city' ]" calculate="instance( 'settings-instance' )/city" />
+				<xforms:bind nodeset="instance( 'update-settings-request-instance' )/xformsdb:var[ @name = 'temperature' ]" calculate="instance( 'settings-instance' )/temperature" />
+				<xforms:bind nodeset="instance( 'update-settings-request-instance' )/xformsdb:var[ @name = 'show-forecast' ]" calculate="instance( 'settings-instance' )/show-forecast" />
+				<xforms:bind nodeset="instance( 'update-settings-request-instance' )/xformsdb:var[ @name = 'language' ]" calculate="instance( 'settings-instance' )/language" />
+				
+				<!-- Initialize the Web page -->
+				<xforms:send submission="select-settings-request-submission" ev:event="xforms-ready" />
+			</xformsdb:secview>
+		</xforms:model>
+	</head>
+	<body>
+		<!-- XFormsDB security view for non-logged in users -->
+		<xformsdb:secview>
+			<div class="page-margins">
+				<div class="page">
+					<div class="header">
+						<h1><xforms:output ref="instance( 'ui-instance' )/header-error" /></h1>
+					</div>
+					<div class="main">
+			        	<div class="message message-error">
+			        		<xforms:output ref="instance( 'ui-instance' )/message-authorization-error" />
+			        	</div>
+					</div>
+					<div class="footer">
+					</div>
+				</div>
+			</div>
+		</xformsdb:secview>
+		<!-- XFormsDB security view for logged in users not having one of the roles: admin -->
+		<xformsdb:secview noroles="admin">
+			<div class="page-margins">
+				<div class="page">
+					<div class="header">
+						<h1><xforms:output ref="instance( 'ui-instance' )/header-error" /></h1>
+					</div>
+					<div class="main">
+			        	<div class="message message-error">
+			        		<xforms:output ref="instance( 'ui-instance' )/message-authorization-error" />
+			        	</div>
+					</div>
+					<div class="footer">
+					</div>
+				</div>
+			</div>
+		</xformsdb:secview>
+		<!-- XFormsDB security view for logged in users having one of the roles: admin -->
+		<xformsdb:secview roles="admin">
+			<div class="page-margins">
+				<div class="page">
+			       	<xforms:switch id="ui-switcher">
+			        	<xforms:case id="default-ui-switcher">
+							<div class="header">
+								<h1>
+									<xforms:output value="if( contains( instance( 'weather-instance' )/weather[ 1 ]/forecast_information/city/@data, ',' ) ) then concat( upper-case( substring( substring-before( instance( 'weather-instance' )/weather[ 1 ]/forecast_information/city/@data, ',' ), 1, 1 ) ), substring( substring-before( instance( 'weather-instance' )/weather[ 1 ]/forecast_information/city/@data, ',' ), 2 ) ) else concat( upper-case( substring( instance( 'weather-instance' )/weather[ 1 ]/forecast_information/city/@data, 1, 1 ) ), substring( instance( 'weather-instance' )/weather[ 1 ]/forecast_information/city/@data, 2 ) )" />
+								</h1>
+							</div>
+							<div class="main">
+								<div class="current-conditions-section">
+									<table class="current-conditions">
+										<tr>
+											<td class="current-conditions-icon">
+												<!-- Hack: xforms:output mediatype="image/..." ... /> does not work in the separate deployment mode when cookies are disabled -->
+												<!--<xforms:output mediatype="image/*" value="concat( 'http://www.google.com', instance( 'weather-instance' )/weather[ 1 ]/current_conditions/icon/@data )">-->
+													<!--<xforms:hint ref="instance( 'weather-instance' )/weather[ 1 ]/current_conditions/condition/@data" />-->
+												<!--</xforms:output>-->
+												<img src="http://www.google.com{instance( 'weather-instance' )/weather[ 1 ]/current_conditions/icon/@data}" title="{instance( 'weather-instance' )/weather[ 1 ]/current_conditions/condition/@data}" alt="{instance( 'weather-instance' )/weather[ 1 ]/current_conditions/condition/@data}" />
+											</td>
+											<td class="current-conditions-info">
+												<xforms:group ref=".[ instance( 'settings-instance' )/temperature = 'c' ]">
+													<xforms:output class="temperature" value="concat( instance( 'weather-instance' )/weather[ 1 ]/current_conditions/temp_c/@data, '&deg;C' )" /><br />
+												</xforms:group>
+												<xforms:group ref=".[ instance( 'settings-instance' )/temperature = 'f' ]">
+													<xforms:output class="temperature" value="concat( instance( 'weather-instance' )/weather[ 1 ]/current_conditions/temp_f/@data, '&deg;F' )" /><br />
+												</xforms:group>
+												<xforms:output ref="instance( 'weather-instance' )/weather[ 1 ]/current_conditions/condition/@data" />
+											</td>
+										</tr>
+									</table>
+								</div>
+								<xforms:group ref=".[ instance( 'settings-instance' )/show-forecast = 'yes' ]">
+									<div class="forecast-conditions-section">
+										<table class="forecast-conditions">
+											<tr>
+												<xforms:repeat id="forecast-conditions-repeat" nodeset="instance( 'weather-instance' )/weather[ 1 ]/forecast_conditions">
+													<td class="forecast-conditions-info">
+														<xforms:output value="concat( upper-case( substring( day_of_week/@data, 1, 1 ) ), substring( day_of_week/@data, 2 ) )" /><br />
+														<!-- Hack: xforms:output mediatype="image/* ... /> does not work in the separate deployment mode when cookies are disabled -->
+														<!--<xforms:output mediatype="image/*" value="concat( 'http://www.google.com', icon/@data )">-->
+															<!--<xforms:hint ref="condition/@data" />-->
+														<!--</xforms:output><br />-->
+														<img src="http://www.google.com{icon/@data}" title="{condition/@data}" alt="{condition/@data}" /><br />
+														<xforms:group ref=".[ instance( 'settings-instance' )/language = 'en' and instance( 'settings-instance' )/temperature = 'c' ]">
+															<xforms:output value="concat( round( ( ( high/@data - 32 ) * ( 5 div 9 ) ) ), '&deg;C' )" />
+														</xforms:group>
+														<xforms:group ref=".[ instance( 'settings-instance' )/language = 'en' and instance( 'settings-instance' )/temperature = 'f' ]">
+															<xforms:output value="concat( high/@data, '&deg;F' )" />
+														</xforms:group>
+														<xforms:group ref=".[ instance( 'settings-instance' )/language = 'fi' and instance( 'settings-instance' )/temperature = 'c' ]">
+															<xforms:output value="concat( high/@data, '&deg;C' )" />
+														</xforms:group>
+														<xforms:group ref=".[ instance( 'settings-instance' )/language = 'fi' and instance( 'settings-instance' )/temperature = 'f' ]">
+															<xforms:output value="concat( round( ( ( 9 div 5 ) * high/@data ) + 32 ), '&deg;F' )" />
+														</xforms:group>
+													</td>
+												</xforms:repeat>
+											</tr>
+										</table>
+									</div>
+								</xforms:group>
+								<div class="settings-section">
+									<xforms:trigger appearance="minimal">
+										<xforms:label ref="instance( 'ui-instance' )/trigger-edit-settings" />
+										<xforms:action ev:event="DOMActivate">
+											<xforms:toggle case="settings-ui-switcher" />
+										</xforms:action>
+									</xforms:trigger>
+								</div>
+							</div>
+							<div class="footer">
+							</div>
+						</xforms:case>
+			        	<xforms:case id="settings-ui-switcher">
+							<div class="header">
+								<h1><xforms:output ref="instance( 'ui-instance' )/header-settings" /></h1>
+							</div>
+							<div class="main">
+								<xforms:switch id="weather-switcher">
+						        	<xforms:case id="default-weather-switcher">
+						        	</xforms:case>
+						        	<xforms:case id="not-found-weather-switcher">
+							        	<div class="message message-error">
+							        		<xforms:output ref="instance( 'ui-instance' )/message-not-found-error" />
+							        	</div>
+						        	</xforms:case>
+						        </xforms:switch>
+								<div class="search-section">
+									<table class="settings">
+										<tr>
+											<td class="settings-label">
+												<xforms:output value="''">
+													<xforms:label ref="instance( 'ui-instance' )/label-city" />
+												</xforms:output>
+											</td>
+											<td class="settings-input">
+												<xforms:input ref="instance( 'settings-instance' )/city" incremental="true">
+													<xforms:label></xforms:label>
+													<xforms:action ev:event="xforms-value-changed">
+														<!-- Hack: Cannot use XQuery because Google Weather's XML response uses incorrect encoding in the XML declaration -->
+														<!--<xforms:send submission="search-weather-request-submission" />-->
+														<xforms:send submission="search-weather-submission" />
+													</xforms:action>
+												</xforms:input>
+											</td>
+										</tr>
+										<tr>
+											<td class="settings-label">
+												<xforms:output value="''">
+													<xforms:label ref="instance( 'ui-instance' )/label-temperature" />
+												</xforms:output>
+											</td>
+											<td class="settings-input">
+												<xforms:select1 ref="instance( 'settings-instance' )/temperature" appearance="full">
+													<xforms:label></xforms:label>
+													<xforms:itemset nodeset="instance( 'ui-instance' )/itemset-temperature/item">
+														<xforms:label ref="label" />
+														<xforms:value ref="value" />
+													</xforms:itemset>
+												</xforms:select1>
+											</td>
+										</tr>
+										<tr>
+											<td class="settings-label">
+												<xforms:output value="''">
+													<xforms:label ref="instance( 'ui-instance' )/label-show-forecast" />
+												</xforms:output>
+											</td>
+											<td class="settings-input">
+												<xforms:select1 ref="instance( 'settings-instance' )/show-forecast" appearance="full">
+													<xforms:label></xforms:label>
+													<xforms:itemset nodeset="instance( 'ui-instance' )/itemset-show-forecast/item">
+														<xforms:label ref="label" />
+														<xforms:value ref="value" />
+													</xforms:itemset>
+												</xforms:select1>
+											</td>
+										</tr>
+										<tr>
+											<td class="settings-label">
+												<xforms:output value="''">
+													<xforms:label ref="instance( 'ui-instance' )/label-language" />
+												</xforms:output>
+											</td>
+											<td class="settings-input">
+												<xforms:select1 ref="instance( 'settings-instance' )/language" appearance="full">
+													<xforms:label></xforms:label>
+													<xforms:itemset nodeset="instance( 'ui-instance' )/itemset-language/item">
+														<xforms:label ref="label" />
+														<xforms:value ref="value" />
+													</xforms:itemset>
+												</xforms:select1>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<div class="settings-section">
+									<xforms:trigger bind="settings-done-trigger-bind" appearance="minimal">
+										<xforms:label ref="instance( 'ui-instance' )/trigger-done" />
+										<xforms:action ev:event="DOMActivate">
+											<xforms:toggle case="default-weather-switcher" />
+											<xforms:send submission="update-settings-request-submission" />
+										</xforms:action>
+									</xforms:trigger>
+								</div>
+							</div>
+							<div class="footer">
+							</div>
+			        	</xforms:case>
+			        	<xforms:case id="error-ui-switcher">
+							<div class="header">
+								<h1><xforms:output ref="instance( 'ui-instance' )/header-error" /></h1>
+							</div>
+							<div class="main">
+					        	<div class="message message-error">
+					        		<xforms:output ref="instance( 'ui-instance' )/message-default-error" />
+					        	</div>
+							</div>
+							<div class="footer">
+							</div>
+			        	</xforms:case>
+					</xforms:switch>
+				</div>
+			</div>
+		</xformsdb:secview>
+		<!--<widget:xforms-instance-inspector xmlns:widget="http://orbeon.org/oxf/xml/widget" />-->
+	</body>
+</html>

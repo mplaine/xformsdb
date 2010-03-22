@@ -1,0 +1,135 @@
+3dm 0.1.5b1
+===========
+Description:
+ * Three-way XML merger.
+Files (1 jar file):
+ * %HOME%/COPYING
+ * 3dm-0.1.5b1.jar
+
+
+Apache HttpComponents Client 4.0
+================================
+Description:
+ * HTTP client.
+Files (6 jar files):
+ * %HOME%/LICENCE.txt
+ * %HOME%/lib/apache-mime4j-0.6.jar
+ * %HOME%/lib/commons-codec-1.3.jar
+ * %HOME%/lib/commons-logging-1.1.1.jar
+ * %HOME%/lib/httpclient-4.0.jar
+ * %HOME%/lib/httpcore-4.0.1.jar
+ * %HOME%/lib/httpmime-4.0.jar
+
+
+Apache Commons Lang 2.4
+=======================
+Description:
+ * Helper utilities for the java-lang API.
+Files (1 jar file):
+ * %HOME%/LICENCE.txt
+ * %HOME%/commons-lang-2.4.jar
+
+
+Apache Log4J 1.2.15
+===================
+Description:
+ * General purpose logging tool.
+Files (1 jar file):
+ * %HOME%/LICENCE
+ * %HOME%/log4j-1.2.15.jar
+
+
+Apache Xerces-J 2.9.1
+=====================
+Description:
+ * XML Parser.
+Files (5 jar files):
+ * %HOME%/LICENSE
+ * %HOME%/resolver.jar
+ * %HOME%/serializer.jar
+ * %HOME%/xercesImpl.jar
+ * %HOME%/xercesSamples.jar
+ * %HOME%/xml-apis.jar
+
+
+eXist-db 1.2.4-rev8072
+======================
+Description:
+ * Native XML database.
+Files (14 jar files):
+ * %HOME%/WEB-INF/lib/antlr-2.7.6.jar
+ * %HOME%/WEB-INF/lib/commons-collections-3.1.jar
+ * %HOME%/WEB-INF/lib/commons-logging-1.0.4.jar
+ * %HOME%/WEB-INF/lib/commons-pool-1.4.jar
+ * %HOME%/WEB-INF/lib/exist.jar
+ * %HOME%/WEB-INF/lib/exist-modules.jar
+ * %HOME%/WEB-INF/lib/exist-optional.jar
+ * %HOME%/WEB-INF/lib/jgroups-all.jar
+ * %HOME%/WEB-INF/lib/jta.jar
+ * %HOME%/WEB-INF/lib/log4j-1.2.15.jar
+ * %HOME%/WEB-INF/lib/stax-api-1.0.1.jar
+ * %HOME%/WEB-INF/lib/sunxacml.jar
+ * %HOME%/WEB-INF/lib/xmldb.jar
+ * %HOME%/WEB-INF/lib/xmlrpc-1.2-patched.jar
+Notes:
+ * From WAR file
+ * Rename file: log4j-1.2.15.jar --> log4j-1.2.15_exist-1-2-4-rev8072.jar
+
+
+JCIP Annotations
+================
+Description:
+ * JCIP Annotations utilized by Apache HttpComponents Client 4.0.
+Files (1 jar file):
+ * See http://www.jcip.net/annotations/doc/index.html for the copyright and license.
+ * jcip-annotations.jar
+
+
+Orbeon Forms dev-post-3.7.1.200910160000-development
+====================================================
+Description:
+ * Transforms XForms markup to (X)HTML+CSS+JavaScript or (X)HTML+CSS.
+Files (1 jar file):
+ * %HOME%/WEB-INF/lib/orbeon-xforms-filter.jar
+ * %HOME%/README.txt
+Notes:
+ * From WAR file
+ 
+
+Saxon-B 9.1.0.1 for Java
+========================
+Description:
+ * XSLT and XQuery Processor.
+Files (9 jar file):
+ * %HOME%/endorse_over_exist_saxon9-xqj.jar
+ * %HOME%/saxon9-dom.jar
+ * %HOME%/saxon9-dom4j.jar
+ * %HOME%/saxon9-jdom.jar
+ * %HOME%/saxon9-s9api.jar
+ * %HOME%/saxon9-sql.jar
+ * %HOME%/saxon9-xom.jar
+ * %HOME%/saxon9-xpath.jar
+ * %HOME%/saxon9.jar
+Notes:
+ * Rename file: saxon9-xqj.jar --> endorse_over_exist_saxon9-xqj.jar
+ * Available under the Mozilla Public License Version 1.0 (the "License"), available at: http://www.mozilla.org/MPL/
+ 
+
+UUID 3.1
+========
+Description:
+ * UUID Generator (version 1).
+Files (1 jar file):
+ * %HOME%/copying.txt
+ * %HOME%/uuid-3.1.jar
+Notes:
+ * From JAR file
+ 
+  
+XOM 1.2.2
+=========
+Description:
+ * XML API.
+Files (1 jar file):
+ * %HOME%/XOM/LICENSE.txt
+ * %HOME%/XOM/xom-1.2.2.jar

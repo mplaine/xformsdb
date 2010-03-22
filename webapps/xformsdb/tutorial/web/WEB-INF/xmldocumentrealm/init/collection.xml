@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection>
+	<doc href="xformsdb_users_cleartext_passwords.xml" />
+	<doc href="xformsdb_users_hashed_passwords.xml" />
+</collection>

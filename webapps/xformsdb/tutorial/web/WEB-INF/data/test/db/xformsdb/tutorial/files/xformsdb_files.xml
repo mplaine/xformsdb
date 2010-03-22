@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<xformsdb:files xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb">
+        <xformsdb:file displayname="XFormsDB Template" filename="xformsdb_template.jpg" mediatype="image/jpeg" filesize="105368" roles="" comment="Screenshot of Template" creator="xformsdb" id="64b51ad2-c9ab-42ac-a5d7-4c5304feced2" created="2009-01-02T17:05:54.959+02:00" lastmodifier="" lastmodified="" />
+        <xformsdb:file displayname="XFormsDB Tutorial" filename="xformsdb_tutorial.jpg" mediatype="image/jpeg" filesize="234811" roles="user" comment="Screenshot of Tutorial" creator="worker" id="699e4cd3-43d8-41a2-acb2-5b64f31f7cd4" created="2009-01-02T17:05:55.009+02:00" lastmodifier="boss" lastmodified="2009-02-19T17:13:04.417+02:00" />
+        <xformsdb:file displayname="XFormsDB PIM" filename="xformsdb_pim.jpg" mediatype="image/jpeg" filesize="193787" roles="admin" comment="Screenshot of PIM" creator="boss" id="1bd554a7-3b6d-4be9-8ac3-69f20febe077" created="2009-01-02T17:05:55.279+02:00" lastmodifier="" lastmodified="" />
+        <xformsdb:file displayname="XFormsDB Blog" filename="xformsdb_blog.jpg" mediatype="image/jpeg" filesize="346297" roles="user admin" comment="Screenshot of Blog" creator="boss" id="94cbf070-5fc5-49ba-a390-c541a1494312" created="2009-01-02T17:05:55.309+02:00" lastmodifier="" lastmodified="" />
+	</xformsdb:files>
+</root>

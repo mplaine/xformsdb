@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui-instance [
+<!ENTITY deg    "&#176;"> <!-- degree sign, U+00B0 ISOnum -->
+]>
+<ui-instance xml:lang="en" xmlns="">
+	<header-error>Error</header-error>
+	<header-settings>Settings</header-settings>
+	<itemset-language>
+		<item>
+			<label>In English</label>
+			<value>en</value>
+		</item>
+		<item>
+			<label>Suomeksi</label>
+			<value>fi</value>
+		</item>
+	</itemset-language>
+	<itemset-show-forecast>
+		<item>
+			<label>Yes</label>
+			<value>yes</value>
+		</item>
+		<item>
+			<label>No</label>
+			<value>no</value>
+		</item>
+	</itemset-show-forecast>	
+	<itemset-temperature>
+		<item>
+			<label>&deg;C</label>
+			<value>c</value>
+		</item>
+		<item>
+			<label>&deg;F</label>
+			<value>f</value>
+		</item>
+	</itemset-temperature>	
+	<label-city>City:</label-city>
+	<label-temperature>Temperature:</label-temperature>
+	<label-show-forecast>Show forecast:</label-show-forecast>
+	<label-language>Language:</label-language>
+	<message-not-found-error>Sorry, no cities matched your search criteria.</message-not-found-error>
+	<message-default-error>Please, try again later.</message-default-error>
+	<message-authorization-error>Sorry, you do not have sufficient rights to access the widget.</message-authorization-error>
+	<trigger-edit-settings>Edit settings</trigger-edit-settings>
+	<trigger-done>Done</trigger-done>
+</ui-instance>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Miscellaneous - HTML Editors</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, Miscellaneous, HTML, Editors" />
+		<meta name="description" content="XFormsDB Tutorial - Miscellaneous - HTML Editors" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2009, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- HTML rich text editor instance -->
+			<xforms:instance id="html-rich-text-editor-instance">
+				<html-rich-text-editor xmlns="" />
+			</xforms:instance>
+			<!-- HTML plain text area instance -->
+			<xforms:instance id="html-plain-text-area-instance">
+				<html-plain-text-area xmlns="" />
+			</xforms:instance>
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Miscellaneous - HTML Editors</h1>
+				<h3>HTML Rich Text Editor</h3>
+   				<table>
+					<tr>
+						<td><xforms:textarea mediatype="text/html" incremental="true" ref="instance( 'html-rich-text-editor-instance' )"/></td>
+					</tr>
+					<tr>
+						<td><xforms:output mediatype="text/html" ref="instance( 'html-rich-text-editor-instance' )" /></td>
+					</tr>
+				</table>
+				<h3>HTML Plain Text Area</h3>
+   				<table>
+					<tr>
+						<td><xforms:textarea xxforms:cols="63" xxforms:rows="10" incremental="true" ref="instance( 'html-plain-text-area-instance' )"/></td>
+					</tr>
+					<tr>
+						<td><xforms:output mediatype="text/html" ref="instance( 'html-plain-text-area-instance' )" /></td>
+					</tr>
+				</table>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

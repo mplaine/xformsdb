@@ -1,0 +1,929 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>XFormsDB 1.0</title>
+		<link href="css/xformsdbapi.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div id="container">
+        	<div id="header">
+				<h1><span>XFormsDB 1.0</span></h1>
+                <h2><span>The API specification for XFormsDB</span></h2>
+                <h2><span>Editor&rsquo;s draft (March 16, 2010)</span></h2>
+				<ol class="editor">
+					<li><b>Editor:</b> Markku Laine, Aalto University, School of Science and Technology <a href="mailto:markku.laine@gmail.com">&lt;markku.laine@gmail.com&gt;</a></li>
+				</ol>
+				<p>&nbsp;</p>
+				<p>Copyright &copy; Markku Laine 2010. All rights reserved.</p>
+                <!-- end #header -->
+			</div>
+			<div id="content">
+				<h2><span>Abstract</span></h2>
+				<p>XFormsDB is an <a href="http://www.w3.org/MarkUp/Forms/">XForms-based</a>, open-source framework for simplifying Web application development.</p>
+                <p>XFormsDB allows software developers and even non-programmers to build useful, highly interactive multi-user Web applications quickly and easily using purely declarative languages&mdash;does not require users to write any client-side scripting or server-side programming code at all.</p>
+				<p>For more information about XFormsDB, please see Markku Laine&rsquo;s Master&rsquo;s Thesis presentation and Markku Laine&rsquo;s Master&rsquo;s Thesis (especially Chapters 1 and 8), which are available at:</p>
+				<ul class="functionalities">
+					<li>/doc/theses/Markku_Laine_2010_-_Masters_Thesis_Presentation_with_Details.pdf</li>
+					<li>/doc/theses/Markku_Laine_2010_-_Masters_Thesis.pdf</li>
+				</ul>				
+				<h2><span>Status of this Document</span></h2>
+				<p>This Section describes the status of this document at the time of its publication. Other documents may supersede this document. The latest status of this document series is maintained at the Aalto University, School of Science and Technology.</p>
+				<p>Please send comments about this document to <a href="mailto:markku.laine@gmail.com">markku.laine@gmail.com</a>.</p>
+				<h2><span>Table of Contents</span></h2>
+				<ol class="toc">
+					<li>1&nbsp;&nbsp;<a href="#toc1">About the XFormsDB Specification</a></li>
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;1.1&nbsp;&nbsp;<a href="#toc1_1">Document Conventions</a></li>
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;1.2&nbsp;&nbsp;<a href="#toc1_2">Namespace for XFormsDB</a></li>
+					<li>2&nbsp;&nbsp;<a href="#toc2">The <code>xformsdb:instance</code> Element</a></li>
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;2.1&nbsp;&nbsp;<a href="#toc2_1">The <code>state</code> Request</a></li>
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;2.2&nbsp;&nbsp;<a href="#toc2_2">The <code>login</code> Request</a></li>
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;2.3&nbsp;&nbsp;<a href="#toc2_3">The <code>logout</code> Request</a></li>
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;2.4&nbsp;&nbsp;<a href="#toc2_4">The <code>user</code> Request</a></li>
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;2.5&nbsp;&nbsp;<a href="#toc2_5">The <code>query</code> Request</a></li>
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;2.6&nbsp;&nbsp;<a href="#toc2_6">The <code>file</code> Request</a></li>
+					<li>&nbsp;&nbsp;&nbsp;&nbsp;2.7&nbsp;&nbsp;<a href="#toc2_7">The <code>cookie</code> Request</a></li>
+					<li>3&nbsp;&nbsp;<a href="#toc3">The <code>xformsdb:submission</code> Element</a></li>
+					<li>4&nbsp;&nbsp;<a href="#toc4">The <code>xformsdb-request-error</code> Event</a></li>
+					<li>5&nbsp;&nbsp;<a href="#toc5">The <code>xformsdb:secview</code> Element</a></li>
+					<li>6&nbsp;&nbsp;<a href="#toc6">The <code>xformsdb:include</code> Element</a></li>
+					<li>7&nbsp;&nbsp;<a href="#toc7">The <code>xformsdb_users.xml</code> Document</a></li>
+					<li>8&nbsp;&nbsp;<a href="#toc8">The <code>xformsdb_files.xml</code> Document</a></li>
+					<li>9&nbsp;&nbsp;<a href="#toc9">Security Considerations</a></li>
+				</ol>
+				<!-- 1 About the XFormsDB Specification -->
+				<h2><a name="toc1" id="toc1"></a><span>1&nbsp;&nbsp;About the XFormsDB Specification</span></h2>
+				<p>The XFormsDB markup language is an extension to the XForms markup language, and thus it needs to be used with the XForms markup language.</p>
+				<p>Please find more information about XForms from the following Websites:</p>
+				<ul class="properties">
+					<li><a href="http://www.w3.org/MarkUp/Forms/">http://www.w3.org/MarkUp/Forms/</a></li>
+					<li><a href="http://www.w3.org/MarkUp/Forms/2003/xforms-for-html-authors.html">http://www.w3.org/MarkUp/Forms/2003/xforms-for-html-authors.html</a></li>
+					<li><a href="http://en.wikibooks.org/wiki/XForms">http://en.wikibooks.org/wiki/XForms</a></li>
+				</ul>
+				<!-- 1.1 Document Conventions -->
+				<h3><a name="toc1_1" id="toc1_1"></a><span>1.1&nbsp;&nbsp;Document Conventions</span></h3>
+				<p>Throughout this document, the following namespace prefixes and corresponding namespace identifiers are used:</p>
+				<ol class="namespaces">
+					<li><b>ev</b>: The XML Events namespace <code>http://www.w3.org/2001/xml-events</code> <a href="http://www.w3.org/TR/xml-events/">(XML Events)</a></li>
+					<li><b>exforms</b>: The eXforms&rsquo; XForms extensions namespace <code>http://www.exforms.org/exf/1-0</code> <a href="http://www.exforms.org/all.html">(eXforms&rsquo; XForms extensions)</a></li>
+					<li><b>my</b>: Any user defined namespace</li>
+					<li><b>xforms</b>: The XForms namespace <code>http://www.w3.org/2002/xforms</code> <a href="http://www.w3.org/TR/xforms11/">(XForms 1.1)</a></li>
+					<li><b>xformsdb</b>: The XFormsDB namespace <code>http://www.tml.tkk.fi/2007/xformsdb</code> <a href="#toc1_2">(1.2 Namespace for XFormsDB)</a></li>
+					<li><b>xhtml</b>: The XHTML namespace <code>http://www.w3.org/1999/xhtml</code> <a href="http://www.w3.org/TR/xhtml1/">(XHTML 1.0)</a></li>
+					<li><b>xs</b>: The XML Schema namespace <code>http://www.w3.org/2001/XMLSchema</code> <a href="http://www.w3.org/TR/xmlschema-2/">(XML Schema Part 2)</a></li>
+					<li><b>xsi</b>: The XML Schema for instances namespace <code>http://www.w3.org/2001/XMLSchema-instance</code> <a href="http://www.w3.org/TR/xmlschema-1/">(XML Schema Part 1)</a></li>
+					<li><b>xxforms</b>: The Orbeon Forms&rsquo; XForms extensions namespace <code>http://orbeon.org/oxf/xml/xforms</code> <a href="http://www.orbeon.com/ops/doc/reference-xforms-2">(Orbeon Forms&rsquo; XForms extensions)</a></li>
+				</ol>
+				<p>This is only a convention; any namespace prefix may be used in practice.</p>
+				<!-- 1.2 Namespace for XFormsDB -->
+				<h3><a name="toc1_2" id="toc1_2"></a><span>1.2&nbsp;&nbsp;Namespace for XFormsDB</span></h3>
+				<p>The namespace Uniform Resource Identifier (URI) for XFormsDB is <code>http://www.tml.tkk.fi/2007/xformsdb</code>.</p>
+				<!-- 2 The xformsdb:instance Element -->
+				<h2><a name="toc2" id="toc2"></a><span>2&nbsp;&nbsp;The <code>xformsdb:instance</code> Element</span></h2>
+				<p>The <code>xformsdb:instance</code> element is a new element that acts as a wrapper for all XFormsDB-related requests to be submitted. The benefit of using a wrapper around requests is that it enables adding new requests to the XFormsDB markup language without requiring any changes to the request submission process.</p>
+				<p>The functionality of the <code>xformsdb:instance</code> element is identical to the <code>xforms:instance</code> element with the exception that only certain parts of the instance data, depending on the type of the request, are allowed to be altered.</p>
+				<p>The different types of requests are described in detail in the following Subsections.</p>
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 1:</b> Definition of the <code>xformsdb:instance</code> element</p>
+				<div class="code">
+					<pre>&lt;!-- XFormsDB request instance --&gt;
+&lt;xformsdb:instance id=&quot;xformsdb-request-instance&quot;&gt;
+  &lt;!-- Actions defined by the form author --&gt;
+&lt;/xformsdb:instance&gt;</pre>
+				</div>
+				<!-- 2.1 The state Request -->
+				<h3><a name="toc2_1" id="toc2_1"></a><span>2.1&nbsp;&nbsp;The <code>state</code> Request</span></h3>
+				<p>The <code>state</code> request provides a means for passing a Web application&rsquo;s state information from one XHTML+XFormsDB document to another. An instance containing a Web application&rsquo;s state information can be stored in an XFormsDB implementation for the duration of the session and it can be later retrieved either by the same or different XHTML+XFormsDB documents.</p>
+				<h4><span>The <code>xformsdb:state</code> Element</span></h4>
+				<p>Required child element of the <code>xformsdb:instance</code> element specifying only the name of the request.</p>
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 2:</b> Example of use of the <code>state</code> request for storing a Web application&rsquo;s state information in an XFormsDB implementation</p>
+				<div class="code">
+					<pre>&lt;!-- State instance --&gt;
+&lt;xforms:instance id=&quot;state-instance&quot;&gt;
+  &lt;ui xmlns=&quot;&quot;&gt;
+    &lt;language&gt;en&lt;/language&gt;
+    &lt;text-size&gt;medium&lt;/text-size&gt;
+  &lt;/ui&gt;
+&lt;/xforms:instance&gt;
+
+&lt;!-- State request instance --&gt;
+&lt;xformsdb:instance id=&quot;state-request-instance&quot;&gt;
+  &lt;xformsdb:state /&gt;
+&lt;/xformsdb:instance&gt;
+
+&lt;!-- Set state request submission --&gt;
+&lt;xformsdb:submission id=&quot;set-state-request-submission&quot;
+  replace=&quot;instance&quot; instance=&quot;state-instance&quot;
+  requestinstance=&quot;state-request-instance&quot; statetype=&quot;set&quot;
+  attachmentinstance=&quot;state-instance&quot;&gt;
+  &lt;!-- Actions defined by the form author --&gt;
+  &lt;xforms:action ev:event=&quot;xformsdb-request-error&quot;&gt;
+    &lt;!-- Show an error message --&gt;
+    &lt;xforms:toggle case=&quot;error-set-state-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+  &lt;xforms:action ev:event=&quot;xforms-submit-done&quot;&gt;
+    &lt;!-- Show a success message --&gt;
+    &lt;xforms:toggle case=&quot;success-set-state-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+&lt;/xformsdb:submission&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 3:</b> Example of use of the <code>state</code> request for retrieving a Web application&rsquo;s state information from an XFormsDB implementation</p>
+				<div class="code">
+					<pre>&lt;!-- State instance --&gt;
+&lt;xforms:instance id=&quot;state-instance&quot;&gt;
+  &lt;dummy xmlns=&quot;&quot; /&gt;
+&lt;/xforms:instance&gt;
+
+&lt;!-- State request instance --&gt;
+&lt;xformsdb:instance id=&quot;state-request-instance&quot;&gt;
+  &lt;xformsdb:state /&gt;
+&lt;/xformsdb:instance&gt;
+
+&lt;!-- Get state request submission --&gt;
+&lt;xformsdb:submission id=&quot;get-state-request-submission&quot;
+  replace=&quot;instance&quot; instance=&quot;state-instance&quot;
+  requestinstance=&quot;state-request-instance&quot; statetype=&quot;get&quot;&gt;
+  &lt;!-- Actions defined by the form author --&gt;
+  &lt;xforms:action ev:event=&quot;xformsdb-request-error&quot;&gt;
+    &lt;!-- Show an error message --&gt;
+    &lt;xforms:toggle case=&quot;error-get-state-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+  &lt;xforms:action ev:event=&quot;xforms-submit-done&quot;&gt;
+    &lt;!-- Show a success message --&gt;
+    &lt;xforms:toggle case=&quot;success-get-state-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+&lt;/xformsdb:submission&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 4:</b> Example of an XML response indicating a successful completion of the <code>state</code> request</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;ui&gt;
+  &lt;language&gt;en&lt;/language&gt;
+  &lt;text-size&gt;medium&lt;/text-size&gt;
+&lt;/ui&gt;</pre>
+				</div>
+				<!-- 2.2 The login Request -->
+				<h3><a name="toc2_2" id="toc2_2"></a><span>2.2&nbsp;&nbsp;The <code>login</code> Request</span></h3>
+				<p>The <code>login</code> request enables a user to authenticate to a Web application, after which the user can access to restricted parts of the Web application. The user authentication is performed by submitting a username and password combination to an XFormsDB implementation, which checks the privileges of the user against a realm (cf. Section <a href="#toc6">6&nbsp;&nbsp;The <code>xformsdb_users.xml</code> Document</a>) and stores the user&rsquo;s credentials to its credentials store for future reference upon a successful login.</p>
+				<h4><span>The <code>xformsdb:login</code> Element</span></h4>
+				<p>Required child element of the <code>xformsdb:instance</code> element that wraps two <code>xformsdb:var</code> elements; one for the <code>username</code> variable and the other for the <code>password</code> variable.</p>
+				<p>Attributes of the <code>xformsdb:login</code> element associated with the <code>login</code> request:</p>
+				<ol class="attributes">
+					<li class="attribute">datasrc</li>
+					<li class="description">Optional attribute specifying the ID of a data source configuration to be used by an XFormsDB implementation for connecting to the data source (realm). In the absence of this attribute, the default data source configuration of an XFormsDB implementation is used.</li>
+					<li class="attribute">doc</li>
+					<li class="description">Optional attribute specifying the name of an XML document for limiting authentication queries of a data source connection to a single <code>xformsdb_users.xml</code> document. Useful when a data source connection points to a collection of documents. Default value is an empty string.</li>
+				</ol>
+				<h4><span>The <code>xformsdb:var</code> Element</span></h4>
+				<p>Two required child elements of the <code>xformsdb:login</code> element; one having <code>username</code> and the other one having <code>password</code> as the value of the name attribute of this element. The values of these elements are bound to the corresponding <code>xforms:input</code> and <code>xforms:secret</code> form controls of a login form.</p>
+				<p>Attributes of the <code>xformsdb:var</code> element associated with the <code>login</code> request:</p>
+				<ol class="attributes">
+					<li class="attribute">name</li>
+					<li class="description">Required attribute specifying the name (<code>username</code> or <code>password</code>) of a variable to which the form control (correspondingly <code>xforms:input</code> and <code>xforms:secret</code>) of a login form is bound to. Default value is an empty string.</li>
+				</ol>
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 5:</b> Example of use of the <code>login</code> request taken from a <code>/login.xformsdb</code> Web page</p>
+				<div class="code">
+					<pre>&lt;!-- User instance --&gt;
+&lt;xforms:instance id=&quot;user-instance&quot;&gt;
+  &lt;dummy xmlns=&quot;&quot; /&gt;
+&lt;/xforms:instance&gt;
+
+&lt;!-- Login request instance --&gt;
+&lt;xformsdb:instance id=&quot;login-request-instance&quot;&gt;
+  &lt;xformsdb:login datasrc=&quot;realm-data-source&quot;
+    doc=&quot;xformsdb_users.xml&quot;&gt;
+    &lt;xformsdb:var name=&quot;username&quot; /&gt;
+    &lt;xformsdb:var name=&quot;password&quot; /&gt;
+  &lt;/xformsdb:login&gt;
+&lt;/xformsdb:instance&gt;
+
+&lt;!-- Login request submission --&gt;
+&lt;xformsdb:submission id=&quot;login-request-submission&quot;
+  replace=&quot;instance&quot; instance=&quot;user-instance&quot;
+  requestinstance=&quot;login-request-instance&quot;&gt;
+  &lt;!-- Actions defined by the form author --&gt;
+  &lt;xforms:action ev:event=&quot;xformsdb-request-error&quot;&gt;
+    &lt;!-- Show an error message --&gt;
+    &lt;xforms:toggle case=&quot;error-login-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+  &lt;xforms:action ev:event=&quot;xforms-submit-done&quot;&gt;
+    &lt;!-- Show an incorrect message --&gt;
+    &lt;xforms:toggle if=&quot;not( exists(
+      instance( &apos;user-instance&apos; )/@username ) )&quot;
+      case=&quot;incorrect-login-case&quot; /&gt;
+    &lt;!-- Show a success message --&gt;
+    &lt;xforms:toggle if=&quot;exists(
+      instance( &apos;user-instance&apos; )/@username )&quot;
+      case=&quot;success-login-case&quot; /&gt;
+    &lt;!-- Redirect the user to /admin/index.xformsdb
+         upon a successful login --&gt;
+    &lt;xforms:load if=&quot;exists(
+      instance( &apos;user-instance&apos; )/@username )&quot;
+      resource=&quot;/admin/index.xformsdb&quot; /&gt;
+  &lt;/xforms:action&gt;
+&lt;/xformsdb:submission&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 6:</b> Example of an XML response indicating a successful completion of the <code>login</code> request</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;xformsdb:user username=&quot;administrator&quot; roles=&quot;user admin&quot; /&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 7:</b> Example of an XML response of the <code>login</code> request indicating an incorrect username and password combination</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;xformsdb:user /&gt;</pre>
+				</div>
+				<!-- 2.3 The logout Request -->
+				<h3><a name="toc2_3" id="toc2_3"></a><span>2.3&nbsp;&nbsp;The <code>logout</code> Request</span></h3>
+				<p>The <code>logout</code> request enables a user to exit a Web application, after which the user cannot access to restricted parts of the Web application. As a result of a successful logout, an XFormsDB implementation removes the user&rsquo;s credentials from its credentials store as well as all other user-related information from the session.</p>
+				<h4><span>The <code>xformsdb:logout</code> Element</span></h4>
+				<p>Required child element of the <code>xformsdb:instance</code> element specifying only the name of the request.</p>				
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 8:</b> Example of use of the <code>logout</code> request</p>
+				<div class="code">
+					<pre>&lt;!-- User instance --&gt;
+&lt;xforms:instance id=&quot;user-instance&quot;&gt;
+  &lt;dummy xmlns=&quot;&quot; /&gt;
+&lt;/xforms:instance&gt;
+
+&lt;!-- Logout request instance --&gt;
+&lt;xformsdb:instance id=&quot;logout-request-instance&quot;&gt;
+  &lt;xformsdb:logout /&gt;
+&lt;/xformsdb:instance&gt;
+
+&lt;!-- Logout request submission --&gt;
+&lt;xformsdb:submission id=&quot;logout-request-submission&quot;
+  replace=&quot;instance&quot; instance=&quot;user-instance&quot;
+  requestinstance=&quot;logout-request-instance&quot;&gt;
+  &lt;!-- Actions defined by the form author --&gt;
+  &lt;xforms:action ev:event=&quot;xformsdb-request-error&quot;&gt;
+    &lt;!-- Show an error message --&gt;
+    &lt;xforms:toggle case=&quot;error-logout-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+  &lt;xforms:action ev:event=&quot;xforms-submit-done&quot;&gt;
+    &lt;!-- Show a success message --&gt;
+    &lt;xforms:toggle case=&quot;success-logout-case&quot; /&gt;
+    &lt;!-- Redirect the user to the home page
+         upon a successful logout --&gt;
+    &lt;xforms:load resource=&quot;/index.xformsdb&quot; /&gt;
+  &lt;/xforms:action&gt;
+&lt;/xformsdb:submission&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 9:</b> Example of an XML response indicating a successful completion of the <code>logout</code> request</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;xformsdb:user /&gt;</pre>
+				</div>
+				<!-- 2.4 The user Request -->
+				<h3><a name="toc2_4" id="toc2_4"></a><span>2.4&nbsp;&nbsp;The <code>user</code> Request</span></h3>
+				<p>The <code>user</code> request provides a means for extracting information about the currently logged-in user, such as <code>username</code> and <code>roles</code> the user belongs to.</p>
+				<h4><span>The <code>xformsdb:user</code> Element</span></h4>
+				<p>Required child element of the <code>xformsdb:instance</code> element specifying only the name of the request.</p>
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 10:</b> Example of use of the <code>user</code> request</p>
+				<div class="code">
+					<pre>&lt;!-- User instance --&gt;
+&lt;xforms:instance id=&quot;user-instance&quot;&gt;
+  &lt;dummy xmlns=&quot;&quot; /&gt;
+&lt;/xforms:instance&gt;
+
+&lt;!-- User request instance --&gt;
+&lt;xformsdb:instance id=&quot;user-request-instance&quot;&gt;
+  &lt;xformsdb:user /&gt;
+&lt;/xformsdb:instance&gt;
+
+&lt;!-- User request submission --&gt;
+&lt;xformsdb:submission id=&quot;user-request-submission&quot;
+  replace=&quot;instance&quot; instance=&quot;user-instance&quot;
+  requestinstance=&quot;user-request-instance&quot;&gt;
+  &lt;!-- Actions defined by the form author --&gt;
+  &lt;xforms:action ev:event=&quot;xformsdb-request-error&quot;&gt;
+    &lt;!-- Show an error message --&gt;
+    &lt;xforms:toggle case=&quot;error-user-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+  &lt;xforms:action ev:event=&quot;xforms-submit-done&quot;&gt;
+    &lt;!-- Show an empty message --&gt;
+    &lt;xforms:toggle if=&quot;not( exists(
+      instance( &apos;user-instance&apos; )/@username ) )&quot;
+      case=&quot;empty-user-case&quot; /&gt;
+    &lt;!-- Show a success message --&gt;
+    &lt;xforms:toggle if=&quot;exists(
+      instance( &apos;user-instance&apos; )/@username )&quot;
+      case=&quot;success-user-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+&lt;/xformsdb:submission&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 11:</b> Example of an XML response of the <code>user</code> request containing information about the currently logged-in user</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;xformsdb:user username=&quot;administrator&quot; roles=&quot;user admin&quot; /&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 12:</b> Example of an XML response of the <code>user</code> request indicating that an XFormsDB implementation does not hold a logged-in user in the session</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;xformsdb:user /&gt;</pre>
+				</div>
+				<!-- 2.5 The query Request -->
+				<h3><a name="toc2_5" id="toc2_5"></a><span>2.5&nbsp;&nbsp;The <code>query</code> Request</span></h3>
+				<p>The <code>query</code> request defines a query to be executed against a data source upon a corresponding submission is dispatched. The query expression can be written either using XQuery or XPath, which are both W3C-defined standards for querying collections of XML data. In addition, the query can be parameterized, too.</p>
+				<p>XQuery expressions are used for retrieving data, creating new structures (e.g., joins), and updating data <i>without</i> data synchronization. XPath expressions, on the other hand, provide much simpler but less powerful means for retrieving and updating data (an XML fragment) <i>with</i> data synchronization.</p>
+				<h4><span>The <code>xformsdb:query</code> Element</span></h4>
+				<p>Required child element of the <code>xformsdb:instance</code> element that wraps necessary elements for specifying a query.</p>			
+				<p>Attributes of the <code>xformsdb:query</code> element associated with the <code>query</code> request:</p>
+				<ol class="attributes">
+					<li class="attribute">datasrc</li>
+					<li class="description">Optional attribute specifying the ID of a data source configuration to be used by an XFormsDB implementation for connecting to the data source. In the absence of this attribute, the default data source configuration of an XFormsDB implementation is used.</li>
+					<li class="attribute">doc</li>
+					<li class="description">Optional attribute specifying the name of an XML document for limiting queries of a data source connection to a single XML document. Useful when a data source connection points to a collection of documents. Default value is an empty string.</li>
+				</ol>
+				<h4><span>The <code>xformsdb:expression</code> Element</span></h4>
+				<p>Required child element of the <code>xformsdb:query</code> element containing a query expression either in XQuery (<code>select</code> and <code>all</code> expression types) or XPath (a combination of <code>select</code> and <code>update</code> expression types). The query expression can be written either inline in this element or to an external file referenced by the <code>resource</code> attribute.</p>
+				<p>Attributes of the <code>xformsdb:expression</code> element associated with the <code>query</code> request:</p>
+				<ol class="attributes">
+					<li class="attribute">resource</li>
+					<li class="description">Optional attribute indicating the URI of an XQuery or XPath expression. Behavior of relative URIs in links is determined by the host language, i.e., the form. Default value is an empty string.</li>
+				</ol>
+				<h4><span>The <code>xformsdb:xmlns</code> Element</span></h4>
+				<p>Optional child element of the <code>xformsdb:query</code> element declaring an XML Namespace that is used in a query expression (XPath).</p>
+				<p>Attributes of the <code>xformsdb:xmlns</code> element associated with the <code>query</code> request:</p>
+				<ol class="attributes">
+					<li class="attribute">prefix</li>
+					<li class="description">Required attribute specifying the prefix of an XML Namespace. Default value is an empty string.</li>
+					<li class="attribute">uri</li>
+					<li class="description">Required attribute specifying the URI of an XML Namespace. Default value is an empty string.</li>
+				</ol>
+				<h4><span>The <code>xformsdb:var</code> Element</span></h4>
+				<p>Optional child element(s) of the <code>xformsdb:query</code> element, whose value is linked to an external variable declared in an XQuery expression or used in an XPath expression. The variable in the XQuery or XPath expression must have the same name as the one specified in the <code>name</code> attribute of this element.</p>
+				<p>Attributes of the <code>xformsdb:var</code> element associated with the <code>query</code> request:</p>
+				<ol class="attributes">
+					<li class="attribute">name</li>
+					<li class="description">Required attribute specifying the name of an external variable declared in an XQuery expression or used in an XPath expression. Default value is an empty string.</li>
+				</ol>
+				<h4><span>The <code>xformsdb:secvar</code> Element</span></h4>
+				<p>Optional child element(s) of the <code>xformsdb:query</code> element, which securely links the username or the space-separated list of the role names of the currently logged-in user to the external variable (<code>username</code> or <code>roles</code>, respectively) declared in an XQuery expression or used in an XPath expression. The variable in the XQuery or XPath expression must have the same name (<code>username</code> or <code>roles</code>) as the one specified in the <code>name</code> attribute of this element. The value of this element is not allowed to, and cannot, be altered because it is securely set on the server side by an XFormsDB implementation.</p>
+				<p>Attributes of the <code>xformsdb:secvar</code> element associated with the <code>query</code> request:</p>
+				<ol class="attributes">
+					<li class="attribute">name</li>
+					<li class="description">Required attribute specifying the name (<code>username</code> or <code>roles</code>) of a secured, external variable (<code>username</code> or <code>roles</code>) declared in an XQuery expression or used in an XPath expression. Default value is an empty string.</li>
+				</ol>
+				<h4><span>Synchronized updates</span></h4>
+				<p>XFormsDB provides a simple and elegant way for updating and synchronizing data to be stored in a data source. The updating process <i>with</i> data synchronization includes two steps. In the first step, an XML fragment is retrieved from a data source using an XPath expression pointing to the root element of the XML fragment to be updated. The retrieved XML fragment can then be altered including deleting and inserting nodes, after which in the second step, the altered XML fragment is submitted back to be stored in the data source using the same XPath expression as before. Finally, an XFormsDB implementation returns the stored XML fragment, which may contain changes made by other clients, upon a successful submission.</p>
+				<img src="gfx/xformsdb_updating_process_with_data_synchronization.png" width="485" height="298" />
+				<p class="caption"><b>Figure 1:</b> XFormsDB updating process <i>with</i> data synchronization</p>
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 13:</b> Example of use of the <code>query</code> request for retrieving data from a data source with XQuery</p>
+				<div class="code">
+					<pre>&lt;!-- Course instance --&gt;
+&lt;xforms:instance id=&quot;course-instance&quot;&gt;
+  &lt;dummy xmlns=&quot;&quot; /&gt;
+&lt;/xforms:instance&gt;
+
+&lt;!-- Select course request instance --&gt;
+&lt;xformsdb:instance id=&quot;select-course-request-instance&quot;&gt;
+  &lt;xformsdb:query datasrc=&quot;courses-data-source&quot; doc=&quot;courses.xml&quot;&gt;
+    &lt;xformsdb:expression&gt;
+      &lt;![CDATA[
+        xquery version &quot;1.0&quot; encoding &quot;UTF-8&quot;;
+        
+        (: Declare namespaces :)
+        declare namespace studies = &quot;http://www.tkk.fi/2009/studies&quot;;
+        (: Declare external variables :)
+        declare variable $code as xs:string external;
+
+        (: Select course :)
+        for $course in /root/studies:courses/studies:course
+          where
+            $course/studies:code = $code
+          return
+            $course
+      ]]&gt;
+    &lt;/xformsdb:expression&gt;
+    &lt;xformsdb:var name=&quot;code&quot; /&gt;
+  &lt;/xformsdb:query&gt;
+&lt;/xformsdb:instance&gt;
+
+&lt;!-- Select course request submission --&gt;
+&lt;xformsdb:submission id=&quot;select-course-request-submission&quot;
+  replace=&quot;instance&quot; instance=&quot;course-instance&quot;
+  requestinstance=&quot;select-course-request-instance&quot;
+  expressiontype=&quot;select&quot;&gt;
+  &lt;!-- Actions defined by the form author --&gt;
+  &lt;xforms:action ev:event=&quot;xformsdb-request-error&quot;&gt;
+    &lt;!-- Show an error message --&gt;
+    &lt;xforms:toggle case=&quot;error-select-course-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+  &lt;xforms:action ev:event=&quot;xforms-submit-done&quot;&gt;
+    &lt;!-- Show a success message --&gt;
+    &lt;xforms:toggle case=&quot;success-select-course-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+&lt;/xformsdb:submission&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 14:</b> Example of an XML response of the <code>query</code> request containing the course information</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;studies:course&gt;
+  &lt;studies:code&gt;T-111.5360&lt;/studies:code&gt;
+  &lt;studies:name&gt;WWW Applications&lt;/studies:name&gt;
+  &lt;studies:credits&gt;4&lt;/studies:credits&gt;
+  &lt;studies:overview&gt;
+    The focus of the course is on new Web technologies.
+  &lt;/studies:overview&gt;
+&lt;/studies:course&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 15:</b> Example of use of the <code>query</code> request for updating data in a data source with XPath</p>
+				<div class="code">
+					<pre>&lt;!-- Course instance --&gt;
+&lt;xforms:instance id=&quot;course-instance&quot;&gt;
+  &lt;dummy xmlns=&quot;&quot; /&gt;
+&lt;/xforms:instance&gt;
+
+&lt;!-- Select and update course request instance --&gt;
+&lt;xformsdb:instance id=&quot;select-and-update-course-request-instance&quot;&gt;
+  &lt;xformsdb:query datasrc=&quot;courses-data-source&quot; doc=&quot;courses.xml&quot;&gt;
+    &lt;xformsdb:expression&gt;
+      /root/studies:courses/studies:course[ studies:code = $code ]
+    &lt;/xformsdb:expression&gt;
+    &lt;xformsdb:xmlns prefix=&quot;studies&quot;
+      uri=&quot;http://www.tkk.fi/2009/studies&quot; /&gt;
+    &lt;xformsdb:var name=&quot;code&quot; /&gt;
+  &lt;/xformsdb:query&gt;
+&lt;/xformsdb:instance&gt;
+
+&lt;!-- Select course request submission --&gt;
+&lt;xformsdb:submission id=&quot;select-course-request-submission&quot;
+  replace=&quot;instance&quot; instance=&quot;course-instance&quot;
+  requestinstance=&quot;select-and-update-course-request-instance&quot;
+  expressiontype=&quot;select&quot;&gt;
+  &lt;!-- Actions defined by the form author --&gt;
+  &lt;xforms:action ev:event=&quot;xformsdb-request-error&quot;&gt;
+    &lt;!-- Show an error message --&gt;
+    &lt;xforms:toggle case=&quot;error-select-course-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+  &lt;xforms:action ev:event=&quot;xforms-submit-done&quot;&gt;
+    &lt;!-- Show a success message --&gt;
+    &lt;xforms:toggle case=&quot;success-select-course-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+&lt;/xformsdb:submission&gt;
+
+&lt;!-- Update course request submission --&gt;
+&lt;xformsdb:submission id=&quot;update-course-request-submission&quot;
+  replace=&quot;instance&quot; instance=&quot;course-instance&quot;
+  requestinstance=&quot;select-and-update-course-request-instance&quot;
+  expressiontype=&quot;update&quot;
+  attachmentinstance=&quot;course-instance&quot;&gt;
+  &lt;!-- Actions defined by the form author --&gt;
+  &lt;xforms:action ev:event=&quot;xformsdb-request-error&quot;&gt;
+    &lt;!-- Show an error message --&gt;
+    &lt;xforms:toggle case=&quot;error-update-course-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+  &lt;xforms:action ev:event=&quot;xforms-submit-done&quot;&gt;
+    &lt;!-- Show a success message --&gt;
+    &lt;xforms:toggle case=&quot;success-update-course-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+&lt;/xformsdb:submission&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 16:</b> Example of an XML response of the <code>query</code> request containing the updated course information</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;studies:course&gt;
+  &lt;studies:code&gt;T-111.5360&lt;/studies:code&gt;
+  &lt;studies:name&gt;WWW Applications&lt;/studies:name&gt;
+  &lt;studies:credits&gt;4&lt;/studies:credits&gt;
+  &lt;studies:overview&gt;
+    The focus of the course is on both new and upcoming Web
+    technologies.
+  &lt;/studies:overview&gt;
+&lt;/studies:course&gt;</pre>
+				</div>
+				<!-- 2.6 The file Request -->
+				<h3><a name="toc2_6" id="toc2_6"></a><span>2.6&nbsp;&nbsp;The <code>file</code> Request</span></h3>
+				<p>The <code>file</code> request enables the users of a Web application to manage (select, update, insert/upload, delete, and download) files stored either within the Web application or to another location on the server. The Multipurpose Internet Mail Extensions (MIME) type of a file to be managed can be anything ranging from a Joint Photographic Experts Group (JPEG) image to a Portable Document Format (PDF) application.</p>
+				<h4><span>The <code>xformsdb:file</code> Element</span></h4>
+				<p>Required child element of the <code>xformsdb:instance</code> element that wraps necessary elements for performing a desired operation on one or more files.</p>
+				<h4><span>The <code>xformsdb:var</code> Element</span></h4>
+				<p>Optional child element of the <code>xformsdb:file</code> element, whose value (username, the space-separated list of file IDs, or the space-separated list of role names) is linked to an appropriate variable used by the <code>file</code> request to filter the list of files to be selected.</p>
+				<p>Attributes of the <code>xformsdb:var</code> element associated with the <code>file</code> request:</p>				
+				<ol class="attributes">
+					<li class="attribute">name</li>
+					<li class="description">Required attribute specifying the name (<code>username</code>, <code>ids</code> or <code>roles</code>) of a variable used by the <code>file</code> request to filter the list of files to be selected. Default value is an empty string.</li>
+				</ol>
+				<h4><span>The <code>xformsdb:secvar</code> Element</span></h4>
+				<p>Optional child element of the <code>xformsdb:file</code> element, whose value (username of the currently logged-in user or the roles of the currently logged-in user) is securely linked to an appropriate variable used by the <code>file</code> request to filter the list of files to be selected. The value of this element is not allowed to, and cannot, be altered because it is securely set on the server side by an XFormsDB implementation.</p>
+				<p>Attributes of the <code>xformsdb:secvar</code> element associated with the <code>file</code> request:</p>
+				<ol class="attributes">
+					<li class="attribute">name</li>
+					<li class="description">Required attribute specifying the name (<code>username</code> or <code>roles</code>) of a secured variable used by the <code>file</code> request to filter the list of files to be selected. Default value is an empty string.</li>
+				</ol>
+				<h4><span>Operations on files</span></h4>
+				<p>XFormsDB provides four operations for managing files. The <code>select</code> operation enables retrieving the metadata about files including the URI from which the file can be downloaded. The <code>insert</code>, <code>delete</code>, and <code>update</code> operations, however, differ from the select operation and the idea behind them is similar to each other. In each operation, required information about the files is submitted to an XFormsDB implementation within an appropriate wrapper element (either <code>&lt;xformsdb:insert&gt;</code>, <code>&lt;xformsdb:delete&gt;</code>, or <code>&lt;xformsdb:update&gt;</code>, respectively) to ensure that an undesired operation is not executed by mistake. As a result of a successful submission, the XFormsDB implementation returns the metadata about files associated with the performed operation in the structure described in Section <a href="#toc8">8&nbsp;&nbsp;The <code>xformsdb_files.xml</code> Document</a>.</p>
+				<p>Required attributes of the <code>xformsdb:file</code> element(s) for each operation associated with the <code>file</code> request:</p>
+				<ol class="attributes">
+					<li class="attribute">select</li>
+					<li class="description">None. All files will be selected if filtering has not been used.</li>
+					<li class="attribute">insert</li>
+					<li class="description"><code>displayname</code>, <code>roles</code>, <code>filename</code>, <code>mediatype</code>, <code>filesize</code>, <code>comment</code>, and <code>creator</code>. Values for the <code>filename</code>, <code>mediatype</code>, and <code>filesize</code> attributes are automatically set by an <code>xforms:upload</code> element, which is bound to the aforementioned attributes.</li>
+					<li class="attribute">delete</li>
+					<li class="description"><code>id</code></li>
+					<li class="attribute">update</li>
+					<li class="description"><code>displayname</code>, <code>roles</code>, <code>filename</code>, <code>mediatype</code>, <code>filesize</code>, <code>comment</code>, <code>creator</code>, <code>created</code>, <code>lastmodifier</code>, <code>lastmodified</code>, <code>id</code>, and <code>download</code>. Replacing values for the <code>filename</code>, <code>mediatype</code>, and <code>filesize</code> attributes are automatically set by an <code>xforms:upload</code> element, which is bound to the aforementioned attributes. Furthermore, replacing values for the <code>id</code>, <code>lastmodified</code>, and <code>download</code> attributes must be ignored by an XFormsDB implementation.</li>
+				</ol>
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 17:</b> Example of use of the <code>file</code> request for retrieving the metadata about all public files associated with a Web application</p>		
+				<div class="code">
+					<pre>&lt;!-- Files instance --&gt;
+&lt;xforms:instance id=&quot;files-instance&quot;&gt;
+  &lt;dummy xmlns=&quot;&quot; /&gt;
+&lt;/xforms:instance&gt;
+
+&lt;!-- Select/Update/Insert/Delete files request instance --&gt;
+&lt;xformsdb:instance id=&quot;suid-files-request-instance&quot;&gt;
+  &lt;xformsdb:file&gt;
+    &lt;!-- All public files --&gt;
+    &lt;xformsdb:var name=&quot;roles&quot; /&gt;
+  &lt;/xformsdb:file&gt;
+&lt;/xformsdb:instance&gt;
+
+&lt;!-- Select files request submission --&gt;
+&lt;xformsdb:submission id=&quot;select-files-request-submission&quot;
+  replace=&quot;instance&quot; instance=&quot;files-instance&quot;
+  requestinstance=&quot;suid-files-request-instance&quot; filetype=&quot;select&quot;&gt;
+  &lt;!-- Actions defined by the form author --&gt;
+  &lt;xforms:action ev:event=&quot;xformsdb-request-error&quot;&gt;
+    &lt;!-- Show an error message --&gt;
+    &lt;xforms:toggle case=&quot;error-select-files-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+  &lt;xforms:action ev:event=&quot;xforms-submit-done&quot;&gt;
+    &lt;!-- Show an empty message --&gt;
+    &lt;xforms:toggle if=&quot;count(
+      instance( &apos;files-instance&apos; )/xformsdb:file ) = 0&quot;
+      case=&quot;empty-select-files-case&quot; /&gt;
+    &lt;!-- Show a success message --&gt;
+    &lt;xforms:toggle if=&quot;count(
+      instance( &apos;files-instance&apos; )/xformsdb:file ) &gt; 0&quot;
+      case=&quot;success-select-files-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+&lt;/xformsdb:submission&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 18:</b> Example of an XML response of the <code>file</code> request containing the metadata about all public files associated with a Web application</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;xformsdb:files&gt;
+  &lt;xformsdb:file displayname=&quot;API for XFormsDB 1.0&quot; roles=&quot;&quot;
+    filename=&quot;api_for_xformsdb_1-0.pdf&quot; mediatype=&quot;application/pdf&quot;
+    filesize=&quot;144941&quot; comment=&quot;Editor&rsquo;s Draft&quot;
+    creator=&quot;Markku Laine&quot; created=&quot;2009-01-27T17:04:55.310+02:00&quot;
+    lastmodifier=&quot;Markku Laine&quot;
+    lastmodified=&quot;2009-02-16T10:52:21.280+02:00&quot;
+    id=&quot;50641f86-572e-4913-ade2-a8df24f16158&quot;
+    download=&quot;http://localhost:8080/tutorial/
+    selectfilesbyroles.xformsdbdownload?id=50641f86-572e-4913-ade2-
+    a8df24f16158&quot; /&gt;
+  &lt;xformsdb:file displayname=&quot;Lecture: XFormsDB&quot; roles=&quot;&quot;
+    filename=&quot;lecture_xformsdb.pdf&quot; mediatype=&quot;application/pdf&quot;
+    filesize=&quot;728504&quot; comment=&quot;Held on January 27, 2009&quot;
+    creator=&quot;Markku Laine&quot; created=&quot;2009-01-27T17:04:55.390+02:00&quot;
+    lastmodifier=&quot;&quot; lastmodified=&quot;&quot;
+    id=&quot;f40e4173-be44-4b73-889a-2ca3ee3ae3bb&quot;
+    download=&quot;http://localhost:8080/tutorial/
+    selectfilesbyroles.xformsdbdownload?id=f40e4173-be44-4b73-889a-
+    2ca3ee3ae3bb&quot; /&gt;
+&lt;/xformsdb:files&gt;</pre>
+				</div>				
+				<p class="caption"><b>Listing 19:</b> Example of use of the <code>file</code> request for uploading files</p>
+				<div class="code">
+					<pre>&lt;!-- Insert files instance --&gt;
+&lt;xforms:instance id=&quot;insert-files-instance&quot;&gt;
+  &lt;xformsdb:insert&gt;
+    &lt;xformsdb:file displayname=&quot;&quot; roles=&quot;&quot;
+      filename=&quot;&quot; mediatype=&quot;&quot; filesize=&quot;&quot;
+      comment=&quot;&quot; creator=&quot;&quot; /&gt;
+    &lt;xformsdb:file displayname=&quot;&quot; roles=&quot;&quot;
+      filename=&quot;&quot; mediatype=&quot;&quot; filesize=&quot;&quot;
+      comment=&quot;&quot; creator=&quot;&quot; /&gt;
+  &lt;/xformsdb:insert&gt;
+&lt;/xforms:instance&gt;
+
+&lt;!-- Select/Update/Insert/Delete files request instance --&gt;
+&lt;xformsdb:instance id=&quot;suid-files-request-instance&quot;&gt;
+  &lt;xformsdb:file /&gt;
+&lt;/xformsdb:instance&gt;
+
+&lt;!-- Insert files request submission --&gt;
+&lt;xformsdb:submission id=&quot;insert-files-request-submission&quot;
+  replace=&quot;instance&quot; instance=&quot;insert-files-instance&quot;
+  requestinstance=&quot;suid-files-request-instance&quot; filetype=&quot;insert&quot;
+  attachmentinstance=&quot;insert-files-instance&quot;&gt;
+  &lt;!-- Actions defined by the form author --&gt;
+  &lt;xforms:action ev:event=&quot;xformsdb-request-error&quot;&gt;
+    &lt;!-- Show an error message --&gt;
+    &lt;xforms:toggle case=&quot;error-insert-files-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+  &lt;xforms:action ev:event=&quot;xforms-submit-done&quot;&gt;
+    &lt;!-- Show a success message --&gt;
+    &lt;xforms:toggle case=&quot;success-insert-files-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+&lt;/xformsdb:submission&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 20:</b> Example of an XML response of the <code>file</code> request containing the metadata about the uploaded files</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;xformsdb:insert inserted=&quot;50641f86-572e-4913-ade2-a8df24f16158
+  f40e4173-be44-4b73-889a-2ca3ee3ae3bb&quot;&gt;
+  &lt;xformsdb:file displayname=&quot;API for XFormsDB 1.0&quot; roles=&quot;&quot;
+    filename=&quot;api_for_xformsdb_1-0.pdf&quot; mediatype=&quot;application/pdf&quot;
+    filesize=&quot;144941&quot; comment=&quot;Editor&rsquo;s Draft&quot;
+    creator=&quot;Markku Laine&quot; created=&quot;2009-01-27T17:04:55.310+02:00&quot;
+    lastmodifier=&quot;&quot; lastmodified=&quot;&quot;
+    id=&quot;50641f86-572e-4913-ade2-a8df24f16158&quot;
+    download=&quot;http://localhost:8080/tutorial/
+    selectfilesbyroles.xformsdbdownload?id=50641f86-572e-4913-ade2-
+    a8df24f16158&quot; /&gt;
+  &lt;xformsdb:file displayname=&quot;Lecture: XFormsDB&quot; roles=&quot;&quot;
+    filename=&quot;lecture_xformsdb.pdf&quot; mediatype=&quot;application/pdf&quot;
+    filesize=&quot;728504&quot; comment=&quot;Held on January 27, 2009&quot;
+    creator=&quot;Markku Laine&quot; created=&quot;2009-01-27T17:04:55.390+02:00&quot;
+    lastmodifier=&quot;&quot; lastmodified=&quot;&quot;
+    id=&quot;f40e4173-be44-4b73-889a-2ca3ee3ae3bb&quot;
+    download=&quot;http://localhost:8080/tutorial/
+    selectfilesbyroles.xformsdbdownload?id=f40e4173-be44-4b73-889a-
+    2ca3ee3ae3bb&quot; /&gt;
+&lt;/xformsdb:insert&gt;</pre>
+				</div>
+				<!-- 2.7 The cookie Request -->
+				<h3><a name="toc2_7" id="toc2_7"></a><span>2.7&nbsp;&nbsp;The <code>cookie</code> Request</span></h3>
+				<p>The <code>cookie</code> request provides a means for checking browser support for cookies.</p>
+				<h4><span>The <code>xformsdb:cookie</code> Element</span></h4>
+				<p>Required child element of the <code>xformsdb:instance</code> element specifying only the name of the request.</p>
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 21:</b> Example of use of the cookie request</p>
+				<div class="code">
+					<pre>&lt;!-- Cookie instance --&gt;
+&lt;xforms:instance id=&quot;cookie-instance&quot;&gt;
+  &lt;dummy xmlns=&quot;&quot; /&gt;
+&lt;/xforms:instance&gt;
+
+&lt;!-- Cookie request instance --&gt;
+&lt;xformsdb:instance id=&quot;cookie-request-instance&quot;&gt;
+  &lt;xformsdb:cookie /&gt;
+&lt;/xformsdb:instance&gt;
+
+&lt;!-- Cookie request submission --&gt;
+&lt;xformsdb:submission id=&quot;cookie-request-submission&quot;
+  replace=&quot;instance&quot; instance=&quot;cookie-instance&quot;
+  requestinstance=&quot;cookie-request-instance&quot;&gt;
+  &lt;!-- Actions defined by the form author --&gt;
+  &lt;xforms:action ev:event=&quot;xformsdb-request-error&quot;&gt;
+    &lt;!-- Show an error message --&gt;
+    &lt;xforms:toggle case=&quot;error-cookie-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+  &lt;xforms:action ev:event=&quot;xforms-submit-done&quot;&gt;
+    &lt;!-- Show an empty message --&gt;
+    &lt;xforms:toggle if=&quot;string-length(
+      instance( &apos;cookie-instance&apos; ) ) = 0&quot;
+      case=&quot;empty-cookie-case&quot; /&gt;
+    &lt;!-- Show a success message --&gt;
+    &lt;xforms:toggle if=&quot;string-length(
+      instance( &apos;cookie-instance&apos; ) ) &gt; 0&quot;
+      case=&quot;success-cookie-case&quot; /&gt;
+  &lt;/xforms:action&gt;
+&lt;/xformsdb:submission&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 22:</b> Example of an XML response of the <code>cookie</code> request indicating that cookies are enabled on the browser</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;xformsdb:cookie&gt;JSESSIONID&lt;/xformsdb:cookie&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 23:</b> Example of an XML response of the <code>cookie</code> request indicating that cookies are <i>not</i> enabled on the browser</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;xformsdb:cookie /&gt;</pre>
+				</div>
+				<!-- 3 The xformsdb:submission Element -->
+				<h2><a name="toc3" id="toc3"></a><span>3&nbsp;&nbsp;The <code>xformsdb:submission</code> Element</span></h2>
+				<p>The <code>xformsdb:submission</code> element is a new element that adds functionality to submit XFormsDB-related requests, such as the <code>query</code> requests. The requests can be submitted multiple times and at any point in the lifetime of a form.</p>
+				<p>The functionality and the processing model of the <code>xformsdb:submission</code> element is identical to the <code>xforms:submission</code> element. In addition, the element supports extension attributes, which have been described below.</p>
+				<p>Extension attributes for the <code>xformsdb:submission</code> element:</p>
+				<ol class="attributes">
+					<li class="attribute">requestinstance</li>
+					<li class="description">Required attribute specifying the <code>xformsdb:instance</code> element containing an XFormsDB-related request to be submitted. The default value is a reference to the first occurrence of the <code>xformsdb:instance</code> element.</li>
+					<li class="attribute">statetype</li>
+					<li class="description">Optional attribute specifying the type of the <code>state</code> request, whose legal values are: <code>get</code> (default) and <code>set</code>.</li>
+					<li class="attribute">expressiontype</li>
+					<li class="description">Optional attribute specifying the type of the <code>query</code> request, whose legal values are: <code>all</code> (default), <code>select</code>, and <code>update</code>.</li>
+					<li class="attribute">filetype</li>
+					<li class="description">Optional attribute specifying the type of the <code>file</code> request, whose legal values are: <code>select</code> (default), <code>update</code>, <code>insert</code>, and <code>delete</code>.</li>
+					<li class="attribute">attachmentinstance</li>
+					<li class="description">Optional attribute specifying the instance to be sent as an attachment along with: (1) the <code>state</code> request (<code>set</code>), (2) the <code>query</code> request (<code>update</code>), and (3) the <code>file</code> request (<code>update</code>, <code>insert</code>, and <code>delete</code>). The attachment instance contains the data to be updated, inserted, or deleted&mdash;depending on the request. When the attribute is absent, defaults to the value of the <code>instance</code> attribute.</li>
+				</ol>
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 24:</b> Definition of the <code>xformsdb:submission</code> element</p>
+				<div class="code">
+					<pre>&lt;!-- XFormsDB request submission --&gt;
+&lt;xformsdb:submission id=&quot;xformsdb-request-submission&quot;
+  replace=&quot;instance&quot; instance=&quot;xforms-instance&quot;
+  requestinstance=&quot;xformsdb-request-instance&quot;&gt;
+  &lt;!-- Actions defined by the form author --&gt;
+&lt;/xformsdb:submission&gt;</pre>
+				</div>
+				<!-- 4 The xformsdb-request-error Event -->
+				<h2><a name="toc4" id="toc4"></a><span>4&nbsp;&nbsp;The <code>xformsdb-request-error</code> Event</span></h2>
+				<p>The <code>xformsdb-request-error</code> event is a new, notification-typed event that is dispatched as an indication of a failure of an XFormsDB-related request submission and/or execution process. For instance, if an error occurs in establishing a connection to a data source or in executing a query expression. The event can be caught by, similarly to other events, XForms event handlers (XForms Actions) that use the events system defined in DOM Level 2 Events and XML Events.</p>
+				<p>The properties of the <code>xformsdb-request-error</code> event have the following values:</p>
+				<ul class="properties">
+					<li><b>Target element:</b> xformsdb:submission</li>
+					<li><b>Bubbles:</b> Yes</li>
+					<li><b>Cancelable:</b> Yes</li>
+					<li><b>Context info:</b> None</li>
+					<li><b>Default action:</b> None; notification event only</li>				
+				</ul>
+				<p>In addition to the dispatched <code>xformsdb-request-error</code> event, a detailed error from an XFormsDB implementation is made available. Generally, the error is appended into the root node of the first child element of the <code>xformsdb:instance</code> element, which submitted the XFormsDB-related request. However, in case the <code>replace</code> attribute of the <code>xformsdb:submission</code> element has the value all, the error is included in an XHTML document returned after the submission to guarantee that the error can be displayed in XHTML browsers which do not necessarily support plain XML documents.</p>
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 25:</b> Example of a detailed error (appended) from an XFormsDB implementation</p>
+				<div class="code">
+					<pre>&lt;!-- Cookie request instance --&gt;
+&lt;xformsdb:instance id=&quot;cookie-request-instance&quot;&gt;
+  &lt;xformsdb:cookie&gt;
+    &lt;!-- Detailed error (appended) from the XFormsDB
+         implementation --&gt;
+    &lt;xformsdb:error&gt;
+      &lt;xformsdb:code&gt;33001&lt;/xformsdb:code&gt;
+      &lt;xformsdb:description&gt;
+        Failed to check browser support for cookies.
+      &lt;/xformsdb:description&gt;
+    &lt;/xformsdb:error&gt;
+  &lt;/xformsdb:cookie&gt;
+&lt;/xformsdb:instance&gt;</pre>
+				</div>
+				<p class="caption"><b>Listing 26:</b> Example of a detailed error (an XHTML document) from an XFormsDB implementation</p>
+				<div class="code">
+					<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xhtml:html&gt;
+  &lt;xhtml:head&gt;
+    &lt;xhtml:title&gt;XFormsDB Error&lt;/xhtml:title&gt;
+  &lt;/xhtml:head&gt;
+  &lt;xhtml:body&gt;
+    &lt;xhtml:h1&gt;XFormsDB Error&lt;/xhtml:h1&gt;
+    &lt;xhtml:p&gt;&lt;xhtml:b&gt;Error code:&lt;/xhtml:b&gt; 33001&lt;/xhtml:p&gt;
+    &lt;xhtml:p&gt;&lt;xhtml:b&gt;Error description:&lt;/xhtml:b&gt; Failed to check browser support for
+cookies.&lt;/xhtml:p&gt;
+  &lt;/xhtml:body&gt;
+&lt;/xhtml:html&gt;</pre>
+				</div>
+				<!-- 5 The xformsdb:secview Element -->
+				<h2><a name="toc5" id="toc5"></a><span>5&nbsp;&nbsp;The <code>xformsdb:secview</code> Element</span></h2>
+				<p>The <code>xformsdb:secview</code> element is a new element that enables showing/hiding a part of a Web page based on the roles of a user. For instance, a Web page may show a login form for users who have not logged in yet, whereas for logged-in users the Web page may show a username and a logout button in the exact same area on the Web page.</p>
+				<p>Before an XFormsDB implementation sends a Web page to the client, it must go through all the <code>xformsdb:secview</code> elements on the Web page and check whether or not the current user has rights to access the content inside those particular <code>xformsdb:secview</code> elements. In case the current user meets all the conditions set, then, and only then, the content is exposed to the user.</p>
+				<p>In the absence of the underlying attributes, the content inside the particular <code>xformsdb:secview</code> element is shown only for users who have not logged in yet. A detailed decision tree diagram of the <code>xformsdb:secview</code> element is presented in Figure 2.</p>
+				<p>Attributes of the <code>xformsdb:secview</code> element:</p>
+				<ol class="attributes">
+					<li class="attribute">roles</li>
+					<li class="description">Optional attribute specifying the space-separated list of role names associated with the part of a Web page. A user must belong to any of the listed roles in order to access the content inside the particular <code>xformsdb:secview</code> element on the Web page.</li>
+					<li class="attribute">allroles</li>
+					<li class="description">Optional attribute specifying the space-separated list of role names associated with the part of a Web page. A user must belong to all of the listed roles in order to access the content inside the particular <code>xformsdb:secview</code> element on the Web page.</li>
+					<li class="attribute">noroles</li>
+					<li class="description">Optional attribute specifying the space-separated list of role names associated with the part of a Web page. A user must not belong to any of the listed roles in order to access the content inside the particular <code>xformsdb:secview</code> element on the Web page.</li>
+					<li class="attribute">noallroles</li>
+					<li class="description">Optional attribute specifying the space-separated list of role names associated with the part of a Web page. A user must not belong to all of the listed roles in order to access the content inside the particular <code>xformsdb:secview</code> element on the Web page.</li>
+				</ol>
+				<img src="gfx/decision_tree_diagram_of_the_xformsdb_secview_element.png" width="571" height="804" />
+				<p class="caption"><b>Figure 2:</b> Decision tree diagram of the <code>xformsdb:secview</code> element</p>
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 27:</b> Definition of the <code>xformsdb:secview</code> elements for showing/hiding the part of a Web page</p>
+				<div class="code">
+					<pre>&lt;!-- XFormsDB security view for non-logged in users --&gt;
+&lt;xformsdb:secview&gt;
+  &lt;!-- Actions and/or UI defined by the form author --&gt;
+&lt;/xformsdb:secview&gt;
+&lt;!-- XFormsDB security view for logged-in users having the roles:
+     user AND admin, but not having the role: moderator --&gt;
+&lt;xformsdb:secview allroles=&quot;user admin&quot; noroles=&quot;moderator&quot;&gt;
+  &lt;!-- Actions and/or UI defined by the form author --&gt;
+&lt;/xformsdb:secview&gt;</pre>
+				</div>
+				<!-- 6 The xformsdb:include Element -->
+				<h2><a name="toc6" id="toc6"></a><span>6&nbsp;&nbsp;The <code>xformsdb:include</code> Element</span></h2>
+				<p>The <code>xformsdb:include</code> element is a new element that provides an inclusion mechanism to facilitate modularity. By means of the <code>xformsdb:include</code> element, it is possible to build large XML documents out of several well-formed XML documents. The idea behind the <code>xformsdb:include</code> element is similar to XInclude with the difference that it is much simpler.</p>
+				<p>The processing of the <code>xformsdb:include</code> elements is recursive, i.e., an included XML document can itself include another XML document.</p>
+				<p>Attributes of the <code>xformsdb:include</code> element:</p>
+				<ol class="attributes">
+					<li class="attribute">resource</li>
+					<li class="description">Required attribute indicating the URI of an external XML document to be included. Behavior of relative URIs in links is determined by the host language, i.e., the form. Default value is an empty string.</li>
+				</ol>
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 28:</b> Definition of the xformsdb:include element for including a navigation</p>
+				<div class="code">
+					<pre>&lt;!-- Include navigation --&gt;
+&lt;xformsdb:include resource=&quot;xinc/navigation.xinc&quot; /&gt;</pre>
+				</div>
+				<!-- 7 The xformsdb_users.xml Document -->
+				<h2><a name="toc7" id="toc7"></a><span>7&nbsp;&nbsp;The <code>xformsdb_users.xml</code> Document</span></h2>
+				<p>The <code>xformsdb_users.xml</code> document is the data source (realm) of usernames and passwords that identify valid users of a Web application, plus an enumeration of the list of roles associated with each valid user. A particular user can have any number of roles associated with their username.</p>
+				<p>Updating, inserting, and deleting users is described in Section <a href="#toc2_5">2.5&nbsp;&nbsp;The <code>query</code> Request</a>.</p>
+				<h4><span>The <code>xformsdb:users</code> Element</span></h4>
+				<p>Required element that wraps all <code>xformsdb:user</code> elements, i.e., it identifies valid users of a Web application.</p>
+				<h4><span>The <code>xformsdb:user</code> Element</span></h4>
+				<p>Required child element of the <code>xformsdb:users</code> element, which identifies a valid user of a Web application.</p>
+				<p>Attributes of the <code>xformsdb:user</code> element:</p>
+				<ol class="attributes">
+					<li class="attribute">username</li>
+					<li class="description">Required attribute specifying the username of a user, which is used for logging into a Web application. Each user must have a unique username within the Web application.</li>
+					<li class="attribute">password</li>
+					<li class="description">Required attribute specifying the password of a user, which is used for logging into a web application. A password can be either in clear text or hashed (supported cryptographic hashing algorithms: SHA-512, SHA-384, SHA-256, SHA-1, and MD-5; supported encoding methods: hex and base64).</li>
+					<li class="attribute">roles</li>
+					<li class="description">Required attribute specifying the space-separated list of role names associated with a user.</li>
+					<li class="attribute">anyAttribute</li>
+					<li class="description">Foreign attributes are allowed on this element.</li>
+				</ol>
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 29:</b> Definition of the structure of the <code>xformsdb_users.xml</code> document</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;root&gt;
+  &lt;xformsdb:users&gt;
+    &lt;xformsdb:user username=&quot;administrator&quot;
+      password=&quot;1224CFEC67D8695D4C9AD7B5777E61C4&quot;
+      roles=&quot;user admin&quot; /&gt;
+    &lt;xformsdb:user username=&quot;student&quot;
+      password=&quot;1CA18BE3E542DA8D52A9E5B4E4931FC3&quot;
+      roles=&quot;user&quot; /&gt;
+  &lt;/xformsdb:users&gt;
+&lt;/root&gt;</pre>
+				</div>
+				<!-- 8 The xformsdb_files.xml Document -->
+				<h2><a name="toc8" id="toc8"></a><span>8&nbsp;&nbsp;The <code>xformsdb_files.xml</code> Document</span></h2>
+				<p>The <code>xformsdb_files.xml</code> document contains the metadata about files associated with a Web application, such as display name and file size. The actual files, which are uploaded by the users of the Web application, on the other hand are stored either within the Web application or to another location on the server.</p>
+				<p>Updating, inserting, and deleting files is described in Section <a href="#toc2_6">2.6&nbsp;&nbsp;The <code>file</code> Request</a>.</p>
+				<h4><span>The <code>xformsdb:files</code> Element</span></h4>
+				<p>Required element that wraps all <code>xformsdb:file</code> elements, i.e., it contains the metadata about files associated with a Web application.</p>
+				<h4><span>The <code>xformsdb:file</code> Element</span></h4>
+				<p>Required child element of the <code>xformsdb:files</code> element, which contains the metadata about a file associated with a Web application.</p>
+				<p>Attributes of the <code>xformsdb:file</code> element:</p>
+				<ol class="attributes">
+					<li class="attribute">displayname</li>
+					<li class="description">Required attribute specifying the display name of a file.</li>
+					<li class="attribute">roles</li>
+					<li class="description">Required attribute specifying the space-separated list of role names associated with a file.</li>
+					<li class="attribute">filename</li>
+					<li class="description">Required attribute specifying the name (set automatically by an <code>xforms:upload</code> element) of a file.</li>
+					<li class="attribute">mediatype</li>
+					<li class="description">Required attribute specifying the MIME type (set automatically by an <code>xforms:upload</code> element) of a file.</li>
+					<li class="attribute">filesize</li>
+					<li class="description">Required attribute specifying the size (set automatically by an <code>xforms:upload</code> element) of a file.</li>
+					<li class="attribute">comment</li>
+					<li class="description">Required attribute specifying the free form comment associated with a file.</li>
+					<li class="attribute">creator</li>
+					<li class="description">Required attribute specifying the creator (username) of a file.</li>
+					<li class="attribute">created</li>
+					<li class="description">Required attribute specifying the creation date (generated automatically by an XFormsDB implementation) of a file in the <code>xs:dateTime</code> format.</li>
+					<li class="attribute">lastmodifier</li>
+					<li class="description">Required attribute specifying the last modifier (username) of a file.</li>
+					<li class="attribute">lastmodified</li>
+					<li class="description">Required attribute specifying the last modified date (generated automatically by an XFormsDB implementation) of a file in the <code>xs:dateTime</code> format.</li>
+					<li class="attribute">id</li>
+					<li class="description">Required attribute specifying the ID of a file, which is used for locating files form the file system on the server. Each file must have a unique ID (generated automatically by an XFormsDB implementation) within a Web application.</li>
+					<li class="attribute">download</li>
+					<li class="description">Additional attribute pointing to the URI from which a file can be downloaded. The attribute is not stored in the <code>xformsdb:file</code> element but added automatically by an XFormsDB implementation when the metadata of the file is retrieved. In case a user does not have rights to download the file, the XFormsDB implementation must show an error message.</li>
+					<li class="attribute">anyAttribute</li>
+					<li class="description">Foreign attributes are allowed on this element.</li>
+				</ol>
+				<h4><span>Usage Example</span></h4>
+				<p class="caption"><b>Listing 30:</b> Definition of the structure of the <code>xformsdb_files.xml</code> document</p>
+				<div class="code">
+					<pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;root&gt;
+  &lt;xformsdb:files&gt;
+    &lt;xformsdb:file displayname=&quot;API for XFormsDB 1.0&quot; roles=&quot;&quot;
+      filename=&quot;api_for_xformsdb_1-0.pdf&quot;
+      mediatype=&quot;application/pdf&quot;
+      filesize=&quot;144941&quot; comment=&quot;Editor&rsquo;s Draft&quot;
+      creator=&quot;Markku Laine&quot; created=&quot;2009-01-27T17:04:55.310+02:00&quot;
+      lastmodifier=&quot;Markku Laine&quot;
+      lastmodified=&quot;2009-02-16T10:52:21.280+02:00&quot;
+      id=&quot;50641f86-572e-4913-ade2-a8df24f16158&quot; /&gt;
+  &lt;xformsdb:file displayname=&quot;Lecture: XFormsDB&quot; roles=&quot;&quot;
+    filename=&quot;lecture_xformsdb.pdf&quot;
+    mediatype=&quot;application/pdf&quot;
+    filesize=&quot;728504&quot; comment=&quot;Held on January 27, 2009&quot;
+    creator=&quot;Markku Laine&quot; created=&quot;2009-01-27T17:04:55.390+02:00&quot;
+    lastmodifier=&quot;&quot; lastmodified=&quot;&quot;
+    id=&quot;f40e4173-be44-4b73-889a-2ca3ee3ae3bb&quot; /&gt;
+  &lt;/xformsdb:files&gt;
+&lt;/root&gt;</pre>
+				</div>
+				<!-- 9 Security Considerations -->
+				<h2><a name="toc9" id="toc9"></a><span>9&nbsp;&nbsp;Security Considerations</span></h2>
+				<p>It must be noted that for security reasons, sensitive information (e.g., query expressions and data source configurations) should never be exposed to the client in their original form. An XFormsDB implementation must take care of this issue, for example, by replacing query expressions and data source configurations with opaque reference IDs in order to prevent malicious clients from rewriting the query expressions and stealing the data source configurations.</p>
+				<p>In addition, redirecting to a (or the same) Web page is in most cases required upon a successful login and logout in order to generate a new view with up-to-date access rights for a user.</p>
+				<p>Finally, a two second pause should be applied by an XFormsDB implementation after each attempt to download a file using an incorrect Uniform Resource Locator (URL) in order to secure file downloads against malicious clients.</p>
+				<!-- end #content -->
+			</div>
+			<div id="footer">
+				<p>&nbsp;</p>
+				<!-- end #footer -->
+			</div>
+			<!-- end #container -->
+		</div>
+	</body>
+</html>

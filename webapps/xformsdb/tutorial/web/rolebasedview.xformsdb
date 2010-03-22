@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Access Control - Role-Based View</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, Access, Control, Role, Based, View" />
+		<meta name="description" content="XFormsDB Tutorial - Access Control - Role-Based View" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2008, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<xforms:model />
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Access Control - Role-Based View</h1>
+		        <table>
+			        <xformsdb:secview>
+			        	<tr>
+			        		<td>Hello <b>non-logged in</b> user!</td>
+			        	</tr>
+			        </xformsdb:secview>
+			        <xformsdb:secview roles="user">
+			        	<tr>
+			        		<td>Hello <b>logged in</b> user having one of the roles: <b>user</b>!</td>
+			        	</tr>
+			        </xformsdb:secview>
+			        <xformsdb:secview roles="admin">
+			        	<tr>
+			        		<td>Hello <b>logged in</b> user having one of the roles: <b>admin</b>!</td>
+			        	</tr>
+			        </xformsdb:secview>
+			        <xformsdb:secview roles="user admin">
+			        	<tr>
+			        		<td>Hello <b>logged in</b> user having one of the roles: <b>user</b> OR <b>admin</b>!</td>
+			        	</tr>
+			        </xformsdb:secview>
+			        <xformsdb:secview allroles="user admin">
+			        	<tr>
+			        		<td>Hello <b>logged in</b> user having all the roles: <b>user</b> AND <b>admin</b>!</td>
+			        	</tr>
+			        </xformsdb:secview>
+			        <xformsdb:secview roles="user" noroles="admin">
+			        	<tr>
+			        		<td>Hello <b>logged in</b> user NOT having one of the roles: <b>admin</b> BUT having one of the roles: <b>user</b>!</td>
+			        	</tr>
+			        </xformsdb:secview>
+			        <xformsdb:secview roles="user">
+				        <xformsdb:secview roles="admin">
+				        	<tr>
+				        		<td>Hello <b>logged in</b> user having both of the roles: <b>user</b> AND <b>admin</b>!</td>
+				        	</tr>
+				        </xformsdb:secview>
+			        </xformsdb:secview>
+			        <xformsdb:secview noallroles="user admin">
+			        	<tr>
+			        		<td>Hello <b>logged in</b> user NOT having all the roles: <b>user</b> AND <b>admin</b>!</td>
+			        	</tr>
+			        </xformsdb:secview>
+				</table>        	
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

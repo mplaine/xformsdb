@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Miscellaneous - Utilities</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, Miscellaneous, Utilities" />
+		<meta name="description" content="XFormsDB Tutorial - Miscellaneous - Utilities" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2009, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<!-- Define external events used by Orbeon Forms -->
+		<xforms:model id="main-model" xxforms:external-events="orbeon-forms-xforms-ready">
+			<!-- Instances -->
+			<!-- Util instance -->
+			<xforms:instance id="util-instance">
+				<util xmlns="">
+					<user-agent>default</user-agent>
+					<language>fi</language>
+					<language-index>10000</language-index>
+					<counter>0</counter>
+				</util>
+			</xforms:instance>
+			<!-- Trigger instance -->
+			<xforms:instance id="trigger-instance">
+				<trigger xmlns="">
+					<ui-language-fi />
+					<ui-language-sv />
+					<ui-language-en />
+					<ui-layout-default />
+					<ui-layout-iphone />
+				</trigger>
+			</xforms:instance>
+			<!-- Accept language instance -->
+			<xforms:instance id="accept-language-instance">
+				<accept-language xmlns="" />
+			</xforms:instance>
+			<!-- Accept language list instance -->
+			<xforms:instance id="accept-language-list-instance">
+				<accept-language-list xmlns="" />
+			</xforms:instance>
+			<!-- Cookie instance -->
+			<xforms:instance id="cookie-instance">
+				<dummy xmlns="" />
+			</xforms:instance>
+			<!-- XFormsDB request instances -->
+			<!-- Cookie request instance -->
+			<xformsdb:instance id="cookie-request-instance">
+				<xformsdb:cookie />
+			</xformsdb:instance>
+			<!-- XFormsDB request submissions -->
+			<!-- Cookie request submission -->
+ 			<xformsdb:submission id="cookie-request-submission" replace="instance" instance="cookie-instance" requestinstance="cookie-request-instance">
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="error-message-switcher" />
+				</xforms:action>
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:toggle case="success-message-switcher" />
+				</xforms:action>
+			</xformsdb:submission>
+			<!-- Initialize the Web page -->
+        	<!-- Orbeon Forms hack: For some reason submissions based on the xforms-ready event do not manage cookies correctly -->
+			<!-- Dispatch the event using xxforms:script -->
+			<xxforms:script ev:event="xforms-ready">
+				ORBEON.xforms.Document.dispatchEvent( "main-model", "orbeon-forms-xforms-ready" );
+			</xxforms:script>
+			<xforms:send submission="cookie-request-submission" ev:event="orbeon-forms-xforms-ready" />
+			<!--<xforms:send submission="cookie-request-submission" ev:event="xforms-ready" />-->
+			<!-- UI language -->
+           	<xforms:setvalue ev:event="xforms-ready" ref="instance( 'util-instance' )/counter" value="number( 1 )" />
+			<xforms:action ev:event="xforms-ready" while="instance( 'util-instance' )/counter &lt;= count( tokenize( instance( 'xformsdb-request-headers-instance' )/xformsdb:request-header[ @name = 'accept-language' ], ',' ) )">
+				<xforms:insert origin="instance( 'accept-language-instance' )" nodeset="*" context="instance( 'accept-language-list-instance' )" at="last()" />
+				<xforms:setvalue if="contains( tokenize( instance( 'xformsdb-request-headers-instance' )/xformsdb:request-header[ @name = 'accept-language' ], ',' )[ number( instance( 'util-instance' )/counter ) ], ';' ) = true()" ref="instance( 'accept-language-list-instance' )/accept-language[ last() ]" value="substring( substring-before( tokenize( instance( 'xformsdb-request-headers-instance' )/xformsdb:request-header[ @name = 'accept-language' ], ',' )[ number( instance( 'util-instance' )/counter ) ], ';' ), 1, 2 )" />
+				<xforms:setvalue if="contains( tokenize( instance( 'xformsdb-request-headers-instance' )/xformsdb:request-header[ @name = 'accept-language' ], ',' )[ number( instance( 'util-instance' )/counter ) ], ';' ) = false()" ref="instance( 'accept-language-list-instance' )/accept-language[ last() ]" value="substring( tokenize( instance( 'xformsdb-request-headers-instance' )/xformsdb:request-header[ @name = 'accept-language' ], ',' )[ number( instance( 'util-instance' )/counter ) ], 1, 2 )" />
+				<xforms:setvalue ref="instance( 'util-instance' )/counter" value="number( . + 1 )" />
+			</xforms:action>
+           	<xforms:setvalue ev:event="xforms-ready" if="empty( index-of( instance( 'accept-language-list-instance' )/accept-language, 'fi' ) ) = false() and index-of( instance( 'accept-language-list-instance' )/accept-language, 'fi' ) &lt; instance( 'util-instance' )/language-index" ref="instance( 'util-instance' )/language" value="'fi'" />
+           	<xforms:setvalue ev:event="xforms-ready" if="empty( index-of( instance( 'accept-language-list-instance' )/accept-language, 'fi' ) ) = false() and index-of( instance( 'accept-language-list-instance' )/accept-language, 'fi' ) &lt; instance( 'util-instance' )/language-index" ref="instance( 'util-instance' )/language-index" value="index-of( instance( 'accept-language-list-instance' )/accept-language, 'fi' )" />
+           	<xforms:setvalue ev:event="xforms-ready" if="empty( index-of( instance( 'accept-language-list-instance' )/accept-language, 'sv' ) ) = false() and index-of( instance( 'accept-language-list-instance' )/accept-language, 'sv' ) &lt; instance( 'util-instance' )/language-index" ref="instance( 'util-instance' )/language" value="'sv'" />
+           	<xforms:setvalue ev:event="xforms-ready" if="empty( index-of( instance( 'accept-language-list-instance' )/accept-language, 'sv' ) ) = false() and index-of( instance( 'accept-language-list-instance' )/accept-language, 'sv' ) &lt; instance( 'util-instance' )/language-index" ref="instance( 'util-instance' )/language-index" value="index-of( instance( 'accept-language-list-instance' )/accept-language, 'sv' )" />
+           	<xforms:setvalue ev:event="xforms-ready" if="empty( index-of( instance( 'accept-language-list-instance' )/accept-language, 'en' ) ) = false() and index-of( instance( 'accept-language-list-instance' )/accept-language, 'en' ) &lt; instance( 'util-instance' )/language-index" ref="instance( 'util-instance' )/language" value="'en'" />
+           	<xforms:setvalue ev:event="xforms-ready" if="empty( index-of( instance( 'accept-language-list-instance' )/accept-language, 'en' ) ) = false() and index-of( instance( 'accept-language-list-instance' )/accept-language, 'en' ) &lt; instance( 'util-instance' )/language-index" ref="instance( 'util-instance' )/language-index" value="index-of( instance( 'accept-language-list-instance' )/accept-language, 'en' )" />
+			<xforms:bind nodeset="instance( 'trigger-instance' )/ui-language-fi" readonly="instance( 'util-instance' )/language = 'fi'" />
+			<xforms:bind nodeset="instance( 'trigger-instance' )/ui-language-sv" readonly="instance( 'util-instance' )/language = 'sv'" />
+			<xforms:bind nodeset="instance( 'trigger-instance' )/ui-language-en" readonly="instance( 'util-instance' )/language = 'en'" />
+			<!-- UI layout -->
+           	<xforms:setvalue ev:event="xforms-ready" if="contains( instance( 'xformsdb-request-headers-instance' )/xformsdb:request-header[ @name = 'user-agent' ], 'iPhone' ) = false()" ref="instance( 'util-instance' )/user-agent" value="'default'" />
+           	<xforms:setvalue ev:event="xforms-ready" if="contains( instance( 'xformsdb-request-headers-instance' )/xformsdb:request-header[ @name = 'user-agent' ], 'iPhone' ) = true()" ref="instance( 'util-instance' )/user-agent" value="'iphone'" />
+			<xforms:bind nodeset="instance( 'trigger-instance' )/ui-layout-default" readonly="instance( 'util-instance' )/user-agent = 'default'" />
+			<xforms:bind nodeset="instance( 'trigger-instance' )/ui-layout-iphone" readonly="instance( 'util-instance' )/user-agent = 'iphone'" />
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Miscellaneous - Utilities</h1>
+		       	<xforms:switch id="message-switcher">
+		        	<xforms:case id="default-message-switcher" />
+		        	<xforms:case id="success-message-switcher">
+				        <div class="message-success">
+				        	<xforms:output value="'Browser support for cookies has been successfully checked.'" />
+				        </div>
+		        	</xforms:case>
+		        	<xforms:case id="error-message-switcher">
+				        <div class="message-error">
+				   	    	<xforms:output value="concat( 'Error (', ' ', instance( 'cookie-request-instance' )/xformsdb:error/xformsdb:code, ' ): ', instance( 'cookie-request-instance' )/xformsdb:error/xformsdb:description )" />
+				       	</div>
+		        	</xforms:case>
+		        </xforms:switch>
+		        <p>XFormsDB makes available, among others, the following information about the initial request, including cookies and browser information:</p>
+				<table>
+					<tr>
+						<td><b>Base URI:</b>&nbsp;</td>
+						<td><xforms:output ref="instance( 'xformsdb-request-base-uri-instance' )" /></td>
+					</tr>
+					<tr>
+						<td><b>User agent:</b>&nbsp;</td>
+						<td><xforms:output ref="instance( 'xformsdb-request-headers-instance' )/xformsdb:request-header[ @name = 'user-agent' ]" /></td>
+					</tr>
+					<tr>
+						<td><b>Accept language:</b>&nbsp;</td>
+						<td><xforms:output ref="instance( 'xformsdb-request-headers-instance' )/xformsdb:request-header[ @name = 'accept-language' ]" /></td>
+					</tr>
+					<tr>
+						<td><b>Cookie:</b>&nbsp;</td>
+						<td><xforms:output ref="instance( 'cookie-instance' )" /></td>
+					</tr>
+				</table>
+				<p>The aforementioned information can be utilized, for instance, to initialize a Web page as follows:</p>
+				<table>
+					<tr>
+						<td><b>UI language:</b>&nbsp;</td>
+						<td>
+							<xforms:output ref="instance( 'util-instance' )/language" />
+							(
+							<xforms:trigger appearance="minimal" ref="instance( 'trigger-instance' )/ui-language-fi">
+								<xforms:label>Suomeksi</xforms:label>
+								<xforms:setvalue ref="instance( 'util-instance' )/language" value="'fi'" ev:event="DOMActivate" />
+							</xforms:trigger>
+							|
+							<xforms:trigger appearance="minimal" ref="instance( 'trigger-instance' )/ui-language-sv">
+								<xforms:label>På svenska</xforms:label>
+								<xforms:setvalue ref="instance( 'util-instance' )/language" value="'sv'" ev:event="DOMActivate" />
+							</xforms:trigger>
+							|
+							<xforms:trigger appearance="minimal" ref="instance( 'trigger-instance' )/ui-language-en">
+								<xforms:label>In English</xforms:label>
+								<xforms:setvalue ref="instance( 'util-instance' )/language" value="'en'" ev:event="DOMActivate" />
+							</xforms:trigger>
+							)
+						</td>
+					</tr>
+					<tr>
+						<td><b>UI layout:</b>&nbsp;</td>
+						<td>
+							<xforms:output ref="instance( 'util-instance' )/user-agent" />
+							(
+							<xforms:trigger appearance="minimal" ref="instance( 'trigger-instance' )/ui-layout-default">
+								<xforms:label>Default</xforms:label>
+								<xforms:setvalue ref="instance( 'util-instance' )/user-agent" value="'default'" ev:event="DOMActivate" />
+							</xforms:trigger>
+							|
+							<xforms:trigger appearance="minimal" ref="instance( 'trigger-instance' )/ui-layout-iphone">
+								<xforms:label>iPhone</xforms:label>
+								<xforms:setvalue ref="instance( 'util-instance' )/user-agent" value="'iphone'" ev:event="DOMActivate" />
+							</xforms:trigger>
+							)
+						</td>
+					</tr>
+					<tr>
+						<td><b>Cookies:</b>&nbsp;</td>
+						<td>
+							<xforms:group ref=".[ string-length( instance( 'cookie-instance' ) ) &gt; 0 ]">
+								<xforms:output value="'Cookies are enabled on your browser.'" />
+							</xforms:group>
+							<xforms:group ref=".[ string-length( instance( 'cookie-instance' ) ) = 0 ]">
+								<xforms:output value="'Cookies are not enabled on your browser. Please adjust this in your security preferences before continuing.'" />
+							</xforms:group>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

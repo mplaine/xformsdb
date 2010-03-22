@@ -1,0 +1,47 @@
+<xhtml:html xmlns:xforms="http://www.w3.org/2002/xforms"
+        xmlns:f="http://orbeon.org/oxf/xml/formatting"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:xxforms="http://orbeon.org/oxf/xml/xforms"
+        xmlns:widget="http://orbeon.org/oxf/xml/widget"
+        xmlns:ev="http://www.w3.org/2001/xml-events"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xhtml:head>
+        <xhtml:title>Repeat Unit Tests</xhtml:title>
+        <xforms:model xmlns:xforms="http://www.w3.org/2002/xforms">
+            <xforms:instance>
+                <companies show="true">
+                    <company>
+                        <name>Wal Mart</name>
+                    </company>
+                    <company>
+                        <name>ExxonMobil</name>
+                    </company>
+                    <company>
+                        <name>Royal Dutch Shell</name>
+                    </company>
+                </companies>
+            </xforms:instance>
+            <xforms:bind nodeset="/companies/@show" type="xs:boolean"/>
+        </xforms:model>
+        <xhtml:link type="text/css" rel="stylesheet" href="/ops/yui/logger/assets/logger.css"/>
+        <xhtml:script type="text/javascript" src="/ops/yui/logger/logger.js"/>
+        <xhtml:script type="text/javascript" src="/ops/yui/yuitest/yuitest.js"/>
+        <xhtml:script type="text/javascript" src="/apps/xforms-sandbox/samples/test-repeat.js"/>
+
+    </xhtml:head>
+    <xhtml:body>
+        <xforms:input ref="@show" id="show">
+            <xforms:label>Show</xforms:label>
+        </xforms:input>
+        <xhtml:table>
+            <xforms:repeat nodeset=".[@show = 'true']/company" id="company-repeat">
+                <xhtml:tr>
+                    <xhtml:td>
+                        <xforms:input ref="name" id="name"/>
+                    </xhtml:td>
+                </xhtml:tr>
+            </xforms:repeat>
+        </xhtml:table>
+    </xhtml:body>
+</xhtml:html>

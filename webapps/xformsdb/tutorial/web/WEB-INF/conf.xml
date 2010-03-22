@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<!-- ========================== XFormsDB Configuration ==================== -->
+<!--
+	
+	XFormsDB configuration file.
+
+-->
+<xformsdb-config xmlns="http://www.tml.tkk.fi/2007/xformsdb">
+
+
+
+	<!-- ====================== XFormsDB MIME Mapping ===================== -->
+	<!--
+	
+		The MIME mappings (extension and MIME type) that are used to transform
+		XHTML+XFormsDB files into XHTML+XForms 1.1 compliant markup.
+		
+		Empty values or missing elements or will be replaced with the default
+		values below.
+		
+		
+		Default extension: xformsdb
+		Default mime-type: application/xhtml+xml
+	
+	-->
+	<mime-mapping>
+		<extension>xformsdb</extension>
+		<mime-type>application/xhtml+xml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xformsdbmobile</extension>
+		<mime-type>application/xhtml+xml</mime-type>
+	</mime-mapping>
+
+
+	<!-- ====================== Encoding ================================== -->
+	<!--
+	
+		The character encoding that is used in input (e.g., query files) and
+		output files throughout the Web application.
+		
+		Empty values or missing elements will be replaced with the default
+		values below.
+		
+		
+		Default encoding: UTF-8
+	
+	-->
+	<encoding>UTF-8</encoding>
+
+
+	<!-- ====================== Data Sources ============================== -->
+	<!--
+	
+		The predefined data source configurations that are used for connecting
+		to the data sources.
+		
+	
+		Data sources that are supported by XFormsDB:
+		+=================+=======+===========================================+
+		| Data source     | Type  | Note                                      |
+		+=================+=======+===========================================+		
+		| XML Document(s) |   1   | Update operations are not supported yet.  |
+		+- - - - - - - - -+- - - -+- - - - - - - - - - - - - - - - - - - - - -+
+		| eXist-db        |   2   |                                           |
+		|                 |       |                                           |
+		|                 |       |                                           |
+		+=================+=======+===========================================+
+
+		Empty values or missing elements will be replaced with the default
+		values below. The default data source to be used is the first
+		occurrence or a data source with default values, if no configured data
+		sources exist.
+		
+		
+		Default id:         XFORMSDB_DEFAULT_DATA_SOURCE
+		Default type:       1
+		Default uri:        (the root uri of the XFormsDB installation)
+		Default username:   (empty string)
+		Default password:   (empty string)
+		Default collection: /WEB-INF/data
+		
+	-->
+	<data-source id="xml-document-data-data-source">
+		<type>1</type>
+		<uri></uri>
+		<username></username>
+		<password></password>
+		<collection>/WEB-INF/xmldocumentdata/test</collection>
+	</data-source>
+	<data-source id="xml-document-realm-data-source">
+		<type>1</type>
+		<uri></uri>
+		<username></username>
+		<password></password>
+		<collection>/WEB-INF/xmldocumentrealm/test</collection>
+	</data-source>
+	<data-source id="exist-data-data-source">
+		<type>2</type>
+		<uri>xmldb:exist://localhost:8080/exist/xmlrpc</uri>
+		<username>xformsdb</username>
+		<password>xformsdb1234</password>
+		<collection>/db/xformsdb/tutorial/data</collection>
+	</data-source>
+	
+	
+	<!-- ====================== Files Metadata ============================ -->
+	<!--
+	
+		The predefined data source configuration that is used for connecting to
+		the files metadata data source.
+		
+	
+		Files metadata data sources that are supported by XFormsDB:
+		+=================+=======+===========================================+
+		| Data source     | Type  | Note                                      |
+		+=================+=======+===========================================+		
+		| XML Document(s) |   1   | Update operations are not supported yet.  |
+		+- - - - - - - - -+- - - -+- - - - - - - - - - - - - - - - - - - - - -+
+		| eXist-db        |   2   |                                           |
+		|                 |       |                                           |
+		|                 |       |                                           |
+		+=================+=======+===========================================+
+
+		Empty values or missing elements will be replaced with the default
+		values below. The default files metadata data source to be used is a
+		files metadata data source with default values, if no configured files
+		metadata data source exists.
+		
+		
+		Default type:       1
+		Default uri:        (the root uri of the XFormsDB installation)
+		Default username:   (empty string)
+		Default password:   (empty string)
+		Default collection: /WEB-INF/files
+
+	-->
+	<files-metadata>
+		<type>2</type>
+		<uri>xmldb:exist://localhost:8080/exist/xmlrpc</uri>
+		<username>xformsdb</username>
+		<password>xformsdb1234</password>
+		<collection>/db/xformsdb/tutorial/files</collection>
+	</files-metadata>
+
+
+	<!-- ====================== Files Folder ============================== -->
+	<!--
+	
+		The files folder that is used for storing uploaded files. The files
+		folder path can be either a relative (to the root URI of the XFormsDB
+		installation) or absolute path.
+
+		Empty values or missing elements will be replaced with the default
+		values below.
+
+
+		Default files folder: WEB-INF/files
+	
+	-->
+	<files-folder>WEB-INF/files/test</files-folder>
+
+
+	<!-- ====================== TDM Conflict Level ======================== -->
+	<!--
+	
+		The conflict level of the three-way XML merging tool that is used for
+		updating data (an XML fragment) with data synchronization.
+		
+		Valid values are:
+		 * error
+		 * warn (stricter)
+		
+		Empty values or missing elements will be replaced with the default
+		values below.
+		
+		
+		Default tdm conflict level: error
+
+	-->
+	<tdm-conflict-level>error</tdm-conflict-level>
+
+
+	<!-- ====================== Widget Authentication URI ================= -->
+	<!--
+	
+		The widget authentication URI that is used for authenticating widget
+		users and retrieving their widget specific user information, including
+		username and roles.
+		
+		The {idkey} and {at} variables in the URI will be replaced with the
+		idkey and at parameter values, respectively.
+		
+		Empty values or missing elements will be replaced with the default
+		values below.
+		
+		
+		Default files folder: (empty string)
+	
+	-->
+	<widget-authentication-uri>http://localhost:8080/uspace/user.xml?idkey={idkey}&amp;at={at}</widget-authentication-uri>
+
+
+	<!-- ====================== Widget Data sources URI =================== -->
+	<!--
+	
+		The widget data sources URI that is used for authenticating	widget
+		users and retrieving their widget specific data source configuration
+		information, such as URIs, usernames, and passwords.
+		
+		The	{idkey} and {at} variables in the URI will be replaced with the
+		idkey and at parameter values, respectively.
+
+		Empty values or missing elements will be replaced with the default
+		values below.
+
+		
+		Default files folder: (empty string)
+	
+	-->
+	<widget-data-sources-uri>http://localhost:8080/uspace/datasource.xml?idkey={idkey}&amp;at={at}</widget-data-sources-uri>
+
+
+	<!-- ====================== Security Files ============================ -->
+	<!--
+	
+		The security files that are used for protecting files from clients
+		based on extensions.
+		
+		Empty values or missing elements will be replaced with the default
+		values below.
+		
+		
+		Default extension: xq
+	
+	-->
+	<security-file>
+		<extension>xinc</extension>
+	</security-file>
+	<security-file>
+		<extension>xq</extension>
+	</security-file>
+	<security-file>
+		<extension>xpath</extension>
+	</security-file>
+
+
+	
+</xformsdb-config>

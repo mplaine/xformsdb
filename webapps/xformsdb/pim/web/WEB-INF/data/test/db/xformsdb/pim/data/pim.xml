@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<pim>
+		<contacts>
+			<contact id="faadfab7b61a0781c12374202c9765c3">
+				<name>Markku Laine</name>
+				<title>Research assistant</title>
+				<company>Helsinki University of Technology</company>
+				<street>Konemiehentie 2</street>
+				<city>Espoo</city>
+				<state></state>
+				<zip>02150</zip>
+				<country>Finland</country>
+				<telephone></telephone>
+				<fax></fax>
+				<mobilephone>+358 50 555 3333</mobilephone>
+				<email>markku.laine@tml.hut.fi</email>
+			</contact>
+			<contact id="7dce3ab650ad06c2a1436899e8005201">
+				<name>Oskari Koskimies</name>
+				<title>Project manager</title>
+				<company>Nokia Research Center</company>
+				<street>Itämerenkatu 11-13</street>
+				<city>Helsinki</city>
+				<state></state>
+				<zip>00180</zip>
+				<country>Finland</country>
+				<telephone></telephone>
+				<fax></fax>
+				<mobilephone>+358 40 555 1111</mobilephone>
+				<email>oskari.koskimies@nokia.com</email>
+			</contact>
+			<contact id="df50cad8e9d3c08afe47f859a3cd7aac">
+				<name>Mikko Honkala</name>
+				<title>Researcher</title>
+				<company>Nokia Research Center</company>
+				<street>Itämerenkatu 11-13</street>
+				<city>Helsinki</city>
+				<state></state>
+				<zip>00180</zip>
+				<country>Finland</country>
+				<telephone></telephone>
+				<fax></fax>
+				<mobilephone>+358 45 555 9999</mobilephone>
+				<email>mikko.honkala@nokia.com</email>
+			</contact>
+			<contact id="8b80a8db525869f5ba2db6f122afece0">
+				<name>Petri Vuorimaa</name>
+				<title>Professor</title>
+				<company>Helsinki University of Technology</company>
+				<street>Konemiehentie 2</street>
+				<city>Espoo</city>
+				<state></state>
+				<zip>02150</zip>
+				<country>Finland</country>
+				<telephone></telephone>
+				<fax></fax>
+				<mobilephone>+358 44 555 7777</mobilephone>
+				<email>petri.vuorimaa@tml.hut.fi</email>
+			</contact>
+			<contact id="9d89d93af7b82b8af1610038fc67dcc4">
+				<name>Emilia Mendes</name>
+				<title>Senior lecturer</title>
+				<company>The University of Auckland</company>
+				<street>Level 5 Room 583, Science Centre, Building 303, 38 Princes Street</street>
+				<city>Auckland</city>
+				<state></state>
+				<zip>1061</zip>
+				<country>New Zealand</country>
+				<telephone></telephone>
+				<fax></fax>
+				<mobilephone>+64 21 555 888</mobilephone>
+				<email>emilia@cs.auckland.ac.nz</email>
+			</contact>
+		</contacts>
+	</pim>
+</root>

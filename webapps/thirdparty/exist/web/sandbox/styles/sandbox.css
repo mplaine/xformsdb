@@ -1,0 +1,285 @@
+@import url(xml2html.css);
+
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	overflow-y: scroll;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#header {
+    padding: 10px 0 5px 10px;
+    border-bottom: 1px solid blue;
+    font-size: 75%;
+}
+
+#header h1 {
+	font-weight: normal;
+	font-size: 150%;
+}
+
+#header #menu {
+    margin: 0.3em 0 0 0;
+    padding: 0;
+    float: right;
+}
+
+#menu li {
+    list-style: none; 
+    float: left;
+    margin: 0;
+    white-space: nowrap;
+    padding: 0px 20px 0px 20px;
+}
+
+#menu li a {
+    color: #666666;
+}
+
+#content {
+    margin: 5px 20px 0 20px;
+    font-size: 75%;
+}
+
+#user {
+	float: right;
+}
+
+#errors {
+	height: 3em;
+	margin-bottom: 3px;
+	color: #AF0024;
+}
+
+button {
+	border: 1px solid #FFB900;
+	background-color: white;
+}
+
+h2 {
+	font-size: 100%;
+}
+
+#slots-panel {
+	float: left;
+	width: 140px;
+	height: 216px;
+	background-color: #FFE;
+	border: 1px solid #FFB900;
+	padding: 5px 2px 5px 2px;
+}
+
+#slots-panel h2 {
+	font-weight: normal;
+	color: black;
+	border-bottom: 1px solid #FFB900;
+	margin-bottom: 5px;
+	padding: 0 0 5px 5px;
+}
+
+#slots li {
+	list-style: none;
+	white-space: nowrap;
+	text-align: center;
+	padding-bottom: 2px;
+}
+
+#slots .num {
+	float: left;
+	color: #FFB900;
+	width: 30px;
+	text-align: right;
+}
+
+#slots a {
+	text-decoration: none;
+}
+
+#slots .used {
+	background-color: #FEFFAF;
+}
+	
+#right-panel {
+	margin-left: 150px;
+	border: 1px solid #FFB900;
+}
+
+#maximize {
+	float: right;
+}
+
+#query-panel {
+	background-color: #FEFFAF;
+	padding: 3px 3px 3px 5px;
+}
+
+p {
+	margin-bottom: 3px;
+}
+
+label:after {
+	content: ': ';
+}
+
+label {
+	padding-right: 7px;
+}
+
+#query {
+    height: 170px;
+}
+
+#saved {
+	width: 200px;
+}
+
+fieldset {
+	border: 0;
+	text-align: right;
+	margin-top: 3px;
+}
+
+fieldset select {
+	margin-right: 20px;
+}
+
+#buttons {
+	float: left;
+}
+
+#submit {
+	margin-right: 10px;
+}
+
+#save-panel {
+	padding: 0 3px 3px 5px;
+	margin-top: 5px;
+	background-color: #FFE;
+	border: 1px solid #FFB900;
+}
+
+#save-panel h2 {
+	margin: 3px 0;
+	font-style: italic;
+	font-weight: normal;
+}
+
+#save-panel select, input {
+	margin-right: 5px;
+}
+
+#save-panel #export-resource {
+	margin-right: 10px;
+}
+
+#description, #path {
+	min-width: 400px;
+}
+
+#wrapper, #docname {
+	min-width: 200px;
+}
+
+#query-output {
+	background-color: #FC6;
+	margin-top: 5px;
+	padding: 0 3px 3px 5px;
+	border: 1px solid #FFD100;
+}
+
+#query-result {
+	margin-top: 10px;
+	height: 1em;
+}
+
+#navbar {
+	width: auto;
+	border: 0;
+	font-size: 75%;
+	margin-bottom: 10px;
+}
+
+#previous {
+	float: left;
+}
+
+#current {
+	text-align: center;
+	color: white;
+	font-weight: bold;
+}
+
+#next {
+	float: right;
+}
+
+#output {
+	font-size: 85%;
+	overflow: auto;
+	background-color: white;
+}
+
+.item {
+	min-height: 2.5em;
+}
+
+/* Hack for internet explorer */
+/*\*/
+* html .item {
+	height: 2.5em;
+}
+
+.even {
+	background-color: #CDE9FF;
+}
+
+.pos {
+	float: left;
+	background-color: #ECF;
+	font-size: 1.25em;
+	padding: 2px;
+	margin-right: 5px;
+}
+
+#xmldb-open {
+	width: 40%;
+	background-color: white;
+	font-size: 75%;
+	border: 5px solid #DAD6D6;
+}
+
+#xmldb-open h1 {
+	font-size: 85%;
+	color: white;
+	padding: 5px 5px;
+	background-color: #3366CC;
+}
+
+#xmldb-inner {
+	padding: 7px;
+}
+
+#xmldb-collections {
+	margin-top: 5px;
+}
+
+#xmldb-close {
+	float: right;
+	color: #CCCCCC;
+	font-size: 75%;
+}
+
+#xmldb-open li {
+	list-style: none;
+}
+
+#xmldb-submit {
+	float: right;
+}
+
+#xmldb-open input {
+	width: 100%;
+}

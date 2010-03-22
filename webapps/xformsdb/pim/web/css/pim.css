@@ -1,0 +1,213 @@
+@charset "UTF-8";
+
+
+/* -------------- IMPORTED STYLE SHEETS ---- */
+@import url( "xforms_of.css" );
+
+
+/* -------------- COMMONS ------------------ */
+body,
+html {
+	background-color: #FFFFFF;
+	margin: 4px 4px 4px 4px;
+	padding: 0px 0px 0px 0px;
+}
+body {
+	color: #000000;
+	font-family: Times New Roman, Verdana, Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	text-align:left;
+}
+.sort {
+	color: #000000;
+	text-decoration: none;
+}
+.alert {
+	color: #FF0000;
+}
+.disabled {
+	color: #999999;
+}
+
+
+/* -------------- CONTAINER ---------------- */
+#container {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	text-align: left;
+	width: 100%;
+}
+
+
+/* -------------- LANGUAGE MENU ---------------- */
+#language-menu {
+	align: left;
+	min-width: 600px;
+	text-align: right;
+	width: 100%;
+}
+
+
+/* -------------- ACTION MENU ------------------ */
+#action-menu {
+	align: left;
+	margin-bottom: 10px;
+	margin-top: 30px;
+	min-width: 600px;
+	text-align: left;
+	width: 100%;
+}
+
+
+/* -------------- PROCESS WORKING -------------- */
+div.process-working {
+	background-image: url( "icon/process-working_16x16.gif" );
+	background-repeat: no-repeat;
+	display: inline;
+	padding: 0px 0px 16px 16px;
+}
+
+
+/* -------------- MESSAGES --------------------- */
+div.message-success {
+	align: left;
+	background-color: #66CC66;
+	background-image: url( "icon/check_32x32.png" );
+	background-position: 5px 5px;
+	background-repeat: no-repeat;
+	border: 2px solid #009900;
+	color: #FFFFFF;
+	font-weight: bold;
+	padding: 12px 12px 12px 50px;
+	margin-bottom: 13px;
+	min-height: 20px;
+	min-width: 600px;
+	text-align: left;
+}
+div.message-error {
+	align: left;
+	background-color: #FF6666;
+	background-image: url( "icon/forbidden_32x32.png" );
+	background-position: 5px 5px;
+	background-repeat: no-repeat;
+	border: 2px solid #CC0000;
+	color: #FFFFFF;
+	font-weight: bold;
+	padding: 12px 12px 12px 50px;
+	margin-bottom: 13px;
+	min-height: 20px;
+	min-width: 600px;
+	text-align: left;
+}
+
+
+/* -------------- PIM CONTACTS TABLE ----------- */
+/* -------------- HEADER OF THE TABLE ---------- */
+table.contacts-header-table {
+	align: left;
+	color: #000000;
+	margin-bottom: 1px;
+	min-width: 600px;
+	width: 100%;
+}
+tr.contacts-header-tr {
+	background-color: #000000;
+	color: #FFFFFF;
+	text-align: left;
+	vertical-align: top;
+}
+
+
+/* -------------- THEAD OF THE TABLE ----------- */
+table.contacts-thead-table {
+	align: left;
+	border-bottom: 0px none transparent;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+	border-top: 1px solid #000000;
+	color: #000000;
+	min-width: 600px;
+	width: 100%;
+}
+tr.contacts-thead-tr {
+	background-color: #F0F0F0;
+	text-align: left;
+	vertical-align: top;
+}
+th.contacts-thead-1-th {
+}
+th.contacts-thead-2-th {
+	width: 138px;
+}
+
+
+/* -------------- TBODY OF THE TABLE ----------- */
+table.contacts-tbody-table {
+	align: left;
+	border-bottom: 0px none transparent;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+	border-top: 0px none transparent;
+	min-width: 600px;
+	width: 100%;
+}
+tr.contacts-tbody-odd-tr {
+	background-color: #FFFFFF;
+	vertical-align: top;
+}
+tr.contacts-tbody-even-tr {
+	background-color: #F0F0F0;
+	vertical-align: top;
+}
+td.contacts-tbody-1-td {
+}
+td.contacts-tbody-2-td {
+	width: 60px;
+}
+td.contacts-tbody-3-td {
+	width: 70px;
+}
+
+
+/* -------------- CONTACTS DETAILS -------------- */
+table.contacts-details-table {
+	align: left;
+	border: 0px none transparent;
+	margin: 10px 30px 10px 30px; 
+	width: 100%;
+}
+td.contacts-details-1-td {
+	line-height: 27px;
+	width: 120px;
+}
+td.contacts-details-2-td {
+	line-height: 27px;
+}
+
+
+/* -------------- TFOOT OF THE TABLE ----------- */
+table.contacts-tfoot-table {
+	align: left;
+	border-bottom: 1px solid #000000;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+	border-top: 0px none transparent;
+	color: #000000;
+	min-width: 600px;
+	width: 100%;
+}
+tr.contacts-tfoot-odd-tr {
+	background-color: #FFFFFF;
+	text-align: left;
+	vertical-align: top;
+}
+tr.contacts-tfoot-even-tr {
+	background-color: #F0F0F0;
+	text-align: left;
+	vertical-align: top;
+}
+th.contacts-tfoot-1-th {
+}

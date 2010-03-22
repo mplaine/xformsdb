@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - State Maintenance - Retrieve State from XFormsDB</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, State, Maintenance, Retrieve, State, from, XFormsDB" />
+		<meta name="description" content="XFormsDB Tutorial - State Maintenance - Retrieve State from XFormsDB" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2008, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- Messages instance -->
+			<xforms:instance id="messages-instance">
+				<messages xmlns="">
+					<success>Web application's state has been successfully retrieved from XFormsDB.</success>
+					<empty>Error: XFormsDB does not hold the web application's state.</empty>
+				</messages>
+			</xforms:instance>
+			<!-- State instance -->
+			<xforms:instance id="state-instance">
+				<dummy xmlns="" />
+			</xforms:instance>
+			<!-- XFormsDB request instances -->
+			<!-- State request instance -->
+			<xformsdb:instance id="state-request-instance">
+				<xformsdb:state />
+			</xformsdb:instance>
+			<!-- XFormsDB request submissions -->
+			<!-- Get state request submission -->
+ 			<xformsdb:submission id="get-state-request-submission" replace="instance" instance="state-instance" requestinstance="state-request-instance" statetype="get">
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="error-message-switcher" />
+				</xforms:action>
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:toggle if="not( exists( instance( 'state-instance' )/ts ) )" case="empty-message-switcher" />
+					<xforms:toggle if="exists( instance( 'state-instance' )/ts )" case="success-message-switcher" />
+				</xforms:action>
+			</xformsdb:submission>
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>State Maintenance - Retrieve State from XFormsDB</h1>
+		        <xforms:switch id="message-switcher">
+		        	<xforms:case id="default-message-switcher" />
+		        	<xforms:case id="success-message-switcher">
+				        <div class="message-success">
+				        	<xforms:output ref="instance( 'messages-instance' )/success" />
+				        </div>
+		        	</xforms:case>
+		        	<xforms:case id="empty-message-switcher">
+				        <div class="message-error">
+				   	    	<xforms:output ref="instance( 'messages-instance' )/empty" />
+				       	</div>
+		        	</xforms:case>
+		        	<xforms:case id="error-message-switcher">
+				        <div class="message-error">
+				   	    	<xforms:output value="concat( 'Error (', ' ', instance( 'state-request-instance' )/xformsdb:error/xformsdb:code, ' ): ', instance( 'state-request-instance' )/xformsdb:error/xformsdb:description )" />
+				       	</div>
+		        	</xforms:case>
+		        </xforms:switch>
+				<table>
+					<tr>
+						<td><b>Language (lang):</b>&nbsp;</td>
+						<td><xforms:output ref="instance( 'state-instance' )/lang" /></td>
+					</tr>
+					<tr>
+						<td><b>Text size (ts):</b>&nbsp;</td>
+						<td><xforms:output ref="instance( 'state-instance' )/ts" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+						<td>
+							<xforms:trigger>
+								<xforms:label>Retrieve state from XFormsDB</xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:send submission="get-state-request-submission" />
+								</xforms:action>
+							</xforms:trigger>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

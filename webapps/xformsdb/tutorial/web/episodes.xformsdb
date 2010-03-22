@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Miscellaneous - Episodes</title>
+		<!-- Works in Firefox 3 only -->
+		<script type="text/javascript">
+			if ( "undefined" === typeof( window.postMessage ) ) {
+				window.postMessage	= function() {};
+			}
+			window.postMessage( "EPISODES:mark:firstbyte", "*" );
+			window.postMessage( "EPISODES:measure:backend:starttime:firstbyte", "*" );
+
+			function doPageReady() {
+				window.postMessage( "EPISODES:measure:frontend:firstbyte", "*" );
+				window.postMessage( "EPISODES:measure:pageready:starttime", "*" );
+				window.postMessage( "EPISODES:measure:totaltime:starttime", "*" );
+				window.postMessage( "EPISODES:done", "*" );
+			}
+			window.addEventListener( "load", doPageReady, false );
+		</script>
+		<meta name="keywords" content="XFormsDB, Tutorial, Miscellaneous, Episodes" />
+		<meta name="description" content="XFormsDB Tutorial - Miscellaneous - Episodes" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2009, XFormsDB" />
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:mark:tutorial.css", "*" );
+		</script>
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:measure:tutorial.css:tutorial.css", "*" );
+		</script>
+		<xforms:model />
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Miscellaneous - Episodes</h1>
+				<p>Testing <a href="http://stevesouders.com/episodes/">Episodes</a>, a framework for timing web pages.</p> 
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

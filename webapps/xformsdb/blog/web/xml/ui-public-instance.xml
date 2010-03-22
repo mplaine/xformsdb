@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ui [
+<!ENTITY copy   "&#169;"> <!-- copyright sign, U+00A9 ISOnum -->
+<!ENTITY raquo  "&#187;"> <!-- right-pointing double angle quotation mark = right pointing guillemet, U+00BB ISOnum -->
+]>
+<ui xmlns="">
+	<header-link-xformsdb-blog>XFormsDB Blog</header-link-xformsdb-blog>
+	<posts-header-archive-for>Archive for</posts-header-archive-for>
+	<message-error-1>Error (</message-error-1>
+	<message-error-2>):</message-error-2>
+	<posts-message-select-posts-error>Failed to retrieve posts.</posts-message-select-posts-error>
+	<posts-message-select-post-archives-error>Failed to retrieve archives.</posts-message-select-post-archives-error>
+	<post-message-select-post-error>Failed to retrieve post.</post-message-select-post-error>
+	<post-message-select-comments-for-update-error>Failed to retrieve comments.</post-message-select-comments-for-update-error>
+	<posts-content-no-posts>Sorry, no posts matched your criteria.</posts-content-no-posts>
+	<posts-content-anonymous>Anonymous</posts-content-anonymous>
+	<posts-content-separator>//</posts-content-separator>
+	<posts-content-comments-1>Comments (</posts-content-comments-1>
+	<posts-content-comments-2>)</posts-content-comments-2>
+	<post-content-anonymous>Anonymous</post-content-anonymous>
+	<post-content-separator>//</post-content-separator>
+	<post-content-comments-1>Comments (</post-content-comments-1>
+	<post-content-comments-2>)</post-content-comments-2>
+	<post-header-leave-a-comment>Leave a Comment</post-header-leave-a-comment>
+	<post-message-publish-comment-error>Failed to publish comment.</post-message-publish-comment-error>
+	<post-message-publish-comment-success>Comment has been successfully published.</post-message-publish-comment-success>
+	<post-label-name>Name</post-label-name>
+	<post-link-submit>Submit</post-link-submit>
+	<archive-header-archive>ARCHIVE</archive-header-archive>
+	<footer-content-copyright>Copyright &copy; XFormsDB 2007. All rights reserved. |</footer-content-copyright>
+	<footer-link-login-administration>Login &raquo; Administration</footer-link-login-administration>
+</ui>

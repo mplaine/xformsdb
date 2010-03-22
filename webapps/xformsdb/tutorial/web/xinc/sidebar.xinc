@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<div xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:ev="http://www.w3.org/2001/xml-events"
+     xmlns:xforms="http://www.w3.org/2002/xforms"
+     id="sidebar">
+	<h1>Navigation</h1>
+	<h4>Query Data Sources</h4>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Select</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="select.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Select securely</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="selectsecurely.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Update with data synchronization</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="updatewithdatasynchronization.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Update without data synchronization</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="updatewithoutdatasynchronization.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<h4>Error Handling</h4>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Error code and error description</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="errorcodeanderrordescription.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<h4>State Maintenance</h4>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Store state in XFormsDB</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="storestateinxformsdb.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Retrieve state from XFormsDB</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="retrievestatefromxformsdb.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Store state in URL</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="storestateinurl.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Retrieve state from URL</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="retrievestatefromurl.xformsdb?lang=en&amp;ts=m" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<h4>Access Control</h4>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Login</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="login.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Logout</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="logout.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Login / Logout</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="loginlogout.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Role-based view</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="rolebasedview.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Retrieve logged in user from XFormsDB</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="retrieveloggedinuserfromxformsdb.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<h4>Files</h4>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Select all</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="selectallfiles.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Select by roles</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="selectfilesbyroles.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Select by IDs</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="selectfilesbyids.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Select securely</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="selectfilessecurely.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Update</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="updatefiles.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Insert</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="insertfiles.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Delete</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="deletefiles.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<h4>Miscellaneous</h4>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Include</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="include.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Redirect</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="redirect.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Generate hashed password</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="generatehashedpassword.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Generate UUID</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="generateuuid.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Event Observer</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="eventobserver.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Utilities</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="utilities.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Bind</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="xformsbind.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Repeat</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="xformsrepeat.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Support Enter in Forms</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="supportenterinforms.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>HTML Editors</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="htmleditors.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Variable</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="xxformsvariable.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>AVT</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="xxformsavt.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>No JavaScript</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="xxformsnoscript.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Sortable</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="sortable.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Google Maps</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="googlemaps.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Episodes</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="episodes.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>Episodes in all browsers</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="episodesinallbrowsers.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>
+</div>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb">
+	<head>
+		<title>XFormsDB Blog - Login</title>
+		<meta name="keywords" content="XFormsDB, Blog, Login" />
+		<meta name="description" content="XFormsDB Blog - Login" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2007, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/blog.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- User interface texts -->
+			<xforms:instance id="ui-instance">
+<ui xmlns="">
+	<working-label>Working...</working-label>
+	<header-link-xformsdb-blog-login>XFormsDB Blog - Login</header-link-xformsdb-blog-login>
+	<login-header-login>Login</login-header-login>
+	<message-error-1>Error (</message-error-1>
+	<message-error-2>):</message-error-2>
+	<login-message-login-error>Failed to login the user.</login-message-login-error>
+	<login-label-username>Username</login-label-username>
+	<login-label-password>Password</login-label-password>
+	<login-link-submit>Submit</login-link-submit>
+	<footer-content-copyright>Copyright &copy; XFormsDB 2007. All rights reserved. |</footer-content-copyright>
+	<footer-link-public>Public</footer-link-public>
+</ui>
+			</xforms:instance>
+			<!-- User instance -->
+			<xforms:instance id="user-instance">
+				<dummy xmlns="" />
+			</xforms:instance>
+			<!-- Login instance -->
+			<xforms:instance id="login-instance">
+				<login xmlns="">
+					<username />
+					<password />
+				</login>
+			</xforms:instance>
+			<!-- XFormsDB request instances -->
+			<!-- Login request instance -->
+			<xformsdb:instance id="login-request-instance">
+				<xformsdb:login datasrc="exist-realm-data-source" doc="xformsdb_users.xml">
+					<xformsdb:var name="username" />
+					<xformsdb:var name="password" />
+				</xformsdb:login>
+			</xformsdb:instance>
+			<!-- XFormsDB request submissions -->
+			<!-- Login request submission -->
+ 			<xformsdb:submission id="login-request-submission" replace="instance" instance="user-instance" requestinstance="login-request-instance">
+ 				<xforms:action ev:event="xforms-submit">
+					<xforms:toggle case="progress" />
+				</xforms:action>
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:toggle case="login" />
+					<xforms:toggle if="not( exists( instance( 'user-instance' )/@username ) )" case="login-login-empty-message-switcher" />
+					<xforms:load if="exists( instance( 'user-instance' )/@username )" resource="admin/index.xformsdbmobile" show="replace" />
+				</xforms:action>
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="login" />
+					<xforms:toggle case="login-login-error-message-switcher" />
+				</xforms:action>
+			</xformsdb:submission>
+ 			<!-- Initialize the web page -->
+			<xforms:toggle case="login" ev:event="xforms-ready" />
+			<xforms:toggle case="login-default-message-switcher" ev:event="xforms-ready" />
+		</xforms:model>
+	</head>
+	<body>
+			     <xforms:switch id="progress-working-switcher">
+			        	<xforms:case id="progress">
+							<xforms:output ref="instance( 'ui-instance' )/working-label" />
+			        	</xforms:case>
+					<xforms:case id="login">
+				<!-- :::: BEGIN: Content :::: -->
+					<!-- :::: BEGIN: Login :::: -->
+					<xforms:output ref="instance( 'ui-instance' )/login-header-login" />
+
+			        <xforms:input ref="instance( 'login-instance' )/username">
+			        	<xforms:label ref="instance( 'ui-instance' )/login-label-username" />
+			        </xforms:input>
+					<xforms:input ref="instance( 'login-instance' )/password">
+						<xforms:label ref="instance( 'ui-instance' )/login-label-password" />
+					</xforms:input>
+
+			        <!-- :::: BEGIN: Login messages :::: -->
+			        <xforms:switch id="login-message-switcher">
+			        	<xforms:case id="login-default-message-switcher" />
+						<xforms:case id="login-login-empty-message-switcher">
+								<xforms:output value="'Error: Incorrect username/password combination.'" />
+						</xforms:case>
+			        	<xforms:case id="login-login-error-message-switcher">
+					        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'login-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/login-message-login-error )" />
+			        	</xforms:case>
+			        </xforms:switch>
+			        <!-- :::: END: Login messages :::: -->					
+					
+						<xforms:trigger>
+							<xforms:label ref="instance( 'ui-instance' )/login-link-submit" />
+							<xforms:action ev:event="DOMActivate">
+								<xforms:toggle case="login-default-message-switcher" />
+								<!-- Retrieve credentials (copy username plus copy and hash password) from the login (temporary) instance -->
+								<xforms:setvalue ref="instance( 'login-request-instance' )/xformsdb:var[ @name = 'username' ]" value="instance( 'login-instance' )/username" />
+								<xforms:setvalue ref="instance( 'login-request-instance' )/xformsdb:var[ @name = 'password' ]" value="digest( concat( instance( 'login-instance' )/password, 'XXX3bnwNf2rbdfbrHrBVAWygzmaRZ99Npd2HCCQQDxgGYHWwxYKqv7KkX8Aqcdku' ), 'SHA-512', 'hex' )" />
+								<xforms:send submission="login-request-submission" />
+							</xforms:action>
+						</xforms:trigger>
+					</xforms:case>
+				<!-- :::: END: Content :::: -->
+				</xforms:switch>
+				
+	</body>
+</html>

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Blog Lite</title>
+		<meta name="keywords" content="XFormsDB, Blog" />
+		<meta name="description" content="XFormsDB Blog" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2007, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/miniblog.css" media="all" />
+		<xforms:model>
+			<!-- Posts -->
+			<xforms:instance id="posts-instance">
+				<dummy xmlns="" />
+			</xforms:instance>
+			<!-- Archives -->
+    		<xforms:instance id="archives-instance">
+				<dummy xmlns="" />
+			</xforms:instance>
+			<!-- Post -->
+			<xforms:instance id="post-instance">
+				<dummy xmlns="" />
+			</xforms:instance>
+			<!-- Comments -->
+			<xforms:instance id="comments-instance">
+				<dummy xmlns="" />
+			</xforms:instance>
+			<!-- Comment template -->
+			<xforms:instance id="comment-instance">
+<comment xmlns="">
+	<creationtime />
+	<content />
+	<author />
+</comment>
+			</xforms:instance>
+			<!-- User interface texts -->
+			<xforms:instance id="ui-instance" src="xml/ui-public-instance.xml">
+<ui xmlns="">
+	<months>
+		<month>January</month>
+		<month>February</month>
+		<month>March</month>
+		<month>April</month>
+		<month>May</month>
+		<month>June</month>
+		<month>July</month>
+		<month>August</month>
+		<month>September</month>
+		<month>October</month>
+		<month>November</month>
+		<month>December</month>
+	</months>
+	<loading-label>Loading...</loading-label>
+	<uploading-comment-label>Uploading comment...</uploading-comment-label>
+	<view-label>View</view-label>
+	<back-label>Back</back-label>
+	<back-to-blog-label>Back to Blog Posting</back-to-blog-label>
+	<reply-label>Reply</reply-label>
+	<header-link-xformsdb-blog>XFormsDB Blog</header-link-xformsdb-blog>
+	<posts-header-archive-for>Archive for</posts-header-archive-for>
+	<message-error>An error occured. Please try again.</message-error>
+	<message-error-1>Error (</message-error-1>
+	<message-error-2>):</message-error-2>
+	<posts-message-select-posts-error>Failed to retrieve posts.</posts-message-select-posts-error>
+	<posts-message-select-post-archives-error>Failed to retrieve archives.</posts-message-select-post-archives-error>
+	<post-message-select-post-error>Failed to retrieve post.</post-message-select-post-error>
+	<post-message-select-comments-for-update-error>Failed to retrieve comments.</post-message-select-comments-for-update-error>
+	<posts-content-no-posts>Sorry, no posts matched your criteria.</posts-content-no-posts>
+	<posts-content-anonymous>Anonymous</posts-content-anonymous>
+	<posts-content-separator>//</posts-content-separator>
+	<posts-content-comments-1>Comments (</posts-content-comments-1>
+	<posts-content-comments-2>)</posts-content-comments-2>
+	<post-content-anonymous>Anonymous</post-content-anonymous>
+	<post-content-separator>//</post-content-separator>
+	<post-content-comments-1>Comments (</post-content-comments-1>
+	<post-content-comments-2>)</post-content-comments-2>
+	<post-header-leave-a-comment>Leave a Comment</post-header-leave-a-comment>
+	<post-message-publish-comment-error>Failed to publish comment.</post-message-publish-comment-error>
+	<post-message-publish-comment-success>Comment has been successfully published.</post-message-publish-comment-success>
+	<post-label-name>Name</post-label-name>
+	<post-label-comment>Comment</post-label-comment>
+	<post-link-submit>Submit</post-link-submit>
+	<archive-header-archive>ARCHIVE</archive-header-archive>
+	<footer-content-copyright>Copyright &copy; XFormsDB 2007. All rights reserved. |</footer-content-copyright>
+	<footer-link-login-administration>Login &raquo; Administration</footer-link-login-administration>
+</ui>
+			</xforms:instance>
+			
+			 <!-- XFormsDB request instances -->
+			<xformsdb:instance id="select-posts-request-instance">
+				<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+					<xformsdb:expression resource="xq/select_posts.xq" />
+					<xformsdb:var name="date" />
+				</xformsdb:query>
+			</xformsdb:instance>
+			<xformsdb:instance id="select-post-archives-request-instance">
+				<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+					<xformsdb:expression resource="xq/select_post_archives.xq" />
+				</xformsdb:query>
+			</xformsdb:instance>
+			<xformsdb:instance id="select-post-request-instance">
+				<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+					<xformsdb:expression resource="xq/select_post.xq" />
+					<xformsdb:var name="id" />
+				</xformsdb:query>
+			</xformsdb:instance>
+			<xformsdb:instance id="select-and-update-comments-request-instance">
+				<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+					<xformsdb:expression resource="xpath/select_and_update_comments.xpath" />
+					<xformsdb:xmlns prefix="xformsdb" uri="http://www.tml.tkk.fi/2007/xformsdb" />
+					<xformsdb:var name="id" />
+				</xformsdb:query>
+			</xformsdb:instance>
+			<!-- XFormsDB request submissions -->
+ 			<!-- Posts: Select posts -->
+ 			<xformsdb:submission id="posts-select-posts-request-submission" replace="instance" instance="posts-instance" requestinstance="select-posts-request-instance" expressiontype="select">
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:send submission="reset-comment-instance-submission" />
+					<xforms:toggle case="headers-case"/>
+				</xforms:action>
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="error-case" />
+				</xforms:action>
+ 			</xformsdb:submission>
+ 			<!-- Posts: Select post archives -->
+ 			<xformsdb:submission id="posts-select-post-archives-request-submission" replace="instance" instance="archives-instance" requestinstance="select-post-archives-request-instance" expressiontype="select">
+ 				<xforms:action ev:event="xforms-submit-done">
+					<!-- <xforms:toggle case="archives-case" /> -->
+					<xforms:send submission="posts-select-posts-request-submission"  />
+				</xforms:action>
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="error-case" />
+				</xforms:action>
+ 			</xformsdb:submission>
+ 			<!-- Post: Select post -->
+ 			<xformsdb:submission id="post-select-post-request-submission" replace="instance" instance="post-instance" requestinstance="select-post-request-instance" expressiontype="select">
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:send submission="reset-comment-instance-submission" />
+					<xforms:send submission="post-select-comments-for-update-request-submission" />
+				</xforms:action>
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="error-case" />
+				</xforms:action>
+ 			</xformsdb:submission>
+ 			<!-- Post: Select comments for update -->
+ 			<xformsdb:submission id="post-select-comments-for-update-request-submission" replace="instance" instance="comments-instance" requestinstance="select-and-update-comments-request-instance" expressiontype="select">
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:toggle case="post-case" />
+				</xforms:action>
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="error-case" />
+				</xforms:action>
+ 			</xformsdb:submission>
+ 			<!-- Post: Publish comment -->
+ 			<xformsdb:submission id="post-publish-comment-request-submission" replace="instance" instance="comments-instance" requestinstance="select-and-update-comments-request-instance" expressiontype="update">
+ 				<xforms:action ev:event="xforms-submit-done">
+	  				<!--  <xforms:send submission="post-select-post-request-submission" /> -->
+	  				<xforms:toggle case="comments-case"/>
+				</xforms:action>
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="error-case" />
+					<xforms:delete context="instance( 'comments-instance' )" nodeset="comment" at="last()" />
+				</xforms:action>
+ 			</xformsdb:submission>
+ 			<!-- Traditional XForms submissions -->
+ 			<xforms:submission id="reset-comment-instance-submission" replace="instance" instance="comment-instance" ref="instance( 'comment-instance' )" action="xml/comment-instance.xml" method="get" mediatype="application/xml" encoding="UTF-8" />
+ 			<!-- Initialize the web page -->
+ 			<xforms:action ev:event="xforms-ready">
+			  <xforms:send submission="posts-select-post-archives-request-submission" />
+			</xforms:action>
+		</xforms:model>
+	</head>
+	<body>
+					<xforms:trigger>
+						<xforms:label ref="instance( 'ui-instance' )/header-link-xformsdb-blog"/>
+						<xforms:action ev:event="DOMActivate">
+							<xforms:toggle case="archives-case" />
+						</xforms:action>
+					</xforms:trigger>
+
+			<xforms:switch id="main-switcher">
+			  <xforms:case id="loading-case">
+				<xforms:output ref="instance( 'ui-instance' )/loading-label"/>
+			  </xforms:case>
+			  <xforms:case id="uploading-case">
+			  	<xforms:output ref="instance( 'ui-instance' )/uploading-comment-label"/>
+			  </xforms:case>
+				<xforms:case id="archives-case">
+						<xforms:output ref="instance( 'ui-instance' )/archive-header-archive" />
+						<hr/>
+						<xforms:repeat nodeset="instance( 'archives-instance' )/archive" id="archives-archive-repeat">
+								<xforms:trigger>
+									<xforms:label value="concat(month-name(.,instance('ui-instance')/months/month),' ',substring(.,1,4))" />
+									<xforms:action ev:event="DOMActivate">
+										<xforms:toggle case="loading-case" />
+										<xforms:setvalue ref="instance( 'select-posts-request-instance' )/xformsdb:var[ @name = 'date' ]" value="instance( 'archives-instance' )/archive[ index( 'archives-archive-repeat' ) ]" />
+										<xforms:send submission="posts-select-posts-request-submission" />
+									</xforms:action>
+								</xforms:trigger>
+						</xforms:repeat>
+				</xforms:case>
+				<xforms:case id="headers-case">
+						<hr/>
+						<xforms:repeat nodeset="instance( 'posts-instance' )/post" id="headers-repeat">
+									<xforms:output ref="headline">
+										<xforms:label value="concat(if( normalize-space( ../author ) = '',instance( 'ui-instance' )/post-content-anonymous,string( ../author )),' // ',../creationtime)"/>
+									</xforms:output>
+									<xforms:trigger>
+										<xforms:label>View</xforms:label>
+										<xforms:action ev:event="DOMActivate">
+											<!-- <xforms:toggle case="folders-case" /> -->
+											<xforms:toggle case="loading-case" />
+											<xforms:setvalue ref="instance( 'select-and-update-comments-request-instance' )/xformsdb:var[ @name = 'id' ]" value="instance( 'posts-instance' )/post[ index( 'headers-repeat' ) ]/@id" />
+											<xforms:setvalue ref="instance( 'select-post-request-instance' )/xformsdb:var[ @name = 'id' ]" value="instance( 'posts-instance' )/post[ index( 'headers-repeat' ) ]/@id" />
+	 										<xforms:send submission="post-select-post-request-submission" />
+											<!--  <xforms:toggle case="comments-case" /> -->
+										</xforms:action>
+									</xforms:trigger>
+								<!--
+								<xforms:output value="concat( ' ', instance( 'ui-instance' )/post-content-separator, ' ' )" />
+								<xforms:output ref="creationtime" xxforms:format="format-date( xs:date( . ), '[MNn] [D], [Y]', 'en', (), () )" />
+								-->
+								<hr/>
+						</xforms:repeat>
+						
+						<xforms:group ref="instance( 'posts-instance' )[not(exists(./post))]">
+							<xforms:output ref="instance( 'ui-instance' )/posts-content-no-posts"/>
+						</xforms:group>
+				</xforms:case>
+				<xforms:case id="post-case">
+							
+							<xforms:output value="instance('post-instance')/headline"/>
+							<hr/>
+							<xforms:output value="instance('post-instance')/content">
+								<xforms:label value="concat(if(normalize-space( instance('post-instance')/author ) = '',instance( 'ui-instance' )/post-content-anonymous,string( instance('post-instance')/author )), ' // ', instance('post-instance')/creationtime)"/>
+							</xforms:output>
+							<xforms:trigger>
+								<xforms:label value="concat('View Comments ( ', instance('post-instance')/comments, ' )')" />
+								<xforms:action ev:event="DOMActivate">
+									<xforms:toggle case="comments-case" />
+								</xforms:action>
+							</xforms:trigger>
+							<xforms:trigger>
+								<xforms:label ref="instance( 'ui-instance' )/post-header-leave-a-comment"/>
+								<xforms:action ev:event="DOMActivate">
+										<xforms:setvalue ref="instance( 'comment-instance' )/author" value=""/>
+										<xforms:setvalue ref="instance( 'comment-instance' )/content" value=""/>
+									<xforms:toggle case="post-comment-case" />
+								</xforms:action>
+							</xforms:trigger>
+							<xforms:trigger>
+								<xforms:label ref="instance( 'ui-instance' )/back-label"/>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:toggle case="headers-case" />
+								</xforms:action>
+							</xforms:trigger>
+				</xforms:case>
+				<xforms:case id="comments-case">
+							<xforms:output value="concat('Comments for ', instance( 'post-instance' )/headline)" />
+
+							<xforms:repeat nodeset="instance( 'comments-instance' )/comment" id="comments-repeat">
+								<hr>
+									<xforms:label value="concat(position(),'/',count(instance( 'comments-instance' )/comment))"/>
+								</hr>
+								<xforms:output ref="content">
+									<xforms:label value="concat(if(normalize-space( ../author ) = '',instance( 'ui-instance' )/post-content-anonymous,string( ../author )), ' // ', ../creationtime)" />
+								</xforms:output>
+								<xforms:trigger>
+									<xforms:label ref="instance( 'ui-instance' )/reply-label"/>
+									<xforms:action ev:event="DOMActivate">
+										<xforms:toggle case="post-comment-case" />
+										<xforms:setvalue ref="instance( 'comment-instance' )/author" value=""/>
+										<xforms:setvalue ref="instance( 'comment-instance' )/content" value="concat('@',instance( 'comments-instance' )/comment[index('comments-repeat')]/author,': ')"/>
+									</xforms:action>
+								</xforms:trigger>
+							</xforms:repeat>
+							<hr/>
+							<xforms:trigger>
+								<xforms:label ref="instance( 'ui-instance' )/back-label"/>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:toggle case="post-case" />
+								</xforms:action>
+							</xforms:trigger>
+				</xforms:case>
+				<xforms:case id="post-comment-case">
+							<xforms:output ref="instance( 'ui-instance' )/post-header-leave-a-comment"/>
+							<hr/>
+							<xforms:group ref="instance( 'comment-instance' )">
+								<xforms:input ref="author">
+									<xforms:label ref="instance( 'ui-instance' )/post-label-name"/>
+								</xforms:input>
+								<xforms:input ref="content">
+									<xforms:label ref="instance( 'ui-instance' )/post-label-comment"/>
+								</xforms:input>
+									<xforms:trigger appearance="full">
+										<xforms:label ref="instance( 'ui-instance' )/post-link-submit" />
+										<xforms:action ev:event="DOMActivate">
+											<xforms:toggle case="uploading-case"/>
+ 											<xforms:setvalue ref="instance( 'comment-instance' )/@id" value="digest( string( random( true ) ), 'MD5', 'hex' )" />
+ 											<xforms:setvalue ref="instance( 'comment-instance' )/creationtime" value="substring( string( now() ), 1, 10 )" />
+ 											<xforms:setvalue ref="instance('post-instance')/comments" value="instance('post-instance')/comments + 1"/>
+											<xforms:insert origin="instance( 'comment-instance' )" nodeset="*" context="instance( 'comments-instance' )" />
+											<xforms:send submission="post-publish-comment-request-submission" />
+										</xforms:action>
+									</xforms:trigger>
+								<xforms:trigger>
+									<xforms:label ref="instance( 'ui-instance' )/back-to-blog-label"/>
+									<xforms:action ev:event="DOMActivate">
+										<xforms:toggle case="post-case" />
+									</xforms:action>
+								</xforms:trigger>	
+							</xforms:group>
+
+				</xforms:case>
+				<xforms:case id="error-case">
+					<hr/>
+				    <xforms:output ref="instance( 'ui-instance' )/message-error"/>
+				</xforms:case>
+			</xforms:switch>
+	</body>
+</html>

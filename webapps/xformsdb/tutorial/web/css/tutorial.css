@@ -1,0 +1,100 @@
+@charset "UTF-8";
+
+
+/* -------------- IMPORTED STYLE SHEETS -------- */
+@import url( "xforms_of.css" );
+
+
+/* -------------- COMMON ----------------------- */
+h1 {
+	margin-top: 0;
+}
+h4 {
+	margin-bottom: 0;
+}
+a,
+a:active,
+a:focus,
+a:hover,
+a:visited {
+	color: #0000FF;
+}
+
+
+/* -------------- CONTAINER -------------------- */
+#container {
+	margin: 20px;
+	width: auto;
+	min-width: 960px;
+	/* min-width: 760px; */
+	/* max-width: 960px; */
+}
+
+
+/* -------------- HEADER ----------------------- */
+#header {
+	display: none;
+}
+
+
+/* -------------- SIDEBAR ---------------------- */
+#sidebar {
+	border-right: 1px dotted #000000;
+	float: left;
+	margin-right: 20px;
+	width: 260;
+}
+
+
+/* -------------- CONTENT ---------------------- */
+#content {
+	margin: 0 0 0 280px;
+	width: auto;
+}
+#content td {
+	vertical-align: top;
+}
+
+
+/* -------------- MESSAGES --------------------- */
+#content div.message-success {
+	align: left;
+	background-color: #66CC66;
+	background-image: url( "icon/check_32x32.png" );
+	background-position: 5px 5px;
+	background-repeat: no-repeat;
+	border: 2px solid #009900;
+	color: #FFFFFF;
+	font-weight: bold;
+	padding: 12px 12px 12px 50px;
+	margin-bottom: 13px;
+	min-height: 20px;
+	text-align: left;
+}
+#content div.message-error {
+	align: left;
+	background-color: #FF6666;
+	background-image: url( "icon/forbidden_32x32.png" );
+	background-position: 5px 5px;
+	background-repeat: no-repeat;
+	border: 2px solid #CC0000;
+	color: #FFFFFF;
+	font-weight: bold;
+	padding: 12px 12px 12px 50px;
+	margin-bottom: 13px;
+	min-height: 20px;
+	text-align: left;
+}
+#content tr.even-tr {
+	background-color: #CCCCCC;	
+}
+#content tr.odd-tr {
+	background-color: #FFFFFF;	
+}
+
+
+/* -------------- FOOTER ----------------------- */
+#footer {
+	clear: both;
+	padding-top: 20px;
+}

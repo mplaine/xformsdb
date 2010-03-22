@@ -1,0 +1,79 @@
+@charset "UTF-8";
+
+
+/* -------------- XFORMS OF ---------------- */
+
+
+.xforms-trigger-appearance-minimal {
+	color: #699215;
+	text-decoration: none;
+}
+.xforms-trigger-appearance-minimal:hover {
+	color: #699215;
+	text-decoration: underline;
+}
+#header .xforms-trigger-appearance-minimal {
+	color: #999999;
+}
+#header .xforms-trigger-appearance-minimal:hover {
+	color: #999999;
+}
+#content .xforms-repeat-selected-item-1 {
+	background: none;
+	border-width: 0px;
+}
+#content .xforms-trigger-appearance-full {
+	color: #699215;
+}
+#content .xforms-trigger-appearance-full:hover {
+	color: #699215;
+}
+#sidebar .xforms-repeat-selected-item-1 {
+	background-color: #F0F0F0;
+	border-width: 0px;
+}
+#content .xforms-input-input {
+	color: #666666;
+	font-size: 11px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	padding: 2px 2px 2px 2px;
+	width: 200px;
+}
+#content .xforms-secret {
+	color: #666666;
+	font-size: 11px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	padding: 2px 2px 2px 2px;
+	width: 200px;
+}
+#content .xforms-textarea {
+	color: #666666;
+	display: block;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	height: 100px;
+	padding: 2px 2px 2px 2px;
+	width: 436px;
+}
+#content table .xforms-textarea {
+	width: 351px;
+}
+#content .xforms-select1 {
+	color: #666666;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	height: 18px;
+	margin: 1px 0px 0px 0px;
+}

@@ -1,0 +1,172 @@
+®@charset "UTF-8";
+
+
+/* ============== XHTML ==================== */
+/* -------------- COMMON ------------------- */
+/* Force vertical scrollbars in Netscape, Firefox, and Safari browsers */
+html {
+	height: 100%;
+ 	margin-bottom: 1px;
+}
+/* Reset font size for all elements to standard (16 Pixel) */
+html * {
+	font-size: 100.01%;
+}
+/* Set default values */
+body {
+	background: #FFFFFF;
+	color: #000000;
+	text-align: left;
+}
+/* Fix rounding errors when scaling font sizes in older versions of Opera browser */
+body {
+	font-size: 100.01%;
+}
+
+/* Set font properties */
+body {
+	color: #333333;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 75.00%; /* 12px */
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;	
+}
+/* Set background pattern */
+body {
+	background-image: none;
+	background-repeat: no-repeat;
+	height: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+	color: #333333;
+}
+h1 {
+	font-size: 116.67%; /* 14px */
+}
+
+/* -------------- PAGE --------------------- */
+/** Layout options
+ *  --------------
+ *  Right aligned:
+ *  margin: 0 0 0 auto;
+ *
+ *  Center aligned:
+ *  margin: 0 auto;
+ */
+.page-margins {
+	margin: 0 auto;
+	min-width: 320px; /* Minimum width */
+	width: 100%;
+}
+.page {
+	background-color: #FFFFFF;
+	padding: 10px;
+	text-align: center;
+}
+
+/* -------------- HEADER ------------------- */
+.header {
+	padding-bottom: 20px;
+}
+
+/* -------------- MAIN --------------------- */
+.current-conditions-section {
+}
+.forecast-conditions-section {
+}
+.search-section {
+}
+.settings-section {
+	padding: 20px 4px 0px 4px;
+	text-align: right;
+}
+.message {
+	align: left;
+	background-position: 5px 5px;
+	background-repeat: no-repeat;
+	color: #FFFFFF;
+	font-weight: bold;
+	padding: 12px 12px 12px 50px;
+	margin-bottom: 20px;
+	margin-top: 0px;
+	min-height: 20px;
+	text-align: left;
+}
+.message-error {
+	background-color: #FF6666;
+	background-image: url( "../../resource/index/forbidden_32x32.png" );
+	border: 2px solid #CC0000;
+}
+
+img {
+	border: 1px solid #999999;
+	margin-left: 10px;
+	margin-right: 10px;
+	padding: 2px;
+}
+.temperature {
+	font-size: 116.67%;
+	font-weight: bold;
+}
+.current-conditions {
+	margin: 0 auto;
+	text-align: left;
+}
+.current-conditions-icon {
+	text-align: right;
+	vertical-align: top;
+}
+.current-conditions-info {
+	text-align: left;
+	vertical-align: top;
+}
+.forecast-conditions {
+	margin: 0 auto;
+	text-align: center;
+}
+.forecast-conditions-info {
+	padding: 20px 0px 0px 0px;
+	vertical-align: top;
+}
+.settings {
+	margin: 0 auto;
+	text-align: left;
+}
+.settings-label {
+	padding: 2px 0px 2px 0px; 
+	text-align: right;
+	vertical-align: middle;
+}
+.settings-input {
+	padding: 2px 0px 2px 4px; 
+	text-align: left;
+	vertical-align: top;
+}
+
+
+/* ============== XFORMS =================== */
+/* -------------- MAIN --------------------- */
+.xforms-label {
+	font-weight: bold;
+	margin-right: 4px;
+}
+.xforms-input input {
+	padding-left: 4px;
+	padding-right: 4px;
+}
+.xforms-trigger-appearance-full {
+	margin-left: -20px;
+}
+.xforms-trigger-appearance-minimal {
+	color: #0066FF;
+	text-decoration: underline;
+}
+.xforms-trigger-appearance-minimal:hover {
+	color: #0066FF;
+	text-decoration: none;
+}
+.xforms-repeat-selected-item-1 {
+	background: none;
+	border-width: 0px;
+}

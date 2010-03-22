@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+
+/* -------------- XFORMS OF ---------------- */
+.xforms-input input {
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+}
+.xforms-secret {
+    background-color: #FFFFFF;
+    border: 1px solid #000000;
+}
+.xforms-repeat-selected-item-1 {
+	background: none;
+	border-width: 0px;
+}
+.xforms-trigger-appearance-xxforms-minimal {
+	color: #0000FF;
+	cursor: pointer;
+	display: block;
+	font-size: 100%;
+	margin: 0;
+	padding: 0;
+	text-decoration: underline;
+}
+.xforms-trigger.navigation {
+	display: block;
+}
+.xforms-select.checkboxlist span {
+	display: block;
+}
+.xforms-trigger.xforms-readonly {
+	color: #CCCCCC;
+	text-decoration: none;
+}
+.xforms-invalid input {
+    background-color: #FFCCCC;
+    border: 1px solid #FF9999;
+}
+.xforms-required-empty input {
+    background-color: #FFCCCC;
+    border: 1px solid #FF9999;
+}

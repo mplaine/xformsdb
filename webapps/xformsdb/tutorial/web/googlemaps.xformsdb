@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Miscellaneous - Google Maps</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, Miscellaneous, Google, Maps" />
+		<meta name="description" content="XFormsDB Tutorial - Miscellaneous - Google Maps" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2009, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<!-- Note: Generate your own API key at http://code.google.com/apis/maps/signup.html and replace the key attribute with the generated value -->
+		<!-- The one used here is linked to http://testbed.tml.hut.fi -->
+		<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAj0d0dmagBdRDHbEqrtAGDBSDH43eU6DiA_gIA1kllRf2L55g8BSXGXSqjoIG0GCBpIq7Nq1TR98TrA" type="text/javascript"></script>
+		<script type="text/javascript">
+				var map				= null;
+				var geocoder		= null;
+				var marker			= null;
+			
+				function initialize() {
+					if ( GBrowserIsCompatible() ) {
+						map			= new GMap2( document.getElementById( "map_canvas" ) );
+						map.setUIToDefault();
+						geocoder	= new GClientGeocoder();
+						showAddress( ORBEON.xforms.Document.getValue( "address-input-field" ) );
+					}
+				}
+				
+				function showAddress( address ) {
+					geocoder.getLatLng( address, function( point ) {
+						if ( !point ) {
+							alert( address + " not found" );
+						}
+						else {
+							map.clearOverlays();
+							map.setCenter( point, 14 );
+							marker	= new GMarker( point );
+							map.addOverlay( marker );
+							//marker.openInfoWindowHtml( address );
+						}
+					});
+				}
+		</script>
+		<style type="text/css">
+			.xforms-input input {
+				width: 450px;
+			}
+		</style>
+		<xforms:model>
+			<!-- Instances -->
+			<!-- Address instance -->
+			<xforms:instance id="address-instance">
+				<address xmlns="">Konemiehentie 2, Espoo, Finland</address>
+			</xforms:instance>
+		</xforms:model>
+	</head>
+	<body onload="initialize()" onunload="GUnload()">
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Miscellaneous - Google Maps</h1>
+		       	<xforms:switch id="message-switcher">
+		        	<xforms:case id="default-message-switcher" />
+		        </xforms:switch>
+		        <table>
+					<tr>
+						<td><b>Note:</b> You have to use your own API key in order to run this example. See the source code for more details.</td>
+					</tr>
+					<tr>
+						<td>
+							<xforms:input id="address-input-field" ref="instance( 'address-instance' )" />
+							<xforms:trigger>
+								<xforms:label>Go!</xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xxforms:script>
+										showAddress( ORBEON.xforms.Document.getValue( "address-input-field" ) );
+									</xxforms:script>
+								</xforms:action>
+					        </xforms:trigger>
+						</td>
+					</tr>
+					<tr>
+						<td><div id="map_canvas" style="width: 500px; height: 300px" /></td>
+					</tr>
+				</table>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

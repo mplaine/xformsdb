@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Files - Insert</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, Files, Insert" />
+		<meta name="description" content="XFormsDB Tutorial - Files - Insert" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2008, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- Roles instance -->
+			<xforms:instance id="roles-instance">
+				<roles xmlns="">
+					<role>user</role>
+					<role>admin</role>
+				</roles>
+			</xforms:instance>
+			<!-- File instance -->
+			<xforms:instance id="file-instance">
+				<xformsdb:file displayname="" filename="" mediatype="" filesize="" roles="" comment="" creator="" />
+			</xforms:instance>
+			<!-- Insert files instance -->
+			<xforms:instance id="insert-files-instance">
+				<xformsdb:insert />
+			</xforms:instance>
+			<!-- XFormsDB request instances -->
+			<!-- Select/Update/Insert/Delete files request instance -->
+			<xformsdb:instance id="suid-files-request-instance">
+				<xformsdb:file />
+			</xformsdb:instance>
+			<!-- Insert files request submission -->
+			<xformsdb:submission id="insert-files-request-submission" replace="instance" instance="insert-files-instance" requestinstance="suid-files-request-instance" filetype="insert">
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="error-message-switcher" />
+				</xforms:action>
+ 				<xforms:action ev:event="xforms-submit-done">
+ 					<!-- Delete files which have been successfully inserted to XFormsDB i.e. reset the UI -->
+ 					<xforms:action while="count( instance( 'insert-files-instance' )/* ) &gt; 0">
+						<xforms:delete nodeset="instance( 'insert-files-instance' )/*" at="last()" />
+					</xforms:action>
+					<!-- Initialize the Web page -->
+					<xforms:insert origin="instance( 'file-instance' )" nodeset="*" context="instance( 'insert-files-instance' )" />
+					<xforms:toggle case="success-message-switcher" />
+				</xforms:action>
+			</xformsdb:submission>
+			<!-- Initialize the Web page -->
+			<xforms:insert origin="instance( 'file-instance' )" nodeset="*" context="instance( 'insert-files-instance' )" ev:event="xforms-ready" />
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Files - Insert</h1>
+		       	<xforms:switch id="message-switcher">
+		        	<xforms:case id="default-message-switcher" />
+		        	<xforms:case id="success-message-switcher">
+				        <div class="message-success">
+				        	<xforms:output value="'Files have been successfully uploaded to XFormsDB.'" />
+				        </div>
+		        	</xforms:case>
+		        	<xforms:case id="error-message-switcher">
+				        <div class="message-error">
+				   	    	<xforms:output value="concat( 'Error (', ' ', instance( 'suid-files-request-instance' )/xformsdb:error/xformsdb:code, ' ): ', instance( 'suid-files-request-instance' )/xformsdb:error/xformsdb:description )" />
+				       	</div>
+		        	</xforms:case>
+		        </xforms:switch>
+  				<table>
+  					<xforms:repeat nodeset="instance( 'insert-files-instance' )/xformsdb:file" id="insert-files-file-repeat">
+						<tr>
+							<td><b>Display name:</b>&nbsp;</td>
+							<td>
+								<xforms:input ref="@displayname" />
+								<xforms:trigger appearance="minimal">
+									<xforms:label><img src="css/icon/forbidden_16x16.png" height="16" width="16" vspace="0" hspace="0" border="0" alt="" /></xforms:label>
+									<xforms:action ev:event="DOMActivate">
+										<xforms:delete nodeset="instance( 'insert-files-instance' )/xformsdb:file[ index( 'insert-files-file-repeat' ) ]" at="last()"/>
+									</xforms:action>
+								</xforms:trigger>
+								<xforms:trigger appearance="minimal">
+									<xforms:label>Remove file</xforms:label>
+									<xforms:action ev:event="DOMActivate">
+										<xforms:delete nodeset="instance( 'insert-files-instance' )/xformsdb:file[ index( 'insert-files-file-repeat' ) ]" at="last()"/>
+									</xforms:action>
+								</xforms:trigger>								
+							</td>
+						</tr>
+						<tr>
+							<td><b>File:</b>&nbsp;</td>
+							<td><xforms:upload ref="."><xforms:filename ref="@filename" /><xforms:mediatype ref="@mediatype" /><xxforms:size ref="@filesize" /></xforms:upload></td>
+						</tr>
+						<tr>
+							<td><b>Roles:</b>&nbsp;</td>
+							<td>
+								<xforms:select ref="@roles" appearance="full">
+									<xforms:itemset nodeset="instance( 'roles-instance' )/role">
+										<xforms:label ref="." />
+										<xforms:value ref="." />
+									</xforms:itemset>
+								</xforms:select>
+							</td>
+						</tr>
+						<tr>
+							<td><b>Comment:</b>&nbsp;</td>
+							<td><xforms:input ref="@comment" /></td>
+						</tr>
+						<tr>
+							<td><b>Creator:</b>&nbsp;</td>
+							<td><xforms:input ref="@creator" /></td>
+						</tr>
+						<tr style="line-height: 10px;">
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+					</xforms:repeat>
+					<tr>
+						<td>&nbsp;</td>
+						<td>
+							<xforms:trigger appearance="minimal">
+								<xforms:label><img src="css/icon/add_16x16.png" height="16" width="16" vspace="0" hspace="0" border="0" alt="" /></xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:insert origin="instance( 'file-instance' )" nodeset="*" context="instance( 'insert-files-instance' )" />
+								</xforms:action>
+							</xforms:trigger>
+							<xforms:trigger appearance="minimal">
+								<xforms:label>Add file</xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:insert origin="instance( 'file-instance' )" nodeset="*" context="instance( 'insert-files-instance' )" />
+								</xforms:action>
+							</xforms:trigger>
+						</td>
+					</tr>
+					<tr style="line-height: 5px;">
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td width="100">&nbsp;</td>
+						<td>
+							<xforms:trigger style="margin-right: 52px;">
+								<xforms:label>Upload files</xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:send submission="insert-files-request-submission" />
+								</xforms:action>
+							</xforms:trigger>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

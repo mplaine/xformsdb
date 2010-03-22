@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<xformsdb:users xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb">
+		<xformsdb:user username="admin" password="d7aeb8d1b9782b20c37275f701c340cff5513b72fed7d8eec46f780ada79f1daddb8b885b88c9d7544fd2f31e0f6972f733e514669b69c19c08344bfebab6ea1" roles="admin" />
+	</xformsdb:users>
+</root>

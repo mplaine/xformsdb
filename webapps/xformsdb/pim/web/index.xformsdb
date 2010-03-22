@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>Personal Information Management (PIM): Contacts</title>
+		<script type="text/javascript">
+			var timestamp_firstbyte	= Number( new Date() );
+		</script>
+		<script id="episodesscript" type="text/javascript" src="js/episodes.js"></script>
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:mark:episodes.js", "*" );
+			window.postMessage( "EPISODES:mark:firstbyte:" + timestamp_firstbyte, "*" );
+			window.postMessage( "EPISODES:measure:episode.js:firstbyte:episodes.js", "*" );
+			window.postMessage( "EPISODES:measure:backend:starttime:firstbyte", "*" );
+
+			function doPageReady() {
+				window.postMessage( "EPISODES:measure:frontend:firstbyte", "*" );			
+				window.postMessage( "EPISODES:measure:pageready:starttime", "*" );			
+				window.postMessage( "EPISODES:measure:totaltime:starttime", "*" );			
+				window.postMessage( "EPISODES:done", "*" );			
+			}
+			function doUpdatePIMDone() {
+				window.postMessage( "EPISODES:measure:updatepim:updatepim", "*" );
+				window.postMessage( "EPISODES:done", "*" );			
+			}
+			function handleEpisodeResults( event ) {
+				if ( "EPISODES:done" === event.data ) {
+					var beaconUrl	= EPISODES.sendBeacon( "gfx/beacon.gif" );
+			
+					// write the beacon URL in the doc
+					if ( beaconUrl ) {
+						//document.getElementById( "episodesresults" ).innerHTML = "<code>" + beaconUrl + "</code>";
+					}
+				}
+			}
+			EPISODES.addEventListener( "load", doPageReady, false );
+			EPISODES.addEventListener( "message", handleEpisodeResults, false );			
+		</script>
+		<meta name="keywords" content="Personal, Information, Management, PIM, Contacts" />
+		<meta name="description" content="Personal Information Managemenet (PIM): Contacts" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2007, XFormsDB" />
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:mark:pim.css", "*" );
+		</script>
+		<link rel="stylesheet" type="text/css" href="css/pim.css" media="all" />
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:measure:pim.css:pim.css", "*" );
+		</script>
+		<!-- Define external events used by Orbeon Forms -->
+		<xforms:model xxforms:external-events="orbeon-forms-xforms-submit">
+			<!-- Personal Information Management (PIM) -->
+			<xforms:instance id="pim-instance">
+				<dummy xmlns="" />
+			</xforms:instance>
+			<!-- Contact template -->
+            <xforms:instance id="contact-instance" src="xml/contact-instance.xml" />
+            <!-- View template -->
+            <xforms:instance id="view-instance" src="xml/view-instance.xml" />
+			<!-- List of PIM Contacts' entries in view mode -->
+			<xforms:instance id="viewlist-instance">
+				<viewlist xmlns="" />
+			</xforms:instance>
+            <!-- Edit template -->
+            <xforms:instance id="edit-instance" src="xml/edit-instance.xml" />
+			<!-- List of PIM Contacts' entries in edit mode -->
+			<xforms:instance id="editlist-instance">
+				<editlist xmlns="" />
+			</xforms:instance>
+            <!-- Delete template -->
+            <xforms:instance id="delete-instance" src="xml/delete-instance.xml" />
+			<!-- List of PIM Contacts' entries in delete mode -->
+			<xforms:instance id="deletelist-instance">
+				<deletelist xmlns="" />
+			</xforms:instance>
+			<!-- Language -->
+            <xforms:instance id="language-instance">
+            	<language xmlns="" type="fi" />
+            </xforms:instance>
+			<!-- Utility variables -->
+            <xforms:instance id="util-instance">
+            	<util xmlns="">
+            		<language>en</language>
+            		<contactorder>ascending</contactorder>
+            		<counter>0</counter>
+            	</util>
+            </xforms:instance>
+            <!-- User Interface texts -->
+            <xforms:instance id="ui-instance" src="xml/ui-instance.xml" />
+			<!-- XFormsDB request instances -->
+			<xformsdb:instance id="select-and-update-pim-request-instance">
+				<xformsdb:query datasrc="exist-data-data-source" doc="pim.xml">
+					<xformsdb:expression resource="xpath/select_and_update_pim.xpath" />
+				</xformsdb:query>
+			</xformsdb:instance>
+			<!-- XFormsDB request submissions -->
+			<!-- Select PIM -->
+ 			<xformsdb:submission id="select-pim-request-submission" replace="instance" instance="pim-instance" requestinstance="select-and-update-pim-request-instance" expressiontype="select">
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:toggle case="default-message-switcher" />
+				</xforms:action>
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="select-error-message-switcher" />
+				</xforms:action>
+ 			</xformsdb:submission>
+ 			<!-- Update PIM -->
+ 			<xformsdb:submission id="update-pim-request-submission" replace="instance" instance="pim-instance" requestinstance="select-and-update-pim-request-instance" expressiontype="update">
+				<xforms:action ev:event="orbeon-forms-xforms-submit">
+					<xforms:send submission="update-pim-request-submission" />
+				</xforms:action>
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:toggle case="default-save-contacts-switcher" />
+					<xforms:toggle case="update-success-message-switcher" />
+					<xxforms:script>
+						doUpdatePIMDone();
+					</xxforms:script>
+				</xforms:action>
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="default-save-contacts-switcher" />
+					<xforms:toggle case="update-error-message-switcher" />
+					<xxforms:script>
+						doUpdatePIMDone();
+					</xxforms:script>
+				</xforms:action>
+ 			</xformsdb:submission>
+			<!-- Initialize the web page -->
+			<xforms:toggle case="default-message-switcher" ev:event="xforms-ready" />
+			<xforms:send submission="select-pim-request-submission" ev:event="xforms-ready" />
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+	        <!-- :::: BEGIN: Language Menu :::: -->
+	       	<div id="language-menu">
+	       		<!-- In Finnish -->
+	       		<!-- Selected -->
+	       		<xforms:group ref=".[ 'fi' = instance( 'util-instance' )/language ]">
+		       		<xforms:output class="disabled" value="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/link-language-fi" />
+		       	</xforms:group>
+	       		<!-- Not selected -->
+	       		<xforms:group ref=".[ 'fi' != instance( 'util-instance' )/language ]">
+					<xforms:trigger appearance="minimal">
+						<xforms:label><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/link-language-fi" /></xforms:label>
+						<xforms:action ev:event="DOMActivate">
+							<xforms:setvalue ref="instance( 'util-instance' )/language" value="'fi'" />
+						</xforms:action>
+					</xforms:trigger>
+		       	</xforms:group>
+	       		 |
+	       		<!-- In Swedish -->
+	       		<!-- Selected -->
+	       		<xforms:group ref=".[ 'se' = instance( 'util-instance' )/language ]">
+		       		<xforms:output class="disabled" value="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/link-language-se" />
+		       	</xforms:group>
+	       		<!-- Not selected -->
+	       		<xforms:group ref=".[ 'se' != instance( 'util-instance' )/language ]">
+					<xforms:trigger appearance="minimal">
+						<xforms:label><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/link-language-se" /></xforms:label>
+						<xforms:action ev:event="DOMActivate">
+							<xforms:setvalue ref="instance( 'util-instance' )/language" value="'se'" />
+						</xforms:action>
+					</xforms:trigger>
+				</xforms:group>
+	       		 |
+	       		<!-- In English -->
+	       		<!-- Selected -->
+	       		<xforms:group ref=".[ 'en' = instance( 'util-instance' )/language ]">
+		       		<xforms:output class="disabled" value="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/link-language-en" />
+		       	</xforms:group>
+	       		<!-- Not selected -->
+	       		<xforms:group ref=".[ 'en' != instance( 'util-instance' )/language ]">
+					<xforms:trigger appearance="minimal">
+						<xforms:label><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/link-language-en" /></xforms:label>
+						<xforms:action ev:event="DOMActivate">
+							<xforms:setvalue ref="instance( 'util-instance' )/language" value="'en'" />
+						</xforms:action>
+					</xforms:trigger>
+				</xforms:group>
+			</div>
+	        <!-- :::: END: Language Menu :::: -->
+	        <h1><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/header-pim" /></h1>
+	        <!-- :::: BEGIN: Messages :::: -->
+	        <xforms:switch id="message-switcher">
+	        	<xforms:case id="default-message-switcher" />
+	        	<xforms:case id="select-error-message-switcher">
+			        <div class="message-error">
+			        	<xforms:output value="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/message-error-1" />
+			        	<xforms:output value="instance( 'select-and-update-pim-request-instance' )/xformsdb:error/xformsdb:code" />
+			        	<xforms:output value="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/message-error-2" />
+			        	<xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/message-select-error" />
+			        </div>
+	        	</xforms:case>
+	        	<xforms:case id="update-success-message-switcher">
+			        <div class="message-success">
+			        	<xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/message-update-success" />
+			        </div>
+	        	</xforms:case>
+	        	<xforms:case id="update-error-message-switcher">
+			        <div class="message-error">
+			        	<xforms:output value="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/message-error-1" />
+			        	<xforms:output value="instance( 'select-and-update-pim-request-instance' )/xformsdb:error/xformsdb:code" />
+			        	<xforms:output value="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/message-error-2" />
+			        	<xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/message-update-error" />
+			        </div>
+	        	</xforms:case>
+	        </xforms:switch>
+	        <!-- :::: END: Messages :::: -->
+	        <!-- :::: BEGIN: Action Menu :::: -->
+	       	<div id="action-menu">
+				<xforms:trigger appearance="minimal">
+					<xforms:label><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/link-action-add-contact" /></xforms:label>
+					<xforms:action ev:event="DOMActivate">
+						<xforms:toggle case="default-message-switcher" />
+						<xforms:insert origin="instance( 'contact-instance' )" nodeset="*" at="last()" context="instance( 'pim-instance' )/contacts" />
+						<xforms:setvalue ref="instance( 'pim-instance' )/contacts/contact[ last() ]/@id" value="digest( string( random( true ) ), 'MD5', 'hex' )" />
+						<xforms:insert origin="instance( 'edit-instance' )" nodeset="*" at="last()" context="instance( 'editlist-instance' )" />
+						<xforms:setvalue ref="instance( 'editlist-instance' )/edit[ last() ]" value="instance( 'pim-instance' )/contacts/contact[ last() ]/@id" />
+					</xforms:action>
+				</xforms:trigger>
+				 | 
+		        <!-- :::: BEGIN: Action Menu - Save contacts :::: -->
+		        <xforms:switch id="save-contacts-switcher">
+		        	<xforms:case id="default-save-contacts-switcher">
+						<xforms:trigger appearance="minimal">
+							<xforms:label><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/link-action-save-contacts" /></xforms:label>
+							<xforms:action ev:event="DOMActivate">
+								<xforms:toggle case="default-message-switcher" />
+								<!-- Change UI before dispatching the event -->
+								<xforms:toggle case="process-working-save-contacts-switcher" />
+			 					<!-- Dispatch the event using xxforms:script -->
+								<xxforms:script>
+									window.postMessage( "EPISODES:init", "*" );
+									window.postMessage( "EPISODES:mark:updatepim", "*" );
+									ORBEON.xforms.Document.dispatchEvent( "update-pim-request-submission", "orbeon-forms-xforms-submit" );
+								</xxforms:script>
+							</xforms:action>
+						</xforms:trigger>
+		        	</xforms:case>
+		        	<xforms:case id="process-working-save-contacts-switcher">
+			        	<xforms:output class="disabled" value="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/link-action-save-contacts" />
+			        	<!-- Orbeon Forms hack: For some reason the background image of the div element is always displayed -->
+			        	<img src="css/icon/process-working_16x16.gif" height="16" width="16" vspace="0" hspace="0" border="0" alt="" />
+						<!--<div class="process-working" />-->
+		        	</xforms:case>
+		        </xforms:switch>
+		        <!-- :::: END: Action Menu - Save contacts :::: -->
+			</div>
+			<!-- :::: END: Action Menu :::: -->
+	        <!-- :::: BEGIN: PIM Contacts table :::: -->
+	       	<!-- Header of the table -->
+	        <table class="contacts-header-table" cellpadding="4" cellspacing="0">
+	       		<tr class="contacts-header-tr">
+	       			<th><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/header-contacts" /></th>
+	       		</tr>
+	       	</table>
+	       	<!-- THEAD of the table -->
+	        <table class="contacts-thead-table" cellpadding="4" cellspacing="0">
+	       		<tr class="contacts-thead-tr">
+					<th class="contacts-thead-1-th">
+						<xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/header-name" />
+						<xforms:group ref=".[ instance( 'util-instance' )/contactorder = 'ascending' ]">
+							<xforms:trigger appearance="minimal">
+								<xforms:label><img src="gfx/down_icon.png" alt="" /></xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:toggle case="default-message-switcher" />
+									<xforms:setvalue ref="instance( 'util-instance' )/contactorder" value="'descending'" />
+								</xforms:action>
+							</xforms:trigger>					
+						</xforms:group>
+						<xforms:group ref=".[ instance( 'util-instance' )/contactorder = 'descending' ]">
+							<xforms:trigger class="sort" appearance="minimal">
+								<xforms:label><img src="gfx/up_icon.png" alt="" /></xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:toggle case="default-message-switcher" />
+									<xforms:setvalue ref="instance( 'util-instance' )/contactorder" value="'ascending'" />
+								</xforms:action>
+							</xforms:trigger>					
+						</xforms:group>
+					</th>
+	       			<th class="contacts-thead-2-th"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/header-actions" /></th>
+	       		</tr>
+	       	</table>
+	       	<!-- TBODY of the table -->
+	        <table class="contacts-tbody-table" cellpadding="4" cellspacing="0">
+				<xforms:repeat nodeset="exforms:sort( instance( 'pim-instance' )/contacts/contact, 'name', 'text', instance( 'util-instance' )/contactorder )" id="pim-contacts-contact-repeat">
+	        		<tr class="contacts-tbody-{if ( position() mod 2 = 1 ) then 'odd' else 'even'}-tr">
+	        			<!-- :::: BEGIN: FIRST COLUMN :::: -->
+						<td class="contacts-tbody-1-td">
+							<!-- List mode -->
+			        		<xforms:group ref=".[ not( @id = instance( 'viewlist-instance')/view ) and not( @id = instance( 'editlist-instance')/edit ) ]">
+								<img src="gfx/right_icon.png" alt="" />
+								<xforms:trigger appearance="minimal">
+									<xforms:label><xforms:output ref="name" /></xforms:label>
+									<xforms:action ev:event="DOMActivate">
+										<xforms:toggle case="default-message-switcher" />
+										<xforms:insert origin="instance( 'view-instance' )" nodeset="*" at="last()" context="instance( 'viewlist-instance' )" />
+										<xforms:setvalue ref="instance( 'viewlist-instance' )/view[ last() ]" value="exforms:sort( instance( 'pim-instance' )/contacts/contact, 'name', 'text', instance( 'util-instance' )/contactorder )[ index( 'pim-contacts-contact-repeat' ) ]/@id" />
+									</xforms:action>
+								</xforms:trigger>
+							</xforms:group>
+							<!-- View mode -->
+			        		<xforms:group ref=".[ @id = instance( 'viewlist-instance')/view ]">
+								<img src="gfx/down_icon.png" alt="" />
+								<xforms:trigger appearance="minimal">
+									<xforms:label><xforms:output ref="name" /></xforms:label>
+									<xforms:action ev:event="DOMActivate">
+										<xforms:toggle case="default-message-switcher" />
+										<xforms:delete context="instance( 'viewlist-instance' )" nodeset="view[ . = exforms:sort( instance( 'pim-instance' )/contacts/contact, 'name', 'text', instance( 'util-instance' )/contactorder )[ index( 'pim-contacts-contact-repeat' ) ]/@id ]" at="1" />
+									</xforms:action>
+								</xforms:trigger>
+								<table class="contacts-details-table" cellpadding="2" cellspacing="0">
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-name" /></td>
+										<td class="contacts-details-2-td"><xforms:output ref="name" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-title" /></td>
+										<td class="contacts-details-2-td"><xforms:output ref="title" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-company" /></td>
+										<td class="contacts-details-2-td"><xforms:output ref="company" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-street" /></td>
+										<td class="contacts-details-2-td"><xforms:output ref="street" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-city" /></td>
+										<td class="contacts-details-2-td"><xforms:output ref="city" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-state" /></td>
+										<td class="contacts-details-2-td"><xforms:output ref="state" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-zip" /></td>
+										<td class="contacts-details-2-td"><xforms:output ref="zip" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-country" /></td>
+										<td class="contacts-details-2-td"><xforms:output ref="country" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-telephone" /></td>
+										<td class="contacts-details-2-td"><xforms:output ref="telephone" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-fax" /></td>
+										<td class="contacts-details-2-td"><xforms:output ref="fax" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-mobilephone" /></td>
+										<td class="contacts-details-2-td"><xforms:output ref="mobilephone" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-email" /></td>
+										<td class="contacts-details-2-td"><xforms:output ref="email" /></td>
+									</tr>
+								</table>
+							</xforms:group>
+							<!-- Edit mode -->
+			        		<xforms:group ref=".[ @id = instance( 'editlist-instance')/edit ]">
+								<img src="gfx/down_icon.png" alt="" />
+			        			<xforms:group ref=".[ name = '' ]">
+			        				<xforms:output value="'&nbsp;'" />
+			        			</xforms:group>
+			        			<xforms:group ref=".[ name != '' ]">
+									<xforms:trigger appearance="minimal">
+										<xforms:label><xforms:output ref="name" /></xforms:label>
+										<xforms:action ev:event="DOMActivate">
+											<xforms:toggle case="default-message-switcher" />
+											<xforms:delete context="instance( 'editlist-instance' )" nodeset="edit[ . = exforms:sort( instance( 'pim-instance' )/contacts/contact, 'name', 'text', instance( 'util-instance' )/contactorder )[ index( 'pim-contacts-contact-repeat' ) ]/@id ]" at="1" />
+										</xforms:action>
+									</xforms:trigger>
+								</xforms:group>
+								<table class="contacts-details-table" cellpadding="2" cellspacing="0">
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-name" /></td>
+										<td class="contacts-details-2-td"><xforms:input ref="name" incremental="true" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-title" /></td>
+										<td class="contacts-details-2-td"><xforms:input ref="title" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-company" /></td>
+										<td class="contacts-details-2-td"><xforms:input ref="company" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-street" /></td>
+										<td class="contacts-details-2-td"><xforms:input ref="street" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-city" /></td>
+										<td class="contacts-details-2-td"><xforms:input ref="city" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-state" /></td>
+										<td class="contacts-details-2-td"><xforms:input ref="state" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-zip" /></td>
+										<td class="contacts-details-2-td"><xforms:input ref="zip" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-country" /></td>
+										<td class="contacts-details-2-td"><xforms:input ref="country" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-telephone" /></td>
+										<td class="contacts-details-2-td"><xforms:input ref="telephone" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-fax" /></td>
+										<td class="contacts-details-2-td"><xforms:input ref="fax" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-mobilephone" /></td>
+										<td class="contacts-details-2-td"><xforms:input ref="mobilephone" /></td>
+									</tr>
+									<tr>
+										<td class="contacts-details-1-td"><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/label-email" /></td>
+										<td class="contacts-details-2-td"><xforms:input ref="email" /></td>
+									</tr>
+								</table>
+							</xforms:group>
+						</td>
+	        			<!-- :::: END: FIRST COLUMN :::: -->
+	        			<!-- :::: BEGIN: SECOND COLUMN :::: -->
+						<td class="contacts-tbody-2-td">
+							<!-- List, View, or Delete mode -->
+				       		<xforms:group ref=".[ not( @id = instance( 'editlist-instance')/edit ) ]">
+		        				<xforms:trigger appearance="minimal">
+									<xforms:label><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/link-edit" /></xforms:label>
+									<xforms:action ev:event="DOMActivate">
+										<xforms:toggle case="default-message-switcher" />
+										<xforms:delete context="instance( 'viewlist-instance' )" nodeset="view[ . = exforms:sort( instance( 'pim-instance' )/contacts/contact, 'name', 'text', instance( 'util-instance' )/contactorder )[ index( 'pim-contacts-contact-repeat' ) ]/@id ]" at="1" />
+										<xforms:insert origin="instance( 'edit-instance' )" nodeset="*" at="last()" context="instance( 'editlist-instance' )" />
+										<xforms:setvalue ref="instance( 'editlist-instance' )/edit[ last() ]" value="exforms:sort( instance( 'pim-instance' )/contacts/contact, 'name', 'text', instance( 'util-instance' )/contactorder )[ index( 'pim-contacts-contact-repeat' ) ]/@id" />
+									</xforms:action>
+								</xforms:trigger>													
+					       	</xforms:group>						
+				       		<xforms:group ref=".[ @id = instance( 'editlist-instance')/edit ]">
+					       		<xforms:output class="disabled" value="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/link-edit" />
+							</xforms:group>
+						</td>
+	        			<!-- :::: END: SECOND COLUMN :::: -->
+	        			<!-- :::: BEGIN: THRID COLUMN :::: -->
+	        			<td class="contacts-tbody-3-td">
+							<!-- List, View, or Edit mode -->
+			        		<xforms:group ref=".[ not( @id = instance( 'deletelist-instance')/delete ) ]">
+		        				<xforms:trigger appearance="minimal">
+									<xforms:label><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/link-delete" /></xforms:label>
+									<xforms:action ev:event="DOMActivate">
+										<xforms:toggle case="default-message-switcher" />
+										<xforms:insert origin="instance( 'delete-instance' )" nodeset="*" at="last()" context="instance( 'deletelist-instance' )" />
+										<xforms:setvalue ref="instance( 'deletelist-instance' )/delete[ last() ]" value="exforms:sort( instance( 'pim-instance' )/contacts/contact, 'name', 'text', instance( 'util-instance' )/contactorder )[ index( 'pim-contacts-contact-repeat' ) ]/@id" />
+									</xforms:action>
+								</xforms:trigger>								
+							</xforms:group>
+							<!-- Delete mode -->
+			        		<xforms:group ref=".[ @id = instance( 'deletelist-instance')/delete ]">
+								<xforms:output class="alert" value="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/content-delete-question" /><br />
+		        				<xforms:trigger appearance="minimal">
+									<xforms:label><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/content-delete-answer-yes" /></xforms:label>
+									<xforms:action ev:event="DOMActivate">
+										<xforms:toggle case="default-message-switcher" />
+										<xforms:delete context="instance( 'pim-instance' )" nodeset="exforms:sort( contacts/contact, 'name', 'text', instance( 'util-instance' )/contactorder )" at="index( 'pim-contacts-contact-repeat' )" />
+									</xforms:action>
+								</xforms:trigger>							
+								<xforms:output value="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/content-delete-separator" /> 
+		        				<xforms:trigger appearance="minimal">
+									<xforms:label><xforms:output ref="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/content-delete-answer-no" /></xforms:label>
+									<xforms:action ev:event="DOMActivate">
+										<xforms:toggle case="default-message-switcher" />
+										<xforms:delete context="instance( 'deletelist-instance' )" nodeset="delete[ . = exforms:sort( instance( 'pim-instance' )/contacts/contact, 'name', 'text', instance( 'util-instance' )/contactorder )[ index( 'pim-contacts-contact-repeat' ) ]/@id ]" at="1" />
+									</xforms:action>
+								</xforms:trigger>								
+							</xforms:group>								
+	        			</td>
+	        			<!-- :::: END: THIRD COLUMN :::: -->
+	        		</tr>
+		        </xforms:repeat>
+    	    </table>
+	        <!-- TFOOT of the table -->
+	        <table class="contacts-tfoot-table" cellpadding="4" cellspacing="0">
+	       		<tr class="contacts-tfoot-{if ( count( instance( 'pim-instance' )/contacts/contact ) mod 2 = 0 ) then 'odd' else 'even'}-tr">
+					<th class="contacts-tfoot-1-th"><xforms:output value="instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/content-results" />&nbsp;<xforms:output value="if( count( instance( 'pim-instance' )/contacts/contact ) = 0 ) then ' 0' else ' 1'" /><xforms:output value="concat( ' - ', count( instance( 'pim-instance' )/contacts/contact ), instance( 'ui-instance' )/language[ @type = instance( 'util-instance' )/language ]/content-of, count( instance( 'pim-instance' )/contacts/contact ) )" /></th>
+	       		</tr>
+	       	</table>
+			<!-- Episodes Results (beacon) -->
+			<!--<div id="episodesresults" />-->
+			<!-- Orbeon Forms XForms Instance Inspector -->
+			<!--<widget:xforms-instance-inspector xmlns:widget="http://orbeon.org/oxf/xml/widget" />-->
+        </div>
+	</body>
+</html>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Files - Update</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, Files, Update" />
+		<meta name="description" content="XFormsDB Tutorial - Files - Update" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2009, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- Roles instance -->
+			<xforms:instance id="roles-instance">
+				<roles xmlns="">
+					<role>user</role>
+					<role>admin</role>
+				</roles>
+			</xforms:instance>
+			<!-- Files instance -->
+			<xforms:instance id="files-instance">
+				<dummy xmlns="" />
+			</xforms:instance>
+			<!-- Update files instance -->
+			<xforms:instance id="update-files-instance">
+				<xformsdb:update />
+			</xforms:instance>
+			<!-- XFormsDB request instances -->
+			<!-- Select/Update/Insert/Delete files request instance -->
+			<xformsdb:instance id="suid-files-request-instance">
+				<xformsdb:file />
+			</xformsdb:instance>
+			<!-- XFormsDB request submissions -->
+			<!-- Select files request submission -->
+ 			<xformsdb:submission id="select-files-request-submission" replace="instance" instance="files-instance" requestinstance="suid-files-request-instance" filetype="select">
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="select-error-message-switcher" />
+				</xforms:action>
+ 				<xforms:action ev:event="xforms-submit-done">
+					<xforms:toggle if="count( instance( 'files-instance' )/xformsdb:file ) = 0" case="select-empty-message-switcher" />
+					<!--<xforms:toggle if="count( instance( 'files-instance' )/xformsdb:file ) &gt; 0" case="select-success-message-switcher" />-->
+					<!-- Delete files from "Update files instance" -->
+ 					<xforms:action while="count( instance( 'update-files-instance' )/xformsdb:file ) &gt; 0">
+						<xforms:delete nodeset="instance( 'update-files-instance' )/xformsdb:file" at="last()" />
+					</xforms:action>
+					<!-- Insert files to be updated to "Update files instance" -->
+					<xforms:insert origin="instance( 'files-instance' )/xformsdb:file" nodeset="*" context="instance( 'update-files-instance' )" />
+				</xforms:action>
+			</xformsdb:submission>
+			<!-- Update files request submission -->
+			<xformsdb:submission id="update-files-request-submission" replace="instance" instance="update-files-instance" requestinstance="suid-files-request-instance" filetype="update">
+ 				<xforms:action ev:event="xformsdb-request-error">
+					<xforms:toggle case="update-error-message-switcher" />
+				</xforms:action>
+ 				<xforms:action ev:event="xforms-submit-done">
+					<!-- Update files which have been successfully updated from XFormsDB i.e. reset the counter -->
+ 					<xforms:action while="count( instance( 'update-files-instance' )/* ) &gt; 0">
+						<xforms:delete nodeset="instance( 'update-files-instance' )/*" at="last()" />
+					</xforms:action>
+					<xforms:toggle case="update-success-message-switcher" />
+					<!-- Initialize the Web page -->
+					<xforms:send submission="select-files-request-submission" />
+				</xforms:action>
+			</xformsdb:submission>
+			<!-- Initialize the Web page -->
+			<xforms:send submission="select-files-request-submission" ev:event="xforms-ready" />
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Files - Update</h1>
+		       	<xforms:switch id="message-switcher">
+		        	<xforms:case id="default-message-switcher" />
+		        	<!--
+		        	<xforms:case id="select-success-message-switcher">
+				        <div class="message-success">
+				        	<xforms:output value="'List of files (all) has been successfully retrieved from XFormsDB.'" />
+				        </div>
+		        	</xforms:case>
+					-->
+		        	<xforms:case id="select-empty-message-switcher">
+				        <div class="message-error">
+				   	    	<xforms:output value="'Error: XFormsDB does not hold any files.'" />
+				       	</div>
+		        	</xforms:case>
+  		        	<xforms:case id="select-error-message-switcher">
+				        <div class="message-error">
+				   		 	<xforms:output value="concat( 'Error (', ' ', instance( 'suid-files-request-instance' )/xformsdb:error/xformsdb:code, ' ): ', instance( 'suid-files-request-instance' )/xformsdb:error/xformsdb:description )" />
+				       	</div>
+		        	</xforms:case>
+		        	<xforms:case id="update-success-message-switcher">
+				        <div class="message-success">
+				        	<xforms:output value="'Files have been successfully updated to XFormsDB.'" />
+				        </div>
+		        	</xforms:case>
+		        	<xforms:case id="update-error-message-switcher">
+				        <div class="message-error">
+				   		 	<xforms:output value="concat( 'Error (', ' ', instance( 'suid-files-request-instance' )/xformsdb:error/xformsdb:code, ' ): ', instance( 'suid-files-request-instance' )/xformsdb:error/xformsdb:description )" />
+				       	</div>
+		        	</xforms:case>
+		        </xforms:switch>
+  				<table>
+  					<xforms:repeat nodeset="instance( 'update-files-instance' )/xformsdb:file" id="update-files-file-repeat">
+						<tr>
+							<td><b>Display name:</b>&nbsp;</td>
+							<td><xforms:input ref="@displayname" /></td>
+						</tr>
+						<tr>
+							<td><b>Current file:</b>&nbsp;</td>
+							<td><xforms:output value="concat( @filename, ' ( ', @mediatype, ' | ', @filesize, ' )' )" /></td>
+						</tr>
+						<tr>
+							<td><b>Substitutive file:</b>&nbsp;</td>
+							<td><xforms:upload ref="."><xforms:filename ref="@filename" /><xforms:mediatype ref="@mediatype" /><xxforms:size ref="@filesize" /></xforms:upload></td>
+						</tr>
+						<tr>
+							<td><b>Roles:</b>&nbsp;</td>
+							<td>
+								<xforms:select ref="@roles" appearance="full">
+									<xforms:itemset nodeset="instance( 'roles-instance' )/role">
+										<xforms:label ref="." />
+										<xforms:value ref="." />
+									</xforms:itemset>
+								</xforms:select>
+							</td>
+						</tr>
+						<tr>
+							<td><b>Comment:</b>&nbsp;</td>
+							<td><xforms:input ref="@comment" /></td>
+						</tr>
+						<tr>
+							<td><b>Creator:</b>&nbsp;</td>
+							<td><xforms:input ref="@creator" /></td>
+						</tr>
+						<tr>
+							<td><b>Created:</b>&nbsp;</td>
+							<td><xforms:output ref="@created" xxforms:format="format-dateTime( xs:dateTime( . ), '[FNn] [MNn] [D], [Y] [H01]:[m01]:[s01]', 'en', (), () )" /></td>
+						</tr>
+						<tr>
+							<td><b>Last modifier:</b>&nbsp;</td>
+							<td><xforms:input ref="@lastmodifier" /></td>
+						</tr>
+						<tr>
+							<td><b>Last modified:</b>&nbsp;</td>
+							<td><xforms:group ref=".[ not( @lastmodified = '' ) ]"><xforms:output ref="@lastmodified" xxforms:format="format-dateTime( xs:dateTime( . ), '[FNn] [MNn] [D], [Y] [H01]:[m01]:[s01]', 'en', (), () )" /></xforms:group></td>
+						</tr>
+						<tr style="line-height: 25px;">
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+					</xforms:repeat>
+					<tr>
+						<td width="100">&nbsp;</td>
+						<td>
+							<xforms:trigger style="margin-right: 52px;">
+								<xforms:label>Update files</xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:send submission="update-files-request-submission" />
+								</xforms:action>
+							</xforms:trigger>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

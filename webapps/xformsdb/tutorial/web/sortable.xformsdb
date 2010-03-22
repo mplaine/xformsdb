@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Miscellaneous - Sortable</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, Miscellaneous, Sortable" />
+		<meta name="description" content="XFormsDB Tutorial - Miscellaneous - Sortable" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2009, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<script type="text/javascript" src="js/jquery-1.3.2.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#sortable").sortable({ axis: 'y', //Force sortable elements to move only along the y-axis 
+					stop: function(event, ui) { //function to trigger after the sorting stops
+						var pos = $('.liikutettava').index(ui.item); //get the new position of the element
+						var id = $('.hidden', ui.item).text(); //Get the id of the moved element
+						$('.xforms-repeat-delimiter').each(function() {
+							if ($(this).prev().is('.xforms-repeat-delimiter')) {
+								$(this).before(ui.item); //After gaining the info from the moved object move it back to the original place otherwise Orbeon messes thins up
+							}
+						});
+						$(ui.item).hide(); //Hide the element so the user doesn't now thath we actually moved the original element back
+						ORBEON.xforms.Document.setValue("position", pos); //Set instance value
+						ORBEON.xforms.Document.setValue("drop-id", id);	//Set instance value
+					  	ORBEON.xforms.Document.dispatchEvent("main-model", "sort-event"); //dispatch the custom event to model			  						  	 
+					} 
+				});
+				$("#sortable").disableSelection();
+			});
+		</script>
+		<xforms:model id="main-model" xxforms:external-events="sort-event">
+			<!-- Instances -->
+			<!-- Items instance -->
+			<xforms:instance id="items-instance">
+				<items xmlns="">
+					<item id="1">
+						<name>Car</name>
+						<price>300000</price>
+					</item>
+					<item id="2">
+						<name>MP3 Player</name>
+						<price>200</price>
+					</item>
+					<item id="3">
+						<name>Computer</name>
+						<price>1000</price>
+					</item>
+					<item id="4">
+						<name>Book</name>
+						<price>15</price>
+					</item>
+					<item id="5">
+						<name>Rabbit</name>
+						<price>69</price>
+					</item>
+					<item id="6">
+						<name>Milk</name>
+						<price>1</price>
+					</item>
+					<item id="7">
+						<name>Experience</name>
+						<price>Priceless</price>
+					</item>
+				</items>
+			</xforms:instance>
+			<xforms:instance id="drop-container">
+				<items xmlns="">
+					<dropped></dropped>
+					<position></position>
+					<temp-container />
+				</items>
+			</xforms:instance>
+			
+			<!-- After insert show the objects again -->
+			<xforms:action ev:event="xforms-insert" ev:observer="items-instance">
+				<xxforms:script>
+		        	$('.liikutettava').not('.xforms-repeat-template').show();
+		        </xxforms:script>
+			</xforms:action>
+			
+			<!-- The Custom event dispatched from javaScript -->
+			<xforms:action ev:event="sort-event">
+				<!-- Copy the moved element -->
+				<xforms:insert origin="instance( 'items-instance' )/item[@id = instance('drop-container')/dropped]" nodeset="*" at="last()" context="instance( 'drop-container' )/temp-container" />
+				<!-- Delete the original -->
+				<xforms:delete context="instance('items-instance')" nodeset="item[@id = instance('drop-container')/dropped]" />
+				<!-- Insert the copy to the desired place -->
+				<xforms:action if="number(instance( 'drop-container' )/position) = 0">
+					<xforms:insert origin="instance( 'drop-container' )/temp-container/item" nodeset="*" at="number(instance( 'drop-container' )/position)" position="before" context="instance( 'items-instance' )" />
+				</xforms:action>
+				<xforms:action if="number(instance( 'drop-container' )/position) != 0">
+					<xforms:insert origin="instance( 'drop-container' )/temp-container/item" nodeset="*" at="number(instance( 'drop-container' )/position)" position="after" context="instance( 'items-instance' )" />
+				</xforms:action>
+				<!-- Clear the temporary container -->
+				<xforms:delete context="instance('drop-container')/temp-container" nodeset="*" />
+			</xforms:action>
+		</xforms:model>
+		<style type="text/css">
+			.laatikko {
+				background-color: #CCCCCC;
+				border: 1px solid #000000;
+				list-style-type: none;
+				margin: 2px 0px 2px 0px;
+				padding: 2px;
+				width: 300px;
+			}
+			.liikutettava {
+				cursor: move;
+			}
+			.hidden {
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Miscellaneous - Sortable</h1>
+		        <h3>Items</h3>
+		        <!-- Hidden inputs for updating the instance data -->
+		        <xforms:input class="hidden" id="drop-id" ref="instance('drop-container')/dropped" />
+		        <xforms:input class="hidden" id="position" ref="instance('drop-container')/position" />
+		   		<ul id="sortable">
+		   			<!-- Main repeat for our sortable elements -->
+					<xforms:repeat nodeset="instance( 'items-instance' )/item" id="items-item-repeat">
+						<li class="laatikko liikutettava"><xforms:output value="concat( name, ' (', price, ' &euro;)' )" /><span class="hidden hidden-id"><xforms:output value="@id" /></span></li>
+    		    	</xforms:repeat>
+				</ul>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

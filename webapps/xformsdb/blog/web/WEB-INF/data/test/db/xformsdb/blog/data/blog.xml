@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <blog>
+        <posts>
+            <post id="08f865da2048e660daf7dbac35d7ba2a">
+                <headline>Master's Thesis</headline>
+                <creationtime>2007-04-15</creationtime>
+                <content>Comments on my Master's thesis.</content>
+                <author>Markku Laine</author>
+                <comments>
+                    <comment id="6e75a5517cef0f8d45cfbc280d1acd53">
+                        <creationtime>2007-09-27</creationtime>
+                        <content>A thorough comparison of related XForms-based end-to-end solutions needs to be done.</content>
+                        <author>Markku Laine</author>
+                    </comment>
+                    <comment id="83ce80c6cba003108283294928155335">
+                        <creationtime>2007-10-04</creationtime>
+                        <content>The XFormsDB framework should be properly evaluated with real users and case studies at some point.</content>
+                        <author>Emilia Mendes</author>
+                    </comment>
+                </comments>
+            </post>
+            <post id="0b853a7dd60022e75ac1ec538e7d6867">
+                <headline>Living in Auckland, New Zealand</headline>
+                <creationtime>2007-10-01</creationtime>
+                <content>Thoughts about life while living in Auckland, New Zealand.</content>
+                <author>Markku Laine</author>
+                <comments>
+                    <comment id="1ab72e627671a76df18fecbd4e17cb70">
+                        <creationtime>2007-10-01</creationtime>
+                        <content>New Zealand has left-hand traffic (LHT), so it might take a while for me to adjust to it--especially when driving a car.</content>
+                        <author>Markku Laine</author>
+                    </comment>
+                    <comment id="1dae67a4a26f23b40aa12b9e84a747c1">
+                        <creationtime>2007-10-01</creationtime>
+                        <content>Pedestrian lights work a bit differently here in New Zealand than in Finland. The green light is visible only for a second or two, after which it switches to blinking red for the next 10 seconds or so.</content>
+                        <author>Markku Laine</author>
+                    </comment>
+                    <comment id="f5bcc6ff6d3569a359342c207e6dbf6a">
+                        <creationtime>2007-10-01</creationtime>
+                        <content>Not all houses/apartments are insulated or have heating in New Zealand, which makes the apartments cold and damp.</content>
+                        <author>Markku Laine</author>
+                    </comment>
+                    <comment id="df90c6098da78fbfd5c9f46cb6d845af">
+                        <creationtime>2007-10-02</creationtime>
+                        <content>There are a wide variety of student restaurants available across campus.</content>
+                        <author>Markku Laine</author>
+                    </comment>
+                </comments>
+            </post>
+            <post id="8fbd93b077d212df9b5ed2ec9bc8eea0">
+                <headline>Travelling Round the World</headline>
+                <creationtime>2007-10-05</creationtime>
+                <content>Markku and Jenni travelling round the world in one and half months.</content>
+                <author>Markku Laine</author>
+                <comments />
+            </post>
+        </posts>
+    </blog>
+</root>

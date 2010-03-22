@@ -1,0 +1,983 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Blog - Administration</title>
+		<script type="text/javascript">
+			var timestamp_firstbyte	= Number( new Date() );
+		</script>
+		<script id="episodesscript" type="text/javascript" src="../js/episodes.js"></script>
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:mark:episodes.js", "*" );
+			window.postMessage( "EPISODES:mark:firstbyte:" + timestamp_firstbyte, "*" );
+			window.postMessage( "EPISODES:measure:episode.js:firstbyte:episodes.js", "*" );
+			window.postMessage( "EPISODES:measure:backend:starttime:firstbyte", "*" );
+
+			function doPageReady() {
+				window.postMessage( "EPISODES:measure:frontend:firstbyte", "*" );			
+				window.postMessage( "EPISODES:measure:pageready:starttime", "*" );			
+				window.postMessage( "EPISODES:measure:totaltime:starttime", "*" );			
+				window.postMessage( "EPISODES:done", "*" );			
+			}
+			function handleEpisodeResults( event ) {
+				if ( "EPISODES:done" === event.data ) {
+					var beaconUrl	= EPISODES.sendBeacon( "../gfx/beacon.gif" );
+			
+					// write the beacon URL in the doc
+					if ( beaconUrl ) {
+						//document.getElementById( "episodesresults" ).innerHTML = "<code>" + beaconUrl + "</code>";
+					}
+				}
+			}
+			EPISODES.addEventListener( "load", doPageReady, false );
+			EPISODES.addEventListener( "message", handleEpisodeResults, false );			
+		</script>
+		<meta name="keywords" content="XFormsDB, Blog, Administration" />
+		<meta name="description" content="XFormsDB Blog Administration" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2007, XFormsDB" />
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:mark:blog.css", "*" );
+		</script>
+		<link rel="stylesheet" type="text/css" href="../css/blog.css" media="all" />
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:measure:blog.css:blog.css", "*" );
+		</script>
+		<!-- XFormsDB security view for non-logged in users -->
+		<xformsdb:secview>
+			<xforms:model>
+				<!-- Redirect to the login page -->
+				<xforms:load resource="../login.xformsdb" ev:event="xforms-ready" />
+			</xforms:model>
+		</xformsdb:secview>
+		<!-- XFormsDB security view for logged in users having one of the roles: admin -->
+		<xformsdb:secview roles="admin">
+			<xforms:model>
+				<!-- Utility variables -->
+				<xforms:instance id="util-instance">
+					<util xmlns="">
+						<manage-posts-view-id />
+						<manage-posts-edit-id />
+						<manage-posts-delete-id />
+						<manage-comments-view-id />
+						<manage-comments-edit-id />
+						<manage-comments-delete-id />
+					</util>
+				</xforms:instance>
+				<!-- Posts -->
+				<xforms:instance id="posts-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Archives -->
+				<xforms:instance id="archives-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Manage posts (filtered) -->
+				<xforms:instance id="manage-posts-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Manage comments (filtered) -->
+				<xforms:instance id="manage-comments-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Comment -->
+				<xforms:instance id="comment-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Comments -->
+				<xforms:instance id="comments-instance">
+					<dummy xmlns="" />
+				</xforms:instance>
+				<!-- Actions -->
+				<xforms:instance id="actions-instance" src="../xml/actions-instance.xml" />
+				<!-- Post template -->
+				<xforms:instance id="post-instance" src="../xml/post-instance.xml" />
+				<!-- User interface texts -->
+				<xforms:instance id="ui-instance" src="../xml/ui-administration-instance.xml" />
+				<!-- XFormsDB request instances -->
+				<xformsdb:instance id="select-and-update-posts-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xpath/select_and_update_posts.xpath" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<xformsdb:instance id="select-post-archives-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xq/select_post_archives.xq" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<xformsdb:instance id="select-manage-posts-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xq/select_manage_posts.xq" />
+						<xformsdb:var name="date" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<xformsdb:instance id="select-manage-comments-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xq/select_manage_comments.xq" />
+						<xformsdb:var name="date" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<xformsdb:instance id="select-comment-archives-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xq/select_comment_archives.xq" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<xformsdb:instance id="select-comment-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xq/select_comment.xq" />
+						<xformsdb:var name="id" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<xformsdb:instance id="select-and-update-comments-request-instance">
+					<xformsdb:query datasrc="exist-data-data-source" doc="blog.xml">
+						<xformsdb:expression resource="../xpath/select_and_update_comments.xpath" />
+						<xformsdb:xmlns prefix="xformsdb" uri="http://www.tml.tkk.fi/2007/xformsdb" />
+						<xformsdb:var name="id" />
+					</xformsdb:query>
+				</xformsdb:instance>
+				<!-- Logout request instance -->
+				<xformsdb:instance id="logout-request-instance">
+					<xformsdb:logout />
+				</xformsdb:instance>
+				<!-- XFormsDB request submissions -->
+				<!-- Write a post: Select posts for update -->
+	 			<xformsdb:submission id="write-a-post-select-posts-for-update-request-submission" replace="instance" instance="posts-instance" requestinstance="select-and-update-posts-request-instance" expressiontype="select">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="off-progress-working-switcher" />
+				 		<xforms:toggle case="write-a-post-content-switcher" />
+						<xforms:setindex repeat="actions-action-repeat" index="1" />
+						<xforms:send submission="reset-post-instance-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="write-a-post-select-posts-for-update-error-message-switcher" />
+						<xforms:toggle case="default-content-switcher" />
+						<xforms:setindex repeat="actions-action-repeat" index="1" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Write a post: Publish post -->
+	 			<xformsdb:submission id="write-a-post-publish-post-request-submission" replace="instance" instance="posts-instance" requestinstance="select-and-update-posts-request-instance" expressiontype="update">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="write-a-post-publish-post-success-message-switcher" />
+						<xforms:send submission="reset-post-instance-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="write-a-post-publish-post-error-message-switcher" />
+						<xforms:toggle case="default-content-switcher" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage posts: Select posts for update -->
+	 			<xformsdb:submission id="manage-posts-select-posts-for-update-request-submission" replace="instance" instance="posts-instance" requestinstance="select-and-update-posts-request-instance" expressiontype="select">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="on-progress-working-switcher" />
+						<xforms:send submission="manage-posts-select-posts-for-table-request-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-posts-select-posts-for-update-error-message-switcher" />
+						<xforms:toggle case="default-content-switcher" />
+						<xforms:setindex repeat="actions-action-repeat" index="2" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage posts: Select posts for table list view -->
+	 			<xformsdb:submission id="manage-posts-select-posts-for-table-request-submission" replace="instance" instance="manage-posts-instance" requestinstance="select-manage-posts-request-instance" expressiontype="select">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="on-progress-working-switcher" />
+						<xforms:send submission="manage-posts-select-post-archives-request-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-posts-select-posts-for-table-error-message-switcher" />
+						<xforms:toggle case="default-content-switcher" />
+						<xforms:setindex repeat="actions-action-repeat" index="2" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage posts: Select post archives -->
+	 			<xformsdb:submission id="manage-posts-select-post-archives-request-submission" replace="instance" instance="archives-instance" requestinstance="select-post-archives-request-instance" expressiontype="select">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-posts-content-switcher" />
+						<xforms:setindex repeat="actions-action-repeat" index="2" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-view-id" value="''" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-edit-id" value="''" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-delete-id" value="''" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-posts-select-post-archives-error-message-switcher" />
+						<xforms:toggle case="default-content-switcher" />
+						<xforms:setindex repeat="actions-action-repeat" index="2" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage posts: Delete post -->
+	 			<xformsdb:submission id="manage-posts-delete-post-request-submission" replace="instance" instance="posts-instance" requestinstance="select-and-update-posts-request-instance" expressiontype="update">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="on-progress-working-switcher" />
+						<xforms:toggle case="manage-posts-delete-post-success-message-switcher" />
+						<xforms:delete context="instance( 'manage-posts-instance' )" nodeset="post[ @id = instance( 'util-instance' )/manage-posts-delete-id ]" at="1" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-delete-id" value="''" />
+						<xforms:send submission="manage-posts-select-posts-for-table-request-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-posts-delete-post-error-message-switcher" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-delete-id" value="''" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage posts: Edit post -->
+	 			<xformsdb:submission id="manage-posts-edit-post-request-submission" replace="instance" instance="posts-instance" requestinstance="select-and-update-posts-request-instance" expressiontype="update">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="on-progress-working-switcher" />
+						<xforms:toggle case="manage-posts-edit-post-success-message-switcher" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-edit-id" value="''" />
+						<xforms:send submission="manage-posts-select-posts-for-table-request-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-posts-edit-post-error-message-switcher" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-edit-id" value="''" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage comments: Select comments for table list view -->
+	 			<xformsdb:submission id="manage-comments-select-comments-for-table-request-submission" replace="instance" instance="manage-comments-instance" requestinstance="select-manage-comments-request-instance" expressiontype="select">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="on-progress-working-switcher" />
+						<xforms:send submission="manage-comments-select-comment-archives-request-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-comments-select-comments-for-table-error-message-switcher" />
+						<xforms:toggle case="default-content-switcher" />
+						<xforms:setindex repeat="actions-action-repeat" index="3" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage comments: Select comment archives -->
+	 			<xformsdb:submission id="manage-comments-select-comment-archives-request-submission" replace="instance" instance="archives-instance" requestinstance="select-comment-archives-request-instance" expressiontype="select">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-comments-content-switcher" />
+						<xforms:setindex repeat="actions-action-repeat" index="3" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-view-id" value="''" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-edit-id" value="''" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-delete-id" value="''" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-comments-select-comment-archives-error-message-switcher" />
+						<xforms:toggle case="default-content-switcher" />
+						<xforms:setindex repeat="actions-action-repeat" index="3" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage comments: View comment -->
+	 			<xformsdb:submission id="manage-comments-view-comment-request-submission" replace="instance" instance="comment-instance" requestinstance="select-comment-request-instance" expressiontype="select">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-comments-content-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-comments-view-comment-error-message-switcher" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-view-id" value="''" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage comments: Select comments for delete update -->
+	 			<xformsdb:submission id="manage-comments-select-comments-for-delete-update-request-submission" replace="instance" instance="comments-instance" requestinstance="select-and-update-comments-request-instance" expressiontype="select">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="on-progress-working-switcher" />
+						<xforms:delete context="instance( 'comments-instance' )" nodeset="comment[ @id = instance( 'util-instance' )/manage-comments-delete-id ]" at="1" />
+						<xforms:send submission="manage-comments-delete-comment-request-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-comments-select-comments-for-delete-update-error-message-switcher" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-delete-id" value="''" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage comments: Delete comment -->
+	 			<xformsdb:submission id="manage-comments-delete-comment-request-submission" replace="instance" instance="comments-instance" requestinstance="select-and-update-comments-request-instance" expressiontype="update">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="on-progress-working-switcher" />
+						<xforms:toggle case="manage-comments-delete-comment-success-message-switcher" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-delete-id" value="''" />
+						<xforms:send submission="manage-comments-select-comments-for-table-request-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-comments-delete-comment-error-message-switcher" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-delete-id" value="''" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage comments: Select comments for edit update -->
+	 			<xformsdb:submission id="manage-comments-select-comments-for-edit-update-request-submission" replace="instance" instance="comments-instance" requestinstance="select-and-update-comments-request-instance" expressiontype="select">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-comments-content-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-comments-select-comments-for-edit-update-error-message-switcher" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-edit-id" value="''" />
+					</xforms:action>
+	 			</xformsdb:submission>
+	 			<!-- Manage comments: Edit comment -->
+	 			<xformsdb:submission id="manage-comments-edit-comment-request-submission" replace="instance" instance="comments-instance" requestinstance="select-and-update-comments-request-instance" expressiontype="update">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="on-progress-working-switcher" />
+						<xforms:toggle case="manage-comments-edit-comment-success-message-switcher" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-edit-id" value="''" />
+						<xforms:send submission="manage-comments-select-comments-for-table-request-submission" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="manage-comments-edit-comment-error-message-switcher" />
+						<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-edit-id" value="''" />
+					</xforms:action>
+	 			</xformsdb:submission>
+				<!-- Logout request submission -->
+	 			<xformsdb:submission id="logout-request-submission" replace="none" requestinstance="logout-request-instance">
+	 				<xforms:action ev:event="xforms-submit">
+						<xforms:toggle case="on-progress-working-switcher" />
+					</xforms:action>
+	 				<xforms:action ev:event="xforms-submit-done">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:load resource="../index.xformsdb" show="replace" />
+					</xforms:action>
+	 				<xforms:action ev:event="xformsdb-request-error">
+						<xforms:toggle case="off-progress-working-switcher" />
+						<xforms:toggle case="logout-error-message-switcher" />
+						<xforms:toggle case="default-content-switcher" />
+					</xforms:action>
+				</xformsdb:submission>
+	 			<!-- Traditional XForms submissions -->
+	 			<xforms:submission id="reset-post-instance-submission" replace="instance" instance="post-instance" ref="instance( 'post-instance' )" action="../xml/post-instance.xml" method="get" mediatype="application/xml" encoding="UTF-8" />
+	 			<!-- Initialize the web page -->
+				<xforms:toggle case="off-progress-working-switcher" ev:event="xforms-ready" />
+				<xforms:toggle case="default-message-switcher" ev:event="xforms-ready" />
+				<xforms:send submission="write-a-post-select-posts-for-update-request-submission" ev:event="xforms-ready" />
+			</xforms:model>
+		</xformsdb:secview>
+	</head>
+	<body>
+		<!-- XFormsDB security view for non-logged in users -->
+		<xformsdb:secview>
+			<xforms:trigger appearance="minimal"><xforms:label>Redirecting...</xforms:label><xforms:action ev:event="DOMActivate"><xforms:load resource="../login.xformsdb" show="replace" /></xforms:action></xforms:trigger>
+		</xformsdb:secview>
+		<!-- XFormsDB security view for logged in users having one of the roles: admin -->
+		<xformsdb:secview roles="admin">
+			<div id="page">
+				<div id="container">
+					<!-- :::: BEGIN: Header :::: -->
+					<div id="header">
+						<!-- :::: BEGIN: Progress working :::: -->
+				        <xforms:switch id="progress-working-switcher">
+				        	<xforms:case id="off-progress-working-switcher">
+				        	</xforms:case>
+				        	<xforms:case id="on-progress-working-switcher">
+								<div class="process-working" />
+				        	</xforms:case>
+						</xforms:switch>					
+						<!-- :::: END: Progress working :::: -->
+						<h1>
+							<xforms:trigger appearance="minimal">
+								<xforms:label><xforms:output ref="instance( 'ui-instance' )/header-link-xformsdb-blog-administration" /></xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:toggle case="default-message-switcher" />
+									<xforms:toggle case="write-a-post-default-message-switcher" />
+									<xforms:toggle case="manage-posts-default-message-switcher" />
+									<xforms:toggle case="manage-comments-default-message-switcher" />
+									<xforms:send submission="write-a-post-select-posts-for-update-request-submission" />
+								</xforms:action>
+							</xforms:trigger>
+						</h1>
+						<div id="headerimage" />
+					</div>
+					<!-- :::: END: Header :::: -->
+					<div id="content">
+				        <!-- :::: BEGIN: Messages :::: -->
+				        <xforms:switch id="message-switcher">
+				        	<xforms:case id="default-message-switcher" />
+				        	<xforms:case id="write-a-post-select-posts-for-update-error-message-switcher">
+						        <div class="message-error">
+						        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-posts-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/write-a-post-message-select-posts-for-update-error )" />
+						        </div>
+				        	</xforms:case>
+				        	<xforms:case id="manage-posts-select-posts-for-update-error-message-switcher">
+						        <div class="message-error">
+						        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-posts-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-posts-message-select-posts-for-update-error )" />
+						        </div>
+				        	</xforms:case>
+				        	<xforms:case id="manage-posts-select-posts-for-table-error-message-switcher">
+						        <div class="message-error">
+						        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-manage-posts-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-posts-message-select-posts-for-table-error )" />
+						        </div>
+				        	</xforms:case>
+				        	<xforms:case id="manage-posts-select-post-archives-error-message-switcher">
+						        <div class="message-error">
+						        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-post-archives-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-posts-message-select-post-archives-error )" />
+						        </div>
+				        	</xforms:case>
+				        	<xforms:case id="manage-comments-select-comments-for-table-error-message-switcher">
+						        <div class="message-error">
+						        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-manage-comments-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-comments-message-select-comments-for-table-error )" />
+						        </div>
+				        	</xforms:case>
+				        	<xforms:case id="manage-comments-select-comment-archives-error-message-switcher">
+						        <div class="message-error">
+						        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-comment-archives-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-comments-message-select-comment-archives-error )" />
+						        </div>
+				        	</xforms:case>
+				        	<xforms:case id="logout-error-message-switcher">
+						        <div class="message-error">
+						        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'logout-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/logout-error )" />
+						        </div>
+				        	</xforms:case>
+				        </xforms:switch>
+				        <!-- :::: END: Messages :::: -->
+						<xforms:switch id="content-switcher">
+							<xforms:case id="default-content-switcher" />
+							<!-- :::: BEGIN: Write a post :::: -->
+							<xforms:case id="write-a-post-content-switcher">
+		 						<h2 class="action"><xforms:output value="instance( 'actions-instance' )/action[ index( 'actions-action-repeat' ) ]" /></h2>
+						        <!-- :::: BEGIN: Write a post messages :::: -->
+						        <xforms:switch id="write-a-post-message-switcher">
+						        	<xforms:case id="write-a-post-default-message-switcher" />
+						        	<xforms:case id="write-a-post-publish-post-error-message-switcher">
+								        <div class="message-error">
+								        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-comments-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/write-a-post-message-publish-post-error )" />
+								        </div>
+						        	</xforms:case>
+						        	<xforms:case id="write-a-post-publish-post-success-message-switcher">
+								        <div class="message-success">
+								        	<xforms:output ref="instance( 'ui-instance' )/write-a-post-message-publish-post-success" />
+								        </div>
+						        	</xforms:case>
+						        </xforms:switch>
+						        <!-- :::: END: Write a post messages :::: -->
+								<xforms:group ref="instance( 'post-instance' )">
+									<p class="newpostauthor"><xforms:input ref="author" /><span class="newpostauthor"><xforms:output ref="instance( 'ui-instance' )/write-a-post-label-name" /></span></p>
+									<p class="newpostheadline"><xforms:input ref="headline" /><span class="newpostheadline"><xforms:output ref="instance( 'ui-instance' )/write-a-post-label-headline" /></span></p>
+									<p class="newpostcontent"><xforms:textarea ref="content" /></p>
+									<p class="newpostsubmit">
+										<xforms:trigger appearance="full">
+											<xforms:label><xforms:output ref="instance( 'ui-instance' )/write-a-post-link-submit" /></xforms:label>
+											<xforms:action ev:event="DOMActivate">
+												<xforms:toggle case="default-message-switcher" />
+												<xforms:toggle case="write-a-post-default-message-switcher" />
+												<xforms:toggle case="manage-posts-default-message-switcher" />
+												<xforms:toggle case="manage-comments-default-message-switcher" />
+ 												<xforms:setvalue ref="instance( 'post-instance' )/@id" value="digest( string( random( true ) ), 'MD5', 'hex' )" />
+	 											<xforms:setvalue ref="instance( 'post-instance' )/creationtime" value="substring( string( current-date() ), 1, 10 )" />
+												<xforms:insert origin="instance( 'post-instance' )" nodeset="*" context="instance( 'posts-instance' )" />
+												<xforms:send submission="write-a-post-publish-post-request-submission" />
+											</xforms:action>
+										</xforms:trigger>
+									</p>
+								</xforms:group>
+							</xforms:case>
+							<!-- :::: END: Write a post :::: -->
+							<!-- :::: BEGIN: Manage posts :::: -->
+							<xforms:case id="manage-posts-content-switcher">
+		 						<h2 class="action"><xforms:output value="instance( 'actions-instance' )/action[ index( 'actions-action-repeat' ) ]" /></h2>
+						        <!-- :::: BEGIN: Manage posts messages :::: -->
+						        <xforms:switch id="manage-posts-message-switcher">
+						        	<xforms:case id="manage-posts-default-message-switcher" />
+						        	<xforms:case id="manage-posts-delete-post-error-message-switcher">
+								        <div class="message-error">
+								        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-posts-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-posts-message-delete-post-error )" />
+								        </div>
+						        	</xforms:case>
+						        	<xforms:case id="manage-posts-delete-post-success-message-switcher">
+								        <div class="message-success">
+								        	<xforms:output ref="instance( 'ui-instance' )/manage-posts-message-delete-post-success" />
+								        </div>
+						        	</xforms:case>
+						        	<xforms:case id="manage-posts-edit-post-error-message-switcher">
+								        <div class="message-error">
+								        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-posts-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-posts-message-edit-post-error )" />
+								        </div>
+						        	</xforms:case>
+						        	<xforms:case id="manage-posts-edit-post-success-message-switcher">
+								        <div class="message-success">
+								        	<xforms:output ref="instance( 'ui-instance' )/manage-posts-message-edit-post-success" />
+								        </div>
+						        	</xforms:case>
+						        </xforms:switch>
+						        <!-- :::: END: Manage posts messages :::: -->
+						        <div class="manageposts">
+						       		<!-- Posts search engine -->
+									<table class="manage-posts-search-table" cellspacing="0">
+										<thead>
+											<tr class="manage-posts-search-tr">
+												<th class="manage-posts-search-thead-1-th" colspan="2"><xforms:output ref="instance( 'ui-instance' )/manage-posts-header-browse-archive" /></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr class="manage-posts-search-tr">
+												<td class="manage-posts-search-tbody-1-td">
+													<xforms:select1 ref="instance( 'select-manage-posts-request-instance' )/xformsdb:var[ @name = 'date' ]" selection="closed">
+														<xforms:itemset nodeset="instance( 'archives-instance' )/archive">
+											                <xforms:label><xforms:output ref="." xxforms:format="format-date( xs:date( . ), '[MNn] [Y]', 'en', (), () )" /></xforms:label>
+								        			        <xforms:value ref="." />
+														</xforms:itemset>
+													</xforms:select1>
+												</td>
+												<td class="manage-posts-search-tbody-2-td">
+													<xforms:trigger appearance="full">
+														<xforms:label ref="instance( 'ui-instance' )/manage-posts-link-browse-archive-submit" />
+														<xforms:action ev:event="DOMActivate">
+															<xforms:toggle case="default-message-switcher" />
+															<xforms:toggle case="write-a-post-default-message-switcher" />
+															<xforms:toggle case="manage-posts-default-message-switcher" />
+															<xforms:toggle case="manage-comments-default-message-switcher" />
+															<xforms:send submission="manage-posts-select-posts-for-update-request-submission" />
+														</xforms:action>
+													</xforms:trigger>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<!-- No posts in selected month -->
+									<xforms:group ref=".[ count( instance( 'manage-posts-instance' )/post ) = 0 and not( instance( 'manage-posts-select-posts-for-table-request-submission' )/xformsdb:error ) ]">
+				  						<xforms:output ref="instance( 'ui-instance' )/manage-posts-content-no-posts" />
+									</xforms:group>
+									<!-- Posts table -->
+									<xforms:group ref=".[ count( instance( 'manage-posts-instance' )/post ) &gt; 0 and not( instance( 'manage-posts-select-posts-for-table-request-submission' )/xformsdb:error ) ]">
+										<table class="manage-posts-table" cellspacing="0">
+											<thead>
+												<tr class="manage-posts-tr">
+													<th class="manage-posts-thead-1-th"><xforms:output ref="instance( 'ui-instance' )/manage-posts-header-headline" /></th>
+													<th class="manage-posts-thead-2-th" colspan="2"><xforms:output ref="instance( 'ui-instance' )/manage-posts-header-actions" /></th>
+												</tr>
+											</thead>
+											<tfoot>
+												<tr class="manage-posts-tr">
+													<th class="manage-posts-tfoot-1-th" colspan="3"><xforms:output value="instance( 'ui-instance' )/manage-posts-content-results" />&nbsp;<xforms:output value="if( count( instance( 'manage-posts-instance' )/post ) = 0 ) then ' 0' else ' 1'" /><xforms:output value="concat( ' - ', count( instance( 'manage-posts-instance' )/post ), ' ', instance( 'ui-instance' )/manage-posts-content-of, ' ', count( instance( 'manage-posts-instance' )/post ) )" /></th>
+												</tr>
+											</tfoot>
+											<tbody>
+												<xforms:repeat nodeset="instance( 'manage-posts-instance' )/post" id="manage-posts-post-repeat">
+													<tr class="manage-posts-tr">
+														<!-- :::: BEGIN: FIRST COLUMN :::: -->
+														<td class="manage-posts-tbody-1-td">
+															<!-- List mode -->
+										        			<xforms:group ref=".[ not( @id = instance( 'util-instance')/manage-posts-view-id ) and not( @id = instance( 'util-instance')/manage-posts-edit-id ) ]">
+																<img src="../gfx/right_icon.png" alt="" />
+																<xforms:trigger appearance="minimal">
+																	<xforms:label ref="headline" />
+																	<xforms:action ev:event="DOMActivate">
+																		<xforms:toggle case="default-message-switcher" />
+																		<xforms:toggle case="write-a-post-default-message-switcher" />
+																		<xforms:toggle case="manage-posts-default-message-switcher" />
+																		<xforms:toggle case="manage-comments-default-message-switcher" />
+							 											<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-view-id" value="instance( 'manage-posts-instance' )/post[ index( 'manage-posts-post-repeat' ) ]/@id" />
+							 											<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-edit-id" value="''" />
+																	</xforms:action>
+																</xforms:trigger>
+															</xforms:group>
+															<!-- View mode -->
+											        		<xforms:group ref=".[ @id = instance( 'util-instance')/manage-posts-view-id ]">
+																<img src="../gfx/down_icon.png" alt="" />
+																<xforms:trigger appearance="minimal">
+																	<xforms:label ref="headline" />
+																	<xforms:action ev:event="DOMActivate">
+																		<xforms:toggle case="default-message-switcher" />
+																		<xforms:toggle case="write-a-post-default-message-switcher" />
+																		<xforms:toggle case="manage-posts-default-message-switcher" />
+																		<xforms:toggle case="manage-comments-default-message-switcher" />
+							 											<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-view-id" value="''" />
+																	</xforms:action>
+																</xforms:trigger>
+																<p class="postauthorandcreationtime"><span class="postauthor"><xforms:output value="if( normalize-space( instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-view-id ]/author ) = '' ) then instance( 'ui-instance' )/manage-posts-content-anonymous else string( instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-view-id ]/author )" /></span><span class="postcreationtime"><xforms:output value="concat( ' ', instance( 'ui-instance' )/manage-posts-content-separator, ' ' )" /><xforms:output ref="instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-view-id ]/creationtime" xxforms:format="format-date( xs:date( . ), '[MNn] [D], [Y]', 'en', (), () )" /></span></p>
+																<div class="postcontent"><pre><xforms:output ref="instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-view-id ]/content" /></pre></div>
+																<p class="postcomments"><span class="commentsicon" /><xforms:output value="concat( instance( 'ui-instance' )/manage-posts-content-comments-1, ' ', count( instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-view-id ]/comments/comment ), ' ', instance( 'ui-instance' )/manage-posts-content-comments-2 )" /></p>
+											        		</xforms:group>
+															<!-- Edit mode -->
+											        		<xforms:group ref=".[ @id = instance( 'util-instance')/manage-posts-edit-id ]">
+																<img src="../gfx/down_icon.png" alt="" />
+																<xforms:trigger appearance="minimal">
+																	<xforms:label ref="headline" />
+																	<xforms:action ev:event="DOMActivate">
+																		<xforms:toggle case="default-message-switcher" />
+																		<xforms:toggle case="write-a-post-default-message-switcher" />
+																		<xforms:toggle case="manage-posts-default-message-switcher" />
+																		<xforms:toggle case="manage-comments-default-message-switcher" />
+							 											<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-edit-id" value="''" />
+																	</xforms:action>
+																</xforms:trigger>
+																<p class="editpostauthor"><xforms:input ref="instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-edit-id ]/author" /><span class="editpostauthor"><xforms:output ref="instance( 'ui-instance' )/manage-posts-label-name" /></span></p>
+																<p class="editpostheadline"><xforms:input ref="instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-edit-id ]/headline" /><span class="editpostheadline"><xforms:output ref="instance( 'ui-instance' )/manage-posts-label-headline" /></span></p>
+																<p class="editpostcontent"><xforms:textarea ref="instance( 'posts-instance' )/post[ @id = instance( 'util-instance' )/manage-posts-edit-id ]/content" /></p>
+																<p class="editpostsubmit">
+																	<xforms:trigger appearance="full">
+																		<xforms:label ref="instance( 'ui-instance' )/manage-posts-link-edit-post-submit" />
+																		<xforms:action ev:event="DOMActivate">
+																			<xforms:toggle case="default-message-switcher" />
+																			<xforms:toggle case="write-a-post-default-message-switcher" />
+																			<xforms:toggle case="manage-posts-default-message-switcher" />
+																			<xforms:toggle case="manage-comments-default-message-switcher" />
+																			<xforms:send submission="manage-posts-edit-post-request-submission" />
+																		</xforms:action>
+																	</xforms:trigger>
+																</p>
+											        		</xforms:group>
+														</td>
+														<!-- :::: END: FIRST COLUMN :::: -->
+														<!-- :::: BEGIN: SECOND COLUMN :::: -->
+														<td class="manage-posts-tbody-2-td">
+												       		<xforms:group ref=".[ not( @id = instance( 'util-instance')/manage-posts-edit-id ) ]">
+																<xforms:trigger appearance="minimal">
+																	<xforms:label ref="instance( 'ui-instance' )/manage-posts-link-edit" />
+																	<xforms:action ev:event="DOMActivate">
+																		<xforms:toggle case="default-message-switcher" />
+																		<xforms:toggle case="write-a-post-default-message-switcher" />
+																		<xforms:toggle case="manage-posts-default-message-switcher" />
+																		<xforms:toggle case="manage-comments-default-message-switcher" />
+							 											<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-view-id" value="''" />
+							 											<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-edit-id" value="instance( 'manage-posts-instance' )/post[ index( 'manage-posts-post-repeat' ) ]/@id" />
+																	</xforms:action>
+																</xforms:trigger>
+															</xforms:group>
+												       		<xforms:group ref=".[ @id = instance( 'util-instance')/manage-posts-edit-id ]">
+													       		<xforms:output class="disabled" value="instance( 'ui-instance' )/manage-posts-link-edit" />
+															</xforms:group>
+														</td>
+														<!-- :::: END: SECOND COLUMN :::: -->
+														<!-- :::: BEGIN: THRID COLUMN :::: -->
+														<td class="manage-posts-tbody-3-td">
+															<xforms:trigger appearance="minimal">
+																<xforms:label ref="instance( 'ui-instance' )/manage-posts-link-delete" />
+																<xforms:action ev:event="DOMActivate">
+																	<xforms:toggle case="default-message-switcher" />
+																	<xforms:toggle case="write-a-post-default-message-switcher" />
+																	<xforms:toggle case="manage-posts-default-message-switcher" />
+																	<xforms:toggle case="manage-comments-default-message-switcher" />
+						 											<xforms:setvalue ref="instance( 'util-instance' )/manage-posts-delete-id" value="instance( 'manage-posts-instance' )/post[ index( 'manage-posts-post-repeat' ) ]/@id" />
+																	<xforms:delete context="instance( 'posts-instance' )" nodeset="post[ @id = instance( 'util-instance' )/manage-posts-delete-id ]" at="1" />
+																	<xforms:send submission="manage-posts-delete-post-request-submission" />
+		 														</xforms:action>
+															</xforms:trigger>
+														</td>
+														<!-- :::: END: THRID COLUMN :::: -->
+													</tr>
+												</xforms:repeat>
+											</tbody>
+										</table>
+									</xforms:group>
+								</div>
+							</xforms:case>
+							<!-- :::: END: Manage posts :::: -->
+							<!-- :::: BEGIN: Manage comments :::: -->
+							<xforms:case id="manage-comments-content-switcher">
+		 						<h2 class="action"><xforms:output value="instance( 'actions-instance' )/action[ index( 'actions-action-repeat' ) ]" /></h2>
+						        <!-- :::: BEGIN: Manage comments messages :::: -->
+						        <xforms:switch id="manage-comments-message-switcher">
+						        	<xforms:case id="manage-comments-default-message-switcher" />
+						        	<xforms:case id="manage-comments-view-comment-error-message-switcher">
+								        <div class="message-error">
+								        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-comment-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-comments-message-view-comment-error )" />
+								        </div>
+						        	</xforms:case>
+						        	<xforms:case id="manage-comments-select-comments-for-delete-update-error-message-switcher">
+								        <div class="message-error">
+								        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-comments-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-comments-message-select-comments-for-delete-update-error )" />
+								        </div>
+						        	</xforms:case>
+						        	<xforms:case id="manage-comments-delete-comment-error-message-switcher">
+								        <div class="message-error">
+								        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-comments-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-comments-message-delete-comment-error )" />
+								        </div>
+						        	</xforms:case>
+						        	<xforms:case id="manage-comments-delete-comment-success-message-switcher">
+								        <div class="message-success">
+								        	<xforms:output ref="instance( 'ui-instance' )/manage-comments-message-delete-comment-success" />
+								        </div>
+						        	</xforms:case>
+						        	<xforms:case id="manage-comments-select-comments-for-edit-update-error-message-switcher">
+								        <div class="message-error">
+								        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-comments-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-comments-message-select-comments-for-edit-update-error )" />
+								        </div>
+						        	</xforms:case>
+						        	<xforms:case id="manage-comments-edit-comment-error-message-switcher">
+								        <div class="message-error">
+								        	<xforms:output value="concat( instance( 'ui-instance' )/message-error-1, ' ', instance( 'select-and-update-comments-request-instance' )/xformsdb:error/xformsdb:code, ' ', instance( 'ui-instance' )/message-error-2, ' ', instance( 'ui-instance' )/manage-comments-message-edit-comment-error )" />
+								        </div>
+						        	</xforms:case>
+						        	<xforms:case id="manage-comments-edit-comment-success-message-switcher">
+								        <div class="message-success">
+								        	<xforms:output ref="instance( 'ui-instance' )/manage-comments-message-edit-comment-success" />
+								        </div>
+						        	</xforms:case>
+						        </xforms:switch>
+						        <!-- :::: END: Manage comments messages :::: -->
+						        <div class="managecomments">
+						       		<!-- Posts search engine -->
+									<table class="manage-comments-search-table" cellspacing="0">
+										<thead>
+											<tr class="manage-comments-search-tr">
+												<th class="manage-comments-search-thead-1-th" colspan="2"><xforms:output ref="instance( 'ui-instance' )/manage-comments-header-browse-archive" /></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr class="manage-comments-search-tr">
+												<td class="manage-comments-search-tbody-1-td">
+													<xforms:select1 ref="instance( 'select-manage-comments-request-instance' )/xformsdb:var[ @name = 'date' ]" selection="closed">
+														<xforms:itemset nodeset="instance( 'archives-instance' )/archive">
+											                <xforms:label><xforms:output ref="." xxforms:format="format-date( xs:date( . ), '[MNn] [Y]', 'en', (), () )" /></xforms:label>
+								        			        <xforms:value ref="." />
+														</xforms:itemset>
+													</xforms:select1>
+												</td>
+												<td class="manage-comments-search-tbody-2-td">
+													<xforms:trigger appearance="full">
+														<xforms:label><xforms:output ref="instance( 'ui-instance' )/manage-comments-link-browse-archive-submit" /></xforms:label>
+														<xforms:action ev:event="DOMActivate">
+															<xforms:toggle case="default-message-switcher" />
+															<xforms:toggle case="write-a-post-default-message-switcher" />
+															<xforms:toggle case="manage-posts-default-message-switcher" />
+															<xforms:toggle case="manage-comments-default-message-switcher" />
+															<xforms:send submission="manage-comments-select-comments-for-table-request-submission" />
+														</xforms:action>
+													</xforms:trigger>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<!-- No comments in selected month -->
+									<xforms:group ref=".[ count( instance( 'manage-comments-instance' )/comment ) = 0 and not( instance( 'manage-comments-select-comments-for-table-request-submission' )/xformsdb:error ) ]">
+				  						<xforms:output ref="instance( 'ui-instance' )/manage-comments-content-no-comments" />
+									</xforms:group>
+									<!-- Comments table -->
+									<xforms:group ref=".[ count( instance( 'manage-comments-instance' )/comment ) &gt; 0 and not( instance( 'manage-comments-select-comments-for-table-request-submission' )/xformsdb:error ) ]">
+										<table class="manage-comments-table" cellspacing="0">
+											<thead>
+												<tr class="manage-comments-tr">
+													<th class="manage-comments-thead-1-th"><xforms:output ref="instance( 'ui-instance' )/manage-comments-header-comment" /></th>
+													<th class="manage-comments-thead-2-th" colspan="2"><xforms:output ref="instance( 'ui-instance' )/manage-comments-header-actions" /></th>
+												</tr>
+											</thead>
+											<tfoot>
+												<tr class="manage-comments-tr">
+													<th class="manage-comments-tfoot-1-th" colspan="3"><xforms:output value="instance( 'ui-instance' )/manage-comments-content-results" />&nbsp;<xforms:output value="if( count( instance( 'manage-comments-instance' )/comment ) = 0 ) then ' 0' else ' 1'" /><xforms:output value="concat( ' - ', count( instance( 'manage-comments-instance' )/comment ), ' ', instance( 'ui-instance' )/manage-comments-content-of, ' ', count( instance( 'manage-comments-instance' )/comment ) )" /></th>
+												</tr>
+											</tfoot>
+											<tbody>
+												<xforms:repeat nodeset="instance( 'manage-comments-instance' )/comment" id="manage-comments-comment-repeat">
+													<tr class="manage-comments-tr">
+														<!-- :::: BEGIN: FIRST COLUMN :::: -->
+														<td class="manage-comments-tbody-1-td">
+															<!-- List mode -->
+										        			<xforms:group ref=".[ not( @id = instance( 'util-instance')/manage-comments-view-id ) and not( @id = instance( 'util-instance')/manage-comments-edit-id ) ]">
+																<img src="../gfx/right_icon.png" alt="" />
+																<xforms:trigger appearance="minimal">
+																	<xforms:label value="if( string-length( content ) &gt; 37 ) then concat( substring( content, 0, 35 ), '...' ) else string( content )" />
+																	<xforms:action ev:event="DOMActivate">
+																		<xforms:toggle case="default-message-switcher" />
+																		<xforms:toggle case="write-a-post-default-message-switcher" />
+																		<xforms:toggle case="manage-posts-default-message-switcher" />
+																		<xforms:toggle case="manage-comments-default-message-switcher" />
+							 											<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-view-id" value="instance( 'manage-comments-instance' )/comment[ index( 'manage-comments-comment-repeat' ) ]/@id" />
+							 											<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-edit-id" value="''" />
+							 											<xforms:setvalue ref="instance( 'select-comment-request-instance' )/xformsdb:var[ @name = 'id' ]" value="instance( 'manage-comments-instance' )/comment[ index( 'manage-comments-comment-repeat' ) ]/@id" />
+							 											<xforms:send submission="manage-comments-view-comment-request-submission" />	
+																	</xforms:action>
+																</xforms:trigger>
+															</xforms:group>
+															<!-- View mode -->
+											        		<xforms:group ref=".[ @id = instance( 'util-instance')/manage-comments-view-id ]">
+																<img src="../gfx/down_icon.png" alt="" />
+																<xforms:trigger appearance="minimal">
+																	<xforms:label value="if( string-length( content ) &gt; 37 ) then concat( substring( content, 0, 35 ), '...' ) else string( content )" />
+																	<xforms:action ev:event="DOMActivate">
+																		<xforms:toggle case="default-message-switcher" />
+																		<xforms:toggle case="write-a-post-default-message-switcher" />
+																		<xforms:toggle case="manage-posts-default-message-switcher" />
+																		<xforms:toggle case="manage-comments-default-message-switcher" />
+							 											<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-view-id" value="''" />
+																	</xforms:action>
+																</xforms:trigger>
+																<p class="viewcommentauthorandcreationtime"><span class="viewcommentauthor"><xforms:output value="if( normalize-space( instance( 'comment-instance' )/author ) = '' ) then instance( 'ui-instance' )/manage-comments-content-anonymous else string( instance( 'comment-instance' )/author )" /></span><span class="viewcommentcreationtime"><xforms:output value="concat( ' ', instance( 'ui-instance' )/manage-comments-content-separator, ' ' )" /><xforms:output ref="instance( 'comment-instance' )/creationtime" xxforms:format="format-date( xs:date( . ), '[MNn] [D], [Y]', 'en', (), () )" /></span></p>
+																<div class="viewcommentpointer" />
+																<div class="viewcommentcontent"><pre><xforms:output ref="instance( 'comment-instance' )/content" /></pre></div>
+											        		</xforms:group>
+															<!-- Edit mode -->
+											        		<xforms:group ref=".[ @id = instance( 'util-instance')/manage-comments-edit-id ]">
+																<img src="../gfx/down_icon.png" alt="" />
+																<xforms:trigger appearance="minimal">
+																	<xforms:label value="if( string-length( content ) &gt; 37 ) then concat( substring( content, 0, 35 ), '...' ) else string( content )" />
+																	<xforms:action ev:event="DOMActivate">
+																		<xforms:toggle case="default-message-switcher" />
+																		<xforms:toggle case="write-a-post-default-message-switcher" />
+																		<xforms:toggle case="manage-posts-default-message-switcher" />
+																		<xforms:toggle case="manage-comments-default-message-switcher" />
+							 											<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-edit-id" value="''" />
+																	</xforms:action>
+																</xforms:trigger>
+																<p class="editcommentauthor"><xforms:input ref="instance( 'comments-instance' )/comment[ @id = instance( 'util-instance' )/manage-comments-edit-id ]/author" /><span class="editcommentauthor"><xforms:output ref="instance( 'ui-instance' )/manage-comments-label-name" /></span></p>
+																<p class="editcommentcontent"><xforms:textarea ref="instance( 'comments-instance' )/comment[ @id = instance( 'util-instance' )/manage-comments-edit-id ]/content" /></p>
+																<p class="editcommentsubmit">
+																	<xforms:trigger appearance="full">
+																		<xforms:label ref="instance( 'ui-instance' )/manage-comments-link-edit-comment-submit" />
+																		<xforms:action ev:event="DOMActivate">
+																			<xforms:toggle case="default-message-switcher" />
+																			<xforms:toggle case="write-a-post-default-message-switcher" />
+																			<xforms:toggle case="manage-posts-default-message-switcher" />
+																			<xforms:toggle case="manage-comments-default-message-switcher" />
+																			<xforms:send submission="manage-comments-edit-comment-request-submission" />
+																		</xforms:action>
+																	</xforms:trigger>		
+																</p>
+											        		</xforms:group>
+														</td>
+														<!-- :::: END: FIRST COLUMN :::: -->
+														<!-- :::: BEGIN: SECOND COLUMN :::: -->
+														<td class="manage-comments-tbody-2-td">
+												       		<xforms:group ref=".[ not( @id = instance( 'util-instance')/manage-comments-edit-id ) ]">
+																<xforms:trigger appearance="minimal">
+																	<xforms:label ref="instance( 'ui-instance' )/manage-comments-link-edit" />
+																	<xforms:action ev:event="DOMActivate">
+																		<xforms:toggle case="default-message-switcher" />
+																		<xforms:toggle case="write-a-post-default-message-switcher" />
+																		<xforms:toggle case="manage-posts-default-message-switcher" />
+																		<xforms:toggle case="manage-comments-default-message-switcher" />
+							 											<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-view-id" value="''" />
+							 											<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-edit-id" value="instance( 'manage-comments-instance' )/comment[ index( 'manage-comments-comment-repeat' ) ]/@id" />
+							 											<xforms:setvalue ref="instance( 'select-and-update-comments-request-instance' )/xformsdb:var[ @name = 'id' ]" value="instance( 'manage-comments-instance' )/comment[ index( 'manage-comments-comment-repeat' ) ]/@postid" />
+																		<xforms:send submission="manage-comments-select-comments-for-edit-update-request-submission" />
+																	</xforms:action>
+																</xforms:trigger>
+															</xforms:group>
+												       		<xforms:group ref=".[ @id = instance( 'util-instance')/manage-comments-edit-id ]">
+													       		<xforms:output class="disabled" value="instance( 'ui-instance' )/manage-comments-link-edit" />
+															</xforms:group>
+														</td>
+														<!-- :::: END: SECOND COLUMN :::: -->
+														<!-- :::: BEGIN: THRID COLUMN :::: -->
+														<td class="manage-comments-tbody-3-td">
+															<xforms:trigger appearance="minimal">
+																<xforms:label ref="instance( 'ui-instance' )/manage-comments-link-delete" />
+																<xforms:action ev:event="DOMActivate">
+																	<xforms:toggle case="default-message-switcher" />
+																	<xforms:toggle case="write-a-post-default-message-switcher" />
+																	<xforms:toggle case="manage-posts-default-message-switcher" />
+																	<xforms:toggle case="manage-comments-default-message-switcher" />
+						 											<xforms:setvalue ref="instance( 'util-instance' )/manage-comments-delete-id" value="instance( 'manage-comments-instance' )/comment[ index( 'manage-comments-comment-repeat' ) ]/@id" />
+						 											<xforms:setvalue ref="instance( 'select-and-update-comments-request-instance' )/xformsdb:var[ @name = 'id' ]" value="instance( 'manage-comments-instance' )/comment[ index( 'manage-comments-comment-repeat' ) ]/@postid" />
+																	<xforms:send submission="manage-comments-select-comments-for-delete-update-request-submission" />
+		 														</xforms:action>
+															</xforms:trigger>
+														</td>
+														<!-- :::: END: THRID COLUMN :::: -->
+													</tr>
+												</xforms:repeat>
+											</tbody>
+										</table>
+									</xforms:group>
+								</div>
+							</xforms:case>
+							<!-- :::: END: Manage comments :::: -->
+						</xforms:switch>
+					</div>
+					<!-- :::: BEGIN: Actions :::: -->
+					<div id="sidebar">
+						<h2><xforms:output ref="instance( 'ui-instance' )/actions-header-actions" /></h2>
+						<xforms:repeat nodeset="instance( 'actions-instance' )/action" id="actions-action-repeat">
+							<p class="archivemonth"><span class="manageicon" />
+								<xforms:trigger appearance="minimal">
+									<xforms:label><xforms:output ref="." /></xforms:label>
+									<xforms:action ev:event="DOMActivate">
+										<xforms:toggle case="default-message-switcher" />
+										<xforms:toggle case="write-a-post-default-message-switcher" />
+										<xforms:toggle case="manage-posts-default-message-switcher" />
+										<xforms:toggle case="manage-comments-default-message-switcher" />
+										<xforms:toggle case="write-a-post-content-switcher" if="index( 'actions-action-repeat' ) = 1" />
+										<xforms:send submission="write-a-post-select-posts-for-update-request-submission" if="index( 'actions-action-repeat' ) = 1" />									
+										<xforms:toggle case="manage-posts-content-switcher" if="index( 'actions-action-repeat' ) = 2" />
+										<xforms:setvalue ref="instance( 'select-manage-posts-request-instance' )/xformsdb:var[ @name = 'date' ]" value="''" if="index( 'actions-action-repeat' ) = 2" />
+										<xforms:send submission="manage-posts-select-posts-for-update-request-submission" if="index( 'actions-action-repeat' ) = 2" />									
+										<xforms:toggle case="manage-comments-content-switcher" if="index( 'actions-action-repeat' ) = 3" />
+										<xforms:setvalue ref="instance( 'select-manage-comments-request-instance' )/xformsdb:var[ @name = 'date' ]" value="''" if="index( 'actions-action-repeat' ) = 3" />
+										<xforms:send submission="manage-comments-select-comments-for-table-request-submission" if="index( 'actions-action-repeat' ) = 3" />
+									</xforms:action>
+								</xforms:trigger>
+							</p>
+						</xforms:repeat>
+					</div>
+					<!-- :::: BEGIN: Footer :::: -->
+					<div id="footer">
+						<div id="footerimage" />
+						<p><xforms:output value="instance( 'ui-instance' )/footer-content-copyright" />
+							<xforms:trigger appearance="minimal">
+								<xforms:label><xforms:output ref="instance( 'ui-instance' )/footer-link-logout-public" /></xforms:label>
+								<xforms:action ev:event="DOMActivate">
+									<xforms:toggle case="default-message-switcher" />
+									<xforms:toggle case="write-a-post-default-message-switcher" />
+									<xforms:toggle case="manage-posts-default-message-switcher" />
+									<xforms:toggle case="manage-comments-default-message-switcher" />
+									<xforms:send submission="logout-request-submission" />
+								</xforms:action>
+							</xforms:trigger>
+						</p>					
+					</div>
+					<!-- :::: END: Footer :::: -->
+					<!-- Episodes Results (beacon) -->
+					<!--<div id="episodesresults" />-->
+					<!-- Orbeon Forms XForms Instance Inspector -->
+					<!--<widget:xforms-instance-inspector xmlns:widget="http://orbeon.org/oxf/xml/widget" />-->
+				</div>
+			</div>
+		</xformsdb:secview>
+	</body>
+</html>

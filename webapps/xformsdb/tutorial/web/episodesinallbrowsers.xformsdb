@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Miscellaneous - Episodes in All Browsers</title>
+		<script type="text/javascript">
+			var timestamp_firstbyte	= Number( new Date() );
+		</script>
+		<script id="episodesscript" type="text/javascript" src="js/episodes.js"></script>
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:mark:episodes.js", "*" );
+			window.postMessage( "EPISODES:mark:firstbyte:" + timestamp_firstbyte, "*" );
+			window.postMessage( "EPISODES:measure:episode.js:firstbyte:episodes.js", "*" );
+			window.postMessage( "EPISODES:measure:backend:starttime:firstbyte", "*" );
+
+			function doPageReady() {
+				window.postMessage( "EPISODES:measure:frontend:firstbyte", "*" );			
+				window.postMessage( "EPISODES:measure:pageready:starttime", "*" );			
+				window.postMessage( "EPISODES:measure:totaltime:starttime", "*" );			
+				window.postMessage( "EPISODES:done", "*" );			
+			}
+			function handleEpisodeResults( event ) {
+				if ( "EPISODES:done" === event.data ) {
+					var beaconUrl	= EPISODES.sendBeacon( "gfx/beacon.gif" );
+			
+					// write the beacon URL in the doc
+					if ( beaconUrl ) {
+						document.getElementById( "episodesresults" ).innerHTML = "<code>" + beaconUrl + "</code>";
+					}
+				}
+			}
+			EPISODES.addEventListener( "load", doPageReady, false );
+			EPISODES.addEventListener( "message", handleEpisodeResults, false );			
+		</script>
+		<meta name="keywords" content="XFormsDB, Tutorial, Miscellaneous, Episodes, in, All, Browsers" />
+		<meta name="description" content="XFormsDB Tutorial - Miscellaneous - Episodes in All Browsers" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2009, XFormsDB" />
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:mark:tutorial.css", "*" );
+		</script>
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<script type="text/javascript">
+			window.postMessage( "EPISODES:measure:tutorial.css:tutorial.css", "*" );
+		</script>
+		<xforms:model />
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Miscellaneous - Episodes in All Browsers</h1>
+				<p>Testing <a href="http://stevesouders.com/episodes/">Episodes</a>, a framework for timing web pages.</p> 
+				<!-- Episodes Results (beacon) -->
+				<div id="episodesresults" />
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>

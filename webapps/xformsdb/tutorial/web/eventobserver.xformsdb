@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsDB Tutorial - Miscellaneous - Event Observer</title>
+		<meta name="keywords" content="XFormsDB, Tutorial, Miscellaneous, Event, Observer" />
+		<meta name="description" content="XFormsDB Tutorial - Miscellaneous - Event Observer" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2009, XFormsDB" />
+		<link rel="stylesheet" type="text/css" href="css/tutorial.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- Observed events instance -->
+			<xforms:instance id="observed-events-instance">
+				<observed-events xmlns="" />
+			</xforms:instance>
+			<!-- Text instance -->
+			<xforms:instance id="text-instance">
+				<text xmlns="" />
+			</xforms:instance>
+			<xforms:instance id="observed-event">
+				<observed-event xmlns="" />
+			</xforms:instance>
+			<xforms:action ev:event="DOMFocusIn" ev:observer="input-field">
+				<xforms:insert origin="instance( 'observed-event' )" nodeset="*" context="instance( 'observed-events-instance' )" />
+				<xforms:setvalue ref="instance( 'observed-events-instance' )/observed-event[ last() ]" value="'DOMFocusIn'" />
+			</xforms:action>
+			<xforms:action ev:event="DOMFocusOut" ev:observer="input-field">
+				<xforms:insert origin="instance( 'observed-event' )" nodeset="*" context="instance( 'observed-events-instance' )" />
+				<xforms:setvalue ref="instance( 'observed-events-instance' )/observed-event[ last() ]" value="'DOMFocusOut'" />
+			</xforms:action>
+			<xforms:action ev:event="xforms-value-changed" ev:observer="input-field">
+				<xforms:insert origin="instance( 'observed-event' )" nodeset="*" context="instance( 'observed-events-instance' )" />
+				<xforms:setvalue ref="instance( 'observed-events-instance' )/observed-event[ last() ]" value="'xforms-value-changed'" />
+			</xforms:action>
+			<xforms:action ev:event="DOMActivate" ev:observer="input-trigger">
+				<xforms:insert origin="instance( 'observed-event' )" nodeset="*" context="instance( 'observed-events-instance' )" />
+				<xforms:setvalue ref="instance( 'observed-events-instance' )/observed-event[ last() ]" value="'DOMActivate'" />
+			</xforms:action>
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+			<xformsdb:include resource="xinc/header.xinc" />
+			<xformsdb:include resource="xinc/sidebar.xinc" />
+			<div id="content">
+				<h1>Miscellaneous - Event Observer</h1>
+		       	<xforms:switch id="message-switcher">
+		        	<xforms:case id="default-message-switcher" />
+		        </xforms:switch>
+		        <table>
+					<tr>
+						<td><b>Text:</b>&nbsp;</td>
+						<td><xforms:input id="input-field" ref="instance( 'text-instance' )" incremental="true" /><xforms:trigger id="input-trigger"><xforms:label>Finish</xforms:label></xforms:trigger></td>
+					</tr>
+					<tr>
+						<td><b>Observed events:</b>&nbsp;</td>
+						<td>
+							<xforms:repeat nodeset="instance( 'observed-events-instance' )/observed-event" id="observed-events-observed-event-repeat">
+								<xforms:output ref="." /><br />
+							</xforms:repeat>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<xformsdb:include resource="xinc/footer.xinc" />
+		</div>
+	</body>
+</html>
