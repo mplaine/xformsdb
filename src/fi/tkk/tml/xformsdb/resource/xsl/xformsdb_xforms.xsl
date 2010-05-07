@@ -1920,6 +1920,230 @@
 		</xsl:choose>
 	</xsl:template>
 
+	 
+	<!-- Handle the <xforms:submit> element -->
+	<xsl:template match="/xhtml:html/xhtml:body//xforms:submit">
+		<!-- Store the matched node for later use -->
+ 		<xsl:variable name="varXFormsSubmit" select="." />
+		<!-- Retrieve the submission attribute -->
+ 		<xsl:variable name="varSubmission" select="@submission" />
+ 		<!-- Parse the XML document -->
+ 		<xsl:variable name="varXFormsDBSubmissions" select="saxon:parse( $paramXFormsDBSubmissionsXMLString )/xformsdb:submissions" />
+ 		<!-- Iterate over all <xformsdb:submission> elements -->
+ 		<xsl:for-each select="$varXFormsDBSubmissions/xformsdb:submission">
+	 		<xsl:if test="@id = $varSubmission">
+	 			<!-- Store the matched node for later use -->
+	 			<xsl:variable name="varXFormsDBSubmission" select="." />
+	 			<!-- Change the context back to the <xforms:submit> element -->
+				<xsl:for-each select="$varXFormsSubmit">
+					<xsl:variable name="varXFormsSubmitElementName">
+						<xsl:choose>
+							<xsl:when test="string-length( substring-before( $varXFormsSubmit/name(), ':' ) ) > 0">
+								<xsl:value-of select="substring-before( $varXFormsSubmit/name(), ':' )" /><xsl:text>:submit</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>submit</xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>				
+					</xsl:variable>
+					<xsl:variable name="varXFormsSubmitElementNamespaceURI">
+						<xsl:value-of select="$varXFormsSubmit/namespace-uri()" />
+					</xsl:variable>
+					<xsl:variable name="varXFormsActionElementName">
+						<xsl:choose>
+							<xsl:when test="string-length( substring-before( $varXFormsSubmit/name(), ':' ) ) > 0">
+								<xsl:value-of select="substring-before( $varXFormsSubmit/name(), ':' )" /><xsl:text>:action</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>action</xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>				
+					</xsl:variable>
+					<xsl:variable name="varXFormsActionElementNamespaceURI">
+						<xsl:value-of select="$varXFormsSubmit/namespace-uri()" />
+					</xsl:variable>
+					<!-- Figure out whether or not the submission attribute of the <xforms:submit> element needs to be changed -->
+					<xsl:variable name="varChangeSubmission">
+						<!-- Iterate over all <xformsdb:submission> elements -->
+			 			<xsl:for-each select="$varXFormsDBSubmissions/xformsdb:submission">
+							<xsl:if test="@id = $varSubmission and @xformsdbrequesttype = 'file' and ( @filetype = 'insert' or @filetype = 'update' )">
+								<xsl:text>true</xsl:text>
+							</xsl:if>
+						</xsl:for-each>
+					</xsl:variable>
+					<!-- Create almost identical copy of the <xforms:submit> element -->
+					<xsl:element name="{ $varXFormsSubmitElementName }" namespace="{ $varXFormsSubmitElementNamespaceURI }">
+						<!-- Iterate over all attributes -->
+			 			<xsl:for-each select="@*">
+							<xsl:attribute name="{ name() }">
+								<xsl:value-of select="." />
+							</xsl:attribute>
+							<!-- Change the submission attribute of the <xforms:submit> element if needed -->
+							<xsl:choose>
+								<!-- BEGIN: Hack: Create a dummy submit in order to receive information about the file to be uploaded from Orbeon Forms -->
+								<xsl:when test="$varChangeSubmission = 'true'">
+									<xsl:attribute name="submission">
+										<xsl:value-of select="concat( 'xformsdb-', $varXFormsSubmit/@submission )" />
+						      		</xsl:attribute>
+								</xsl:when>
+								<!-- END: Hack: Create a dummy submit in order to receive information about the file to be uploaded from Orbeon Forms -->
+								<xsl:otherwise />
+							</xsl:choose>								
+				 		</xsl:for-each>
+				 		<!-- Copy child elements -->
+						<xsl:apply-templates select="$varXFormsSubmit/*" />
+						<!-- Create an additional <xforms:action> element -->
+						<xsl:element name="{ $varXFormsActionElementName }" namespace="{ $varXFormsActionElementNamespaceURI }">
+			 				<!-- Add the event attribute -->
+							<xsl:attribute name="event" namespace="http://www.w3.org/2001/xml-events">
+								<xsl:text>DOMActivate</xsl:text>
+							</xsl:attribute>
+							<xsl:if test="$varXFormsDBSubmission/@id = $varSubmission">
+								<!-- ::::::::::::: DELETE ELEMENT ::::::::::::: -->
+								<!-- Delete an old xformsdb:error element (if any) from the request instance -->
+								<!-- Rename the element after the matched element -->
+								<xsl:variable name="deleteElementName">
+									<xsl:choose>
+										<xsl:when test="string-length( substring-before( $varXFormsSubmit/name(), ':' ) ) > 0">
+											<xsl:value-of select="substring-before( $varXFormsSubmit/name(), ':' )" /><xsl:text>:delete</xsl:text>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:text>delete</xsl:text>
+										</xsl:otherwise>
+									</xsl:choose>				
+								</xsl:variable>
+								<xsl:variable name="deleteElementNamespaceURI">
+									<xsl:value-of select="$varXFormsSubmit/namespace-uri()" />
+								</xsl:variable>
+								<xsl:element name="{ $deleteElementName }" namespace="{ $deleteElementNamespaceURI }">
+									<!-- Add the transformed/correct model attribute -->
+									<xsl:if test="$varXFormsDBSubmission/@model">
+										<xsl:attribute name="model">
+											<xsl:value-of select="$varXFormsDBSubmission/@model" />
+										</xsl:attribute>
+									</xsl:if>
+									<!-- Add the nodeset attribute -->
+									<xsl:attribute name="nodeset">
+										<xsl:value-of select="$varXFormsDBSubmission/@ref" />
+										<xsl:text>/</xsl:text>
+										<xsl:value-of select="$paramXFormsDBErrorElement" />
+									</xsl:attribute>
+									<!-- Add the at attribute -->
+									<xsl:attribute name="at">
+										<xsl:text>last()</xsl:text>
+									</xsl:attribute>
+								</xsl:element>
+							</xsl:if>
+				 			<!-- Create additional elements if necessary -->
+							<xsl:if test="$varXFormsDBSubmission/@id = $varSubmission and ( $varXFormsDBSubmission/@expressiontype = 'update' or $varXFormsDBSubmission/@statetype = 'set' or $varXFormsDBSubmission/@filetype = 'delete' )">
+								<!-- ::::::::::::: DELETE ELEMENT ::::::::::::: -->
+								<!-- Add the delete element (to delete the previous child element of the attachment element) -->
+								<!-- Rename the element after the matched element -->
+								<xsl:variable name="deleteElementName">
+									<xsl:choose>
+										<xsl:when test="string-length( substring-before( $varXFormsSubmit/name(), ':' ) ) > 0">
+											<xsl:value-of select="substring-before( $varXFormsSubmit/name(), ':' )" /><xsl:text>:delete</xsl:text>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:text>delete</xsl:text>
+										</xsl:otherwise>
+									</xsl:choose>				
+								</xsl:variable>
+								<xsl:variable name="deleteElementNamespaceURI">
+									<xsl:value-of select="$varXFormsSubmit/namespace-uri()" />
+								</xsl:variable>
+								<xsl:element name="{ $deleteElementName }" namespace="{ $deleteElementNamespaceURI }">
+									<!-- Add the transformed/correct model attribute -->
+									<xsl:if test="$varXFormsDBSubmission/@model">
+										<xsl:attribute name="model">
+											<xsl:value-of select="$varXFormsDBSubmission/@model" />
+										</xsl:attribute>
+									</xsl:if>
+									<!-- Add the nodeset attribute -->
+									<xsl:if test="$varXFormsDBSubmission/@ref">
+										<xsl:attribute name="nodeset">
+											<xsl:variable name="xformsdbAttachmentElementName">
+												<xsl:choose>
+													<xsl:when test="string-length( name( namespace::*[ . = 'http://www.tml.tkk.fi/2007/xformsdb' ] ) ) > 0">
+														<xsl:value-of select="name( namespace::*[ . = 'http://www.tml.tkk.fi/2007/xformsdb' ] )" /><xsl:text>:attachment</xsl:text>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:text>attachment</xsl:text>
+													</xsl:otherwise>
+												</xsl:choose>				
+											</xsl:variable>
+											<xsl:value-of select="$varXFormsDBSubmission/@ref" />
+											<xsl:text>/</xsl:text>
+											<xsl:value-of select="$xformsdbAttachmentElementName" />
+											<xsl:text>/*</xsl:text>
+										</xsl:attribute>
+									</xsl:if>
+									<!-- Add the at attribute -->
+									<xsl:attribute name="at">
+										<xsl:text>1</xsl:text>
+									</xsl:attribute>
+								</xsl:element>
+								<!-- ::::::::::::: INSERT ELEMENT ::::::::::::: -->
+								<!-- Add the insert element (to insert the attachment instance data to the attachment element) -->
+								<!-- Rename the element after the matched element -->
+								<xsl:variable name="insertElementName">
+									<xsl:choose>
+										<xsl:when test="string-length( substring-before( $varXFormsSubmit/name(), ':' ) ) > 0">
+											<xsl:value-of select="substring-before( $varXFormsSubmit/name(), ':' )" /><xsl:text>:insert</xsl:text>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:text>insert</xsl:text>
+										</xsl:otherwise>
+									</xsl:choose>				
+								</xsl:variable>
+								<xsl:variable name="insertElementNamespaceURI">
+									<xsl:value-of select="$varXFormsSubmit/namespace-uri()" />
+								</xsl:variable>
+								<xsl:element name="{ $insertElementName }" namespace="{ $insertElementNamespaceURI }">
+									<!-- Add the transformed/correct model attribute -->
+									<xsl:if test="$varXFormsDBSubmission/@model">
+										<xsl:attribute name="model">
+											<xsl:value-of select="$varXFormsDBSubmission/@model" />
+										</xsl:attribute>
+									</xsl:if>
+									<!-- Add the context and nodeset attributes -->
+									<xsl:if test="$varXFormsDBSubmission/@ref">
+										<!-- Add the context attribute -->
+										<xsl:attribute name="context">
+											<xsl:variable name="xformsdbAttachmentElementName">
+												<xsl:choose>
+													<xsl:when test="string-length( name( namespace::*[ . = 'http://www.tml.tkk.fi/2007/xformsdb' ] ) ) > 0">
+														<xsl:value-of select="name( namespace::*[ . = 'http://www.tml.tkk.fi/2007/xformsdb' ] )" /><xsl:text>:attachment</xsl:text>
+													</xsl:when>
+													<xsl:otherwise>
+														<xsl:text>attachment</xsl:text>
+													</xsl:otherwise>
+												</xsl:choose>				
+											</xsl:variable>
+											<xsl:value-of select="$varXFormsDBSubmission/@ref" />
+											<xsl:text>/</xsl:text>
+											<xsl:value-of select="$xformsdbAttachmentElementName" />
+										</xsl:attribute>
+										<!-- Add the nodeset attribute -->
+										<xsl:attribute name="nodeset">
+											<xsl:text>*</xsl:text>
+										</xsl:attribute>
+									</xsl:if>
+									<!-- Add the origin attribute -->
+									<xsl:if test="$varXFormsDBSubmission/@xformsinsertorigin">
+										<xsl:attribute name="origin">
+											<xsl:value-of select="$varXFormsDBSubmission/@xformsinsertorigin" />
+										</xsl:attribute>
+									</xsl:if>
+								</xsl:element>
+							</xsl:if>
+						</xsl:element>
+					</xsl:element>
+				</xsl:for-each>	 			
+	 		</xsl:if>
+	 	</xsl:for-each>
+	 </xsl:template>
+
 
 	<!-- Handle the <xforms:load> element -->
 	<xsl:template match="//xforms:load">
