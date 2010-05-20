@@ -187,7 +187,7 @@
 		Default files folder: (empty string)
 	
 	-->
-	<widget-authentication-uri>http://localhost:8080/uspace/user.xml?idkey={idkey}&amp;at={at}</widget-authentication-uri>
+	<widget-authentication-uri>http://localhost:8080/uspace/rest/xformsdbuser?idkey={idkey}&amp;at={at}</widget-authentication-uri>
 
 
 	<!-- ====================== Widget Data sources URI =================== -->
@@ -207,7 +207,7 @@
 		Default files folder: (empty string)
 	
 	-->
-	<widget-data-sources-uri>http://localhost:8080/uspace/datasource.xml?idkey={idkey}&amp;at={at}</widget-data-sources-uri>
+	<widget-data-sources-uri>http://localhost:8080/uspace/rest/xformsdbwidgetdatasources?idkey={idkey}&amp;at={at}</widget-data-sources-uri>
 
 
 	<!-- ====================== Security Files ============================ -->
