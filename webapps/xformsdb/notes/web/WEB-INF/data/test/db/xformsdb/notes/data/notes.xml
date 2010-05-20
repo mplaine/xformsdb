@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<notes>
+		<note id="6e75a5517cef0f8d45cfbc280d1acd53">
+			<creationtime>2010-05-17</creationtime>
+			<content>Finish EDEN deliverable documents</content>
+		</note>
+		<note id="83ce80c6cba003108283294928155335">
+			<creationtime>2010-05-18</creationtime>
+			<content>Review HYPE final submissions</content>
+		</note>
+		<note id="08f865da2048e660daf7dbac35d7ba2a">
+			<creationtime>2010-05-19</creationtime>
+			<content>Implement the Notes Web application</content>
+		</note>
+	</notes>
+</root>

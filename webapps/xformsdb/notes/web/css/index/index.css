@@ -1,0 +1,120 @@
+@charset "UTF-8";
+
+
+/* ============== XHTML ==================== */
+/* Force vertical scrollbars in Netscape, Firefox, and Safari browsers */
+html {
+	height: 100%;
+ 	margin-bottom: 1px;
+}
+/* Reset font size for all elements to standard (16 Pixel) */
+html * {
+	font-size: 100.01%;
+}
+/* Set default values */
+body {
+	background: #FFFFFF;
+	color: #000000;
+	text-align: left;
+}
+/* Fix rounding errors when scaling font sizes in older versions of Opera browser */
+body {
+	font-size: 100.01%;
+}
+
+/* Set font properties */
+body {
+	color: #333333;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 75.00%; /* 12px */
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;	
+}
+/* Set background pattern */
+body {
+	background-image: none;
+	background-repeat: repeat;
+	height: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+	color: #333333;
+}
+h1 {
+	font-size: 250%; /* 30px */
+}
+h3 {
+	font-size: 150%; /* 18px */
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+h5 {
+	font-size: 116.67%; /* 14px */
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+
+/* ============== XHTML ==================== */
+/* -------------- PAGE --------------------- */
+/** Layout options
+ *  --------------
+ *  Right aligned:
+ *  margin: 0 0 0 auto;
+ *
+ *  Center aligned:
+ *  margin: 0 auto;
+ */
+.index.page_margins {
+	margin: 0 auto;
+	width: 100%;
+}
+.index.page {
+	background-color: #FFFFFF;
+	padding: 10px;
+	text-align: left;
+}
+
+
+/* -------------- HEADER ------------------- */
+.index.header {
+	padding-bottom: 20px;
+}
+
+
+/* -------------- MAIN --------------------- */
+.index.main table.notetable {
+	table-layout: fixed;
+	width: 100%;
+}
+.index.main table.notetable td {
+	border-bottom: 1px solid #999999;
+	border-top: 1px solid #999999;
+	color: #333333;
+	padding: 10px 0px 10px 0px;
+	width: 100%;
+}
+.index.main table.notetable .creationtime {
+	color: #999999;
+}
+.index.main table.notetable .content {
+	display: block;
+	margin-top: 2px;
+}
+.index.main table.newnotetable .newnotelabel {
+	font-weight: bold;
+	padding-right: 10px;
+}
+
+
+/* ============== XFORMS =================== */
+.index.main .xforms-repeat-selected-item-1 {
+	background: none;
+	border-width: 0px;
+}
+.index.main .xforms-trigger.delete {
+	float: right;
+}
+.index.main table.newnotetable .newnotetrigger {
+	margin-top: 4px;
+}
