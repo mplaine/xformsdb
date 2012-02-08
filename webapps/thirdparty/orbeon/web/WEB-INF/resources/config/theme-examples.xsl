@@ -165,7 +165,7 @@
                         </xhtml:td>
                     </xhtml:tr>
                 </xhtml:table>
-                <xhtml:p class="ops-version">Orbeon Forms <xsl:value-of select="$orbeon-forms-version"/>-201109082120-modified</xhtml:p>
+                <xhtml:p class="ops-version">Orbeon Forms <xsl:value-of select="$orbeon-forms-version"/>-201202081552-modified</xhtml:p>
             </xhtml:body>
             <!-- Scripts at the bottom of the page. This is not valid HTML, but it is a recommended practice for
                  performance as of early 2008. See http://developer.yahoo.com/performance/rules.html#js_bottom -->
