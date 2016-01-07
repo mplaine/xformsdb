@@ -2,6 +2,7 @@ package fi.tkk.tml.xformsdb.transformer.xformsdb;
 
 import java.net.URLDecoder;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,8 +13,6 @@ import nu.xom.Elements;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-
-import com.eaio.uuid.UUID;
 
 import fi.tkk.tml.xformsdb.core.Constants;
 import fi.tkk.tml.xformsdb.error.ErrorConstants;
@@ -30,7 +29,7 @@ import fi.tkk.tml.xformsdb.servlet.XFormsDBServlet;
  * an appropriate transformation result.
  *
  * @author Markku Laine
- * @version 1.0	 Created on February 23, 2010
+ * @version 1.0	 Created on January 5, 2016
  */
 public class XFormsDBInstancesTransformer {
 
@@ -116,7 +115,7 @@ public class XFormsDBInstancesTransformer {
 					}
 					
 					// Add id
-					xformsdbQueryElement.addAttribute( new Attribute( "id", new UUID().toString() ) );
+					xformsdbQueryElement.addAttribute( new Attribute( "id", UUID.randomUUID().toString() ) );
 				}
 				if ( xformsdbWidgetQueryElement != null ) {
 					Element xformsdbExpression					= null;
@@ -157,7 +156,7 @@ public class XFormsDBInstancesTransformer {
 					}
 
 					// Add id
-					xformsdbWidgetQueryElement.addAttribute( new Attribute( "id", new UUID().toString() ) );
+					xformsdbWidgetQueryElement.addAttribute( new Attribute( "id", UUID.randomUUID().toString() ) );
 				}
 				else if ( xformsdbStateElement != null ) {
 					// Add attachment if needed
@@ -173,7 +172,7 @@ public class XFormsDBInstancesTransformer {
 					xformsdbExpression.addAttribute( new Attribute( "resource", Constants.XQ_AUTHENTICATE_USER_FILE_PATH ) );
 
 					// Add id
-					xformsdbLoginElement.addAttribute( new Attribute( "id", new UUID().toString() ) );
+					xformsdbLoginElement.addAttribute( new Attribute( "id", UUID.randomUUID().toString() ) );
 				}
 				else if ( xformsdbLogoutElement != null ) {
 					// Nothing to be updated
@@ -242,7 +241,7 @@ public class XFormsDBInstancesTransformer {
 					}
 
 					// Add id
-					xformsdbFileElement.addAttribute( new Attribute( "id", new UUID().toString() ) );
+					xformsdbFileElement.addAttribute( new Attribute( "id", UUID.randomUUID().toString() ) );
 				}
 				else if ( xformsdbCookieElement != null ) {
 					// Nothing to be updated

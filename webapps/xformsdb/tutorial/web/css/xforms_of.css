@@ -6,6 +6,12 @@
     background-color: #FFFFFF;
     border: 1px solid #000000;
 }
+.xforms-input.xforms-readonly input {
+	color: #CCCCCC;
+}
+.xforms-input.wide-input input {
+	width: 200px;
+}
 .xforms-secret {
     background-color: #FFFFFF;
     border: 1px solid #000000;

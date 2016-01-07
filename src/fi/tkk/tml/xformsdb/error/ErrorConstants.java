@@ -6,7 +6,7 @@ package fi.tkk.tml.xformsdb.error;
  * 
  *
  * @author Markku Laine
- * @version 1.0	 Created on February 23, 2010
+ * @version 1.0	 Created on January 7, 2016
  */
 public class ErrorConstants {
 	
@@ -1065,7 +1065,6 @@ public class ErrorConstants {
 	public static final String ERROR_MESSAGE_TRANSFORMATION_87		= "Failed to transform the <xformsdb:widgetquery> element.";
 
 	public static final int ERROR_CODE_TRANSFORMATION_88			= 19088;
-	public static final String ERROR_MESSAGE_TRANSFORMATION_88		= "Failed to transform the <xformsdb:widgetquery> element.";
 
 	public static final int ERROR_CODE_TRANSFORMATION_89			= 19089;
 	public static final String ERROR_MESSAGE_TRANSFORMATION_89		= "Failed to update the XOM document object (<xforms:models> element).";
@@ -1078,6 +1077,59 @@ public class ErrorConstants {
 
 	public static final int ERROR_CODE_TRANSFORMATION_92			= 19092;
 	public static final String ERROR_MESSAGE_TRANSFORMATION_92		= "Failed to retrieve the username of the logged in user from XFormsDB.";
+
+	public static final int ERROR_CODE_TRANSFORMATION_93			= 19093;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_93		= "Failed to update the XOM document object (<xformsrtc:connects> element).";
+
+	public static final int ERROR_CODE_TRANSFORMATION_94			= 19094;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_94		= "Failed to transform the <xformsrtc:connect> elements.";
+
+	public static final int ERROR_CODE_TRANSFORMATION_95			= 19095;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_95		= "Failed to update the XOM document object (<xformsrtc:disconnects> element).";
+
+	public static final int ERROR_CODE_TRANSFORMATION_96			= 19096;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_96		= "Failed to transform the <xformsrtc:disconnect> elements.";
+
+	public static final int ERROR_CODE_TRANSFORMATION_97			= 19097;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_97		= "Failed to update the XOM document object (<xformsrtc:connections> element).";
+
+	public static final int ERROR_CODE_TRANSFORMATION_98			= 19098;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_98		= "Failed to transform the <xformsrtc:connection> elements.";
+
+	public static final int ERROR_CODE_TRANSFORMATION_99			= 19099;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_99		= "Missing mandatory attribute 'id' from the <xformsrtc:connection> element.";
+
+	public static final int ERROR_CODE_TRANSFORMATION_100			= 19100;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_100		= "Missing mandatory attribute 'resource' from the <xformsrtc:connection> element.";
+
+	public static final int ERROR_CODE_TRANSFORMATION_101			= 19101;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_101		= "Missing mandatory attribute 'ref' from the <xformsrtc:connection> element.";
+
+	public static final int ERROR_CODE_TRANSFORMATION_102			= 19102;
+
+	public static final int ERROR_CODE_TRANSFORMATION_103			= 19103;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_103		= "Missing mandatory attribute 'instance' from the <xformsrtc:connection> element.";
+
+	public static final int ERROR_CODE_TRANSFORMATION_104			= 19104;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_104		= "Missing mandatory attribute 'connection' from the <xformsrtc:connect> element.";
+
+	public static final int ERROR_CODE_TRANSFORMATION_105			= 19105;
+
+	public static final int ERROR_CODE_TRANSFORMATION_106			= 19106;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_106		= "Missing mandatory attribute 'connection' from the <xformsrtc:disconnect> element.";
+
+	public static final int ERROR_CODE_TRANSFORMATION_107			= 19107;
+
+	public static final int ERROR_CODE_TRANSFORMATION_108			= 19108;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_108		= "Failed to update the XOM document object (<xformsrtc:sends> element).";
+
+	public static final int ERROR_CODE_TRANSFORMATION_109			= 19109;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_109		= "Missing mandatory attribute 'connection' from the <xformsrtc:send> element.";
+
+	public static final int ERROR_CODE_TRANSFORMATION_110			= 19110;
+
+	public static final int ERROR_CODE_TRANSFORMATION_111			= 19111;
+	public static final String ERROR_MESSAGE_TRANSFORMATION_111		= "Failed to transform the <xformsrtc:send> elements.";
 
 	
 	// ErrorWriter errors

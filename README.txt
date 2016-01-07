@@ -5,7 +5,7 @@
 =================================================
 
 
-Last updated for XFormsDB 1.0 on March 16, 2010.
+Last updated for XFormsDB 1.1 on January 7, 2016.
 
 This README.txt file covers the following topics:
 
@@ -19,6 +19,7 @@ This README.txt file covers the following topics:
      8. More Information
      9. Known Issues
     10. Third-Party Software
+    11. Changelog
      
      
 *************************************************
@@ -469,8 +470,6 @@ This product includes the following software:
        GNU Lesser General Public License, version undefined)
      * Saxon-B 9.1.0.1 for Java (http://saxon.sourceforge.net/)
        Mozilla Public License, version 1.0
-     * UUID 3.1 (http://johannburkard.de/software/uuid/)
-       MIT License
      * XOM 1.2.2 (http://www.xom.nu/)
        GNU Lesser General Public License, version 2.1
 
@@ -480,7 +479,22 @@ individual licenses.
      /lib/licenses/*.txt
 
 
-Copyright (c) 2006-2010 Aalto University, School of Science and Technology
-and Nokia Research Center. All rights reserved.
+*************************************************
+11. Changelog
+*************************************************
+
+Changelog for XFormsDB:
+
+Version 1.1 (January 7, 2016)
+     * Added support for XFormsRTC
+     * Added support for Firefox 10+
+     * Added the Notes web application
+     * Added support for synchronized updates in the <xforms:submit> elements
+
+Version 1.0 (March 22, 2010)
+     * First public release
+
+
+Copyright (c) 2006-2016 Aalto University and Nokia Research Center. All rights reserved.
 
 --

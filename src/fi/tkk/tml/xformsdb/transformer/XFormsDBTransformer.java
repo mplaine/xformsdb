@@ -50,6 +50,10 @@ import fi.tkk.tml.xformsdb.transformer.xforms.XFormsModelsTransformer;
 import fi.tkk.tml.xformsdb.transformer.xforms.XFormsSubmissionsTransformer;
 import fi.tkk.tml.xformsdb.transformer.xformsdb.XFormsDBInstancesTransformer;
 import fi.tkk.tml.xformsdb.transformer.xformsdb.XFormsDBSubmissionsTransformer;
+import fi.tkk.tml.xformsdb.transformer.xformsrtc.XFormsRTCConnectionsTransformer;
+import fi.tkk.tml.xformsdb.transformer.xformsrtc.XFormsRTCConnectsTransformer;
+import fi.tkk.tml.xformsdb.transformer.xformsrtc.XFormsRTCDisconnectsTransformer;
+import fi.tkk.tml.xformsdb.transformer.xformsrtc.XFormsRTCSendsTransformer;
 import fi.tkk.tml.xformsdb.transformer.xhtml.XHTMLAsTransformer;
 import fi.tkk.tml.xformsdb.transformer.xhtml.XHTMLMetasTransformer;
 import fi.tkk.tml.xformsdb.util.FileUtils;
@@ -65,7 +69,7 @@ import fi.tkk.tml.xformsdb.xml.to.RequestHeaderTO;
  * 
  *
  * @author Markku Laine
- * @version 1.0	 Created on November 19, 2009
+ * @version 1.0	 Created on January 7, 2016
  */
 public class XFormsDBTransformer {
 
@@ -413,6 +417,70 @@ public class XFormsDBTransformer {
 	}
 
 
+	private static void updateXOMXFormsRTCConnections( HttpServletResponse response, Document document ) throws TransformerException {
+		logger.log( Level.DEBUG, "Method has been called." );
+		
+		
+		try {
+			// Update the XOM document in order to update the <xformsrtc:connection> elements
+			XFormsRTCConnectionsTransformer.transform( response, document );
+			logger.log( Level.DEBUG, "The XOM document object (<xformsrtc:connections> element) has been successfully updated." );
+		} catch ( TransformerException tex ) {
+			throw tex;
+		} catch ( Exception ex ) {
+			throw new TransformerException( ErrorConstants.ERROR_CODE_TRANSFORMATION_97, ErrorConstants.ERROR_MESSAGE_TRANSFORMATION_97, ex );
+		}
+	}
+
+	
+	private static void updateXOMXFormsRTCConnects( Document document ) throws TransformerException {
+		logger.log( Level.DEBUG, "Method has been called." );
+		
+		
+		try {
+			// Update the XOM document in order to update the <xformsrtc:connect> elements
+			XFormsRTCConnectsTransformer.transform( document );
+			logger.log( Level.DEBUG, "The XOM document object (<xformsrtc:connects> element) has been successfully updated." );
+		} catch ( TransformerException tex ) {
+			throw tex;
+		} catch ( Exception ex ) {
+			throw new TransformerException( ErrorConstants.ERROR_CODE_TRANSFORMATION_93, ErrorConstants.ERROR_MESSAGE_TRANSFORMATION_93, ex );
+		}
+	}
+
+	
+	private static void updateXOMXFormsRTCDisconnects( Document document ) throws TransformerException {
+		logger.log( Level.DEBUG, "Method has been called." );
+		
+		
+		try {
+			// Update the XOM document in order to update the <xformsrtc:disconnect> elements
+			XFormsRTCDisconnectsTransformer.transform( document );
+			logger.log( Level.DEBUG, "The XOM document object (<xformsrtc:disconnects> element) has been successfully updated." );
+		} catch ( TransformerException tex ) {
+			throw tex;
+		} catch ( Exception ex ) {
+			throw new TransformerException( ErrorConstants.ERROR_CODE_TRANSFORMATION_95, ErrorConstants.ERROR_MESSAGE_TRANSFORMATION_95, ex );
+		}
+	}
+
+	
+	private static void updateXOMXFormsRTCSends( Document document ) throws TransformerException {
+		logger.log( Level.DEBUG, "Method has been called." );
+		
+		
+		try {
+			// Update the XOM document in order to update the <xformsrtc:send> elements
+			XFormsRTCSendsTransformer.transform( document );
+			logger.log( Level.DEBUG, "The XOM document object (<xformsrtc:sends> element) has been successfully updated." );
+		} catch ( TransformerException tex ) {
+			throw tex;
+		} catch ( Exception ex ) {
+			throw new TransformerException( ErrorConstants.ERROR_CODE_TRANSFORMATION_108, ErrorConstants.ERROR_MESSAGE_TRANSFORMATION_108, ex );
+		}
+	}
+
+
 	private static void updateXOMXFormsLoads( HttpServletResponse response, Document document ) throws TransformerException {
 		logger.log( Level.DEBUG, "Method has been called." );
 		
@@ -580,6 +648,12 @@ public class XFormsDBTransformer {
 			xformsdbTransformerXForms.setParameter( "paramXFormsDBStateXMLString", xformsdbStateXMLString );
 			xformsdbTransformerXForms.setParameter( "paramXFormsDBInstancesXMLString", new Element( document.getRootElement().getFirstChildElement( "instances", Constants.NAMESPACE_URI_XFORMSDB ) ).toXML() );
 			xformsdbTransformerXForms.setParameter( "paramXFormsDBSubmissionsXMLString", new Element( document.getRootElement().getFirstChildElement( "submissions", Constants.NAMESPACE_URI_XFORMSDB ) ).toXML() );
+			xformsdbTransformerXForms.setParameter( "paramXFormsRTCConnectionsXMLString", new Element( document.getRootElement().getFirstChildElement( "connections", Constants.NAMESPACE_URI_XFORMSRTC ) ).toXML() );
+			xformsdbTransformerXForms.setParameter( "paramXFormsRTCConnectsXMLString", new Element( document.getRootElement().getFirstChildElement( "connects", Constants.NAMESPACE_URI_XFORMSRTC ) ).toXML() );
+			xformsdbTransformerXForms.setParameter( "paramXFormsRTCDisconnectsXMLString", new Element( document.getRootElement().getFirstChildElement( "disconnects", Constants.NAMESPACE_URI_XFORMSRTC ) ).toXML() );
+			xformsdbTransformerXForms.setParameter( "paramXFormsRTCSendsXMLString", new Element( document.getRootElement().getFirstChildElement( "sends", Constants.NAMESPACE_URI_XFORMSRTC ) ).toXML() );
+			xformsdbTransformerXForms.setParameter( "paramXFormsRTCEventProxyInstance", Constants.XFORMSRTC_EVENT_PROXY_INSTANCE );
+			xformsdbTransformerXForms.setParameter( "paramXFormsRTCVariable", Constants.XFORMSRTC_VARIABLE );
 			xformsdbTransformerXForms.setParameter( "paramXFormsModelsXMLString", new Element( document.getRootElement().getFirstChildElement( "models", Constants.NAMESPACE_URI_XFORMS ) ).toXML() );
 			xformsdbTransformerXForms.setParameter( "paramXFormsLoadsXMLString", new Element( document.getRootElement().getFirstChildElement( "loads", Constants.NAMESPACE_URI_XFORMS ) ).toXML() );
 			xformsdbTransformerXForms.setParameter( "paramXFormsSubmissionsXMLString", new Element( document.getRootElement().getFirstChildElement( "submissions", Constants.NAMESPACE_URI_XFORMS ) ).toXML() );
@@ -824,6 +898,7 @@ public class XFormsDBTransformer {
 
 			// Build the XOM document
 			document							= XFormsDBTransformer.buildXOM( xformsdbExtract, encoding );
+			logger.log( Level.DEBUG, "Extracted XML (before):\n" + document.toXML() );
 
 			// Update the XOM document (<xforms:models> element)
 			XFormsDBTransformer.updateXOMXFormsModels( response, document );
@@ -833,6 +908,18 @@ public class XFormsDBTransformer {
 
 			// Update the XOM document (<xformsdb:instances> element)
 			XFormsDBTransformer.updateXOMXFormsDBInstances( xformsdbServlet, request, document, expressionTypeUpdateRequestInstances, stateTypeSetRequestInstances, fileTypeInsertRequestInstances, fileTypeDeleteRequestInstances, fileTypeUpdateRequestInstances );
+
+			// Update the XOM document (<xformsrtc:connection> element)
+			XFormsDBTransformer.updateXOMXFormsRTCConnections( response, document );
+
+			// Update the XOM document (<xformsrtc:connect> element)
+			XFormsDBTransformer.updateXOMXFormsRTCConnects( document );
+
+			// Update the XOM document (<xformsrtc:disconnect> element)
+			XFormsDBTransformer.updateXOMXFormsRTCDisconnects( document );
+
+			// Update the XOM document (<xformsrtc:send> element)
+			XFormsDBTransformer.updateXOMXFormsRTCSends( document );
 
 			// Update the XOM document (<xforms:loads> element)
 			XFormsDBTransformer.updateXOMXFormsLoads( response, document );
@@ -845,6 +932,7 @@ public class XFormsDBTransformer {
 
 			// Update the XOM document (<xhtml:as> element)
 			XFormsDBTransformer.updateXOMXHTMLAs( response, document );
+			logger.log( Level.DEBUG, "Extracted XML (after):\n" + document.toXML() );
 
 			// Add the <xformsdb:query> elements to XFormsDB query manager
 			XFormsDBTransformer.addElementsToXFormsDBQueryManager( request.getSession(), document );

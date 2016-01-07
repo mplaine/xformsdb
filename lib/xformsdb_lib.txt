@@ -94,7 +94,7 @@ Files (1 jar file):
  * %HOME%/README.txt
 Notes:
  * From WAR file
- 
+
 
 Saxon-B 9.1.0.1 for Java
 ========================
@@ -113,19 +113,8 @@ Files (9 jar file):
 Notes:
  * Rename file: saxon9-xqj.jar --> endorse_over_exist_saxon9-xqj.jar
  * Available under the Mozilla Public License Version 1.0 (the "License"), available at: http://www.mozilla.org/MPL/
- 
 
-UUID 3.1
-========
-Description:
- * UUID Generator (version 1).
-Files (1 jar file):
- * %HOME%/copying.txt
- * %HOME%/uuid-3.1.jar
-Notes:
- * From JAR file
- 
-  
+
 XOM 1.2.2
 =========
 Description:

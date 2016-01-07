@@ -4,6 +4,7 @@
 				xmlns:saxon="http://saxon.sf.net/"
 				xmlns:xforms="http://www.w3.org/2002/xforms"
 				xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+				xmlns:xformsrtc="http://cs.aalto.fi/2016/xformsrtc"
 				xmlns:xxforms="http://orbeon.org/oxf/xml/xforms"
 				xmlns:exforms="http://www.exforms.org/exf/1-0"
 				xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -31,6 +32,12 @@
 	<xsl:param name="paramXFormsDBStateXMLString" select="/.." />
 	<xsl:param name="paramXFormsDBInstancesXMLString" select="/.." />
 	<xsl:param name="paramXFormsDBSubmissionsXMLString" select="/.." />
+	<xsl:param name="paramXFormsRTCConnectionsXMLString" select="/.." />
+	<xsl:param name="paramXFormsRTCConnectsXMLString" select="/.." />
+	<xsl:param name="paramXFormsRTCDisconnectsXMLString" select="/.." />
+	<xsl:param name="paramXFormsRTCSendsXMLString" select="/.." />
+	<xsl:param name="paramXFormsRTCEventProxyInstance" select="'xformsrtc-event-proxy-instance'" />
+	<xsl:param name="paramXFormsRTCVariable" select="'xformsrtc'" />
 	<xsl:param name="paramXFormsModelsXMLString" select="/.." />
 	<xsl:param name="paramXFormsLoadsXMLString" select="/.." />
 	<xsl:param name="paramXFormsSubmissionsXMLString" select="/.." />
@@ -58,6 +65,10 @@
 
 		<xsl:copy>
 			<xsl:copy-of select="@*" />
+			<!-- Add external events for XFormsRTC -->
+			<xsl:attribute name="external-events" namespace="http://orbeon.org/oxf/xml/xforms">
+				<xsl:value-of select="$varXFormsModels/xforms:model[ $varXFormsModelIndex ]/@xxforms:external-events" />
+			</xsl:attribute>			
 			<!-- Add the <xforms:instance id="xformsdb-response-proxy-instance-xxxxx"> element, which acts as a proxy inside this model for XFormsDB-related related -->
 			<!-- Add the instance element and rename it after the parent (xforms:model) element -->
 			<xsl:variable name="xformsdbResponseProxyInstanceElementName">
@@ -1672,6 +1683,375 @@
 		</xsl:if>
 	</xsl:template>
 
+
+	<!-- Transform the <xformsrtc:connection> element -->
+	<xsl:template match="/xhtml:html/xhtml:head/xforms:model/xformsrtc:connection">
+		<!-- Parse the XML document -->
+ 		<xsl:variable name="varXFormsRTCConnections" select="saxon:parse( $paramXFormsRTCConnectionsXMLString )/xformsrtc:connections" />
+		<!-- Calculate the index/position of the matched <xformsrtc:connection> element -->
+ 		<xsl:variable name="varXFormsRTCConnectionIndex" select="count( preceding::xformsrtc:connection ) + 1" />
+		<!-- Transform the <xformsrtc:connection> element -->
+		<!-- Add the <xforms:instance id="xformsrtc-event-proxy-instance-xxxxx"> element, which acts as an event proxy inside this model for the particular <xformsrtc:connection> element -->
+		<!-- Add the instance element and rename it after the parent (xforms:model) element -->
+		<xsl:variable name="xformsrtcEventProxyInstanceElementName">
+			<xsl:choose>
+				<xsl:when test="string-length( name( namespace::*[ . = 'http://www.w3.org/2002/xforms' ] ) ) > 0">
+					<xsl:value-of select="name( namespace::*[ . = 'http://www.w3.org/2002/xforms' ] )" /><xsl:text>:instance</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>instance</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>				
+		</xsl:variable>
+		<xsl:variable name="xformsrtcEventProxyInstanceElementNamespaceURI">
+			<xsl:value-of select="'http://www.w3.org/2002/xforms'" />
+		</xsl:variable>
+		<xsl:element name="{ $xformsrtcEventProxyInstanceElementName }" namespace="{ $xformsrtcEventProxyInstanceElementNamespaceURI }">
+			<xsl:attribute name="id">
+				<xsl:value-of select="$paramXFormsRTCEventProxyInstance" />
+				<xsl:text>-</xsl:text>
+				<xsl:value-of select="$varXFormsRTCConnections/xformsrtc:connection[ $varXFormsRTCConnectionIndex ]/@xformsrtcconnectionindex" />
+			</xsl:attribute>
+			<xformsrtc-event-proxy xmlns="">
+				<error-code />
+				<error-message />
+				<disconnect-code />
+				<disconnect-reason />
+			</xformsrtc-event-proxy>
+		</xsl:element>
+	</xsl:template>
+
+
+	<xsl:template match="/xhtml:html/xhtml:body">
+		<!-- Parse the XML document -->
+ 		<xsl:variable name="varXFormsRTCConnections" select="saxon:parse( $paramXFormsRTCConnectionsXMLString )/xformsrtc:connections" />
+		<!-- Copy the element -->
+		<xsl:copy>
+			<!-- And its attributes -->
+			<xsl:copy-of select="@*" />
+			<!-- And everything inside it -->
+			<xsl:apply-templates />
+			<!-- Iterate over all <xformsrtc:connection> elements and generate related code for each of them -->
+			<xsl:for-each select="/xhtml:html/xhtml:head/xforms:model/xformsrtc:connection">
+				<!-- Current position -->
+		 		<xsl:variable name="varXFormsRTCConnectionPosition" select="position()" />
+				<!-- Current <xformsrtc:connection> element -->
+		 		<xsl:variable name="varXFormsRTCConnection" select="$varXFormsRTCConnections/xformsrtc:connection[ $varXFormsRTCConnectionPosition ]" />
+				<!-- Calculate the index/position of the matched <xformsrtc:connection> element -->
+		 		<xsl:variable name="varXFormsRTCConnectionIndex" select="$varXFormsRTCConnection/@xformsrtcconnectionindex" />
+				<!-- Add the group element for each <xformsrtc:connection id="..."> element -->
+				<xsl:element name="xforms:group" namespace="http://www.w3.org/2002/xforms">
+					<xsl:attribute name="id">
+						<xsl:value-of select="$varXFormsRTCConnection/@id" />			
+					</xsl:attribute>
+					<xsl:attribute name="style">
+						<xsl:text>display: none;</xsl:text>
+					</xsl:attribute>
+					<!-- Leverage AVTs in XHTML to add AVT support for <xformsrtc:connection resource="..." > -->			
+					<xsl:element name="div" namespace="http://www.w3.org/1999/xhtml">
+						<xsl:attribute name="id">
+							<xsl:text>xformsrtc-connection-resource-</xsl:text>
+							<xsl:value-of select="$varXFormsRTCConnectionIndex" />
+						</xsl:attribute>
+						<xsl:attribute name="resource">
+							<xsl:value-of select="$varXFormsRTCConnection/@resource" />
+						</xsl:attribute>
+					</xsl:element>
+					<!-- Copy the contents of the <xformsrtc:connection> element unchanged -->
+					<xsl:copy-of select="./*" />
+					<!-- Hidden input fields for proxying XFormsRTC event properties -->
+					<xsl:element name="xforms:input" namespace="http://www.w3.org/2002/xforms">
+						<xsl:attribute name="id">
+							<xsl:text>xformsrtc-event-proxy-error-code-input-</xsl:text>
+							<xsl:value-of select="$varXFormsRTCConnectionIndex" />
+						</xsl:attribute>
+						<xsl:attribute name="ref">
+							<xsl:text>instance( 'xformsrtc-event-proxy-instance-</xsl:text>
+							<xsl:value-of select="$varXFormsRTCConnectionIndex" />
+							<xsl:text>' )/error-code</xsl:text>
+						</xsl:attribute>
+					</xsl:element>
+					<xsl:element name="xforms:input" namespace="http://www.w3.org/2002/xforms">
+						<xsl:attribute name="id">
+							<xsl:text>xformsrtc-event-proxy-error-message-input-</xsl:text>
+							<xsl:value-of select="$varXFormsRTCConnectionIndex" />
+						</xsl:attribute>
+						<xsl:attribute name="ref">
+							<xsl:text>instance( 'xformsrtc-event-proxy-instance-</xsl:text>
+							<xsl:value-of select="$varXFormsRTCConnectionIndex" />
+							<xsl:text>' )/error-message</xsl:text>
+						</xsl:attribute>
+					</xsl:element>
+					<xsl:element name="xforms:input" namespace="http://www.w3.org/2002/xforms">
+						<xsl:attribute name="id">
+							<xsl:text>xformsrtc-event-proxy-data-send-input-</xsl:text>
+							<xsl:value-of select="$varXFormsRTCConnectionIndex" />
+						</xsl:attribute>
+						<xsl:attribute name="ref">
+							<xsl:value-of select="$varXFormsRTCConnection/@ref" />
+						</xsl:attribute>
+					</xsl:element>
+					<xsl:element name="xforms:input" namespace="http://www.w3.org/2002/xforms">
+						<xsl:attribute name="id">
+							<xsl:text>xformsrtc-event-proxy-data-receive-input-</xsl:text>
+							<xsl:value-of select="$varXFormsRTCConnectionIndex" />
+						</xsl:attribute>
+						<xsl:attribute name="ref">
+							<xsl:text>instance( '</xsl:text>
+							<xsl:value-of select="$varXFormsRTCConnection/@instance" />
+							<xsl:text>' )</xsl:text>
+						</xsl:attribute>
+					</xsl:element>
+					<xsl:element name="xforms:input" namespace="http://www.w3.org/2002/xforms">
+						<xsl:attribute name="id">
+							<xsl:text>xformsrtc-event-proxy-disconnect-code-input-</xsl:text>
+							<xsl:value-of select="$varXFormsRTCConnectionIndex" />
+						</xsl:attribute>
+						<xsl:attribute name="ref">
+							<xsl:text>instance( 'xformsrtc-event-proxy-instance-</xsl:text>
+							<xsl:value-of select="$varXFormsRTCConnectionIndex" />
+							<xsl:text>' )/disconnect-code</xsl:text>
+						</xsl:attribute>
+					</xsl:element>
+					<xsl:element name="xforms:input" namespace="http://www.w3.org/2002/xforms">
+						<xsl:attribute name="id">
+							<xsl:text>xformsrtc-event-proxy-disconnect-reason-input-</xsl:text>
+							<xsl:value-of select="$varXFormsRTCConnectionIndex" />
+						</xsl:attribute>
+						<xsl:attribute name="ref">
+							<xsl:text>instance( 'xformsrtc-event-proxy-instance-</xsl:text>
+							<xsl:value-of select="$varXFormsRTCConnectionIndex" />
+							<xsl:text>' )/disconnect-reason</xsl:text>
+						</xsl:attribute>
+					</xsl:element>
+					<!-- XFormsRTC JavaScript WebSocket binding script -->
+					<xsl:element name="script" namespace="http://www.w3.org/1999/xhtml">
+						<xsl:variable name="newline">
+							<xsl:text>
+							</xsl:text>
+						</xsl:variable>
+						<xsl:attribute name="type">
+							<xsl:text>text/javascript</xsl:text>
+						</xsl:attribute>
+						window.addEventListener( "load", function load( event ) {
+							window.removeEventListener( "load", load, false ); // Remove the listener as it is no longer needed
+							<xsl:value-of select="concat( $paramXFormsRTCVariable, $varXFormsRTCConnectionIndex )" />.support();
+						}, false );
+
+						var <xsl:value-of select="concat( $paramXFormsRTCVariable, $varXFormsRTCConnectionIndex )" />				= ( function() {
+							// Private variables
+							var ws					= null;
+							var url					= null;
+							
+							// Private functions
+							function support() {
+								//delete window.WebSocket; // For debugging: Emulate a browser without WebSocket support
+								if ( "WebSocket" in window === false ) {
+									//console.log( "WebSocket is not supported by your browser: " + navigator.userAgent );
+									ORBEON.xforms.Document.setValue( "xformsrtc-event-proxy-error-code-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />", undefined ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+									ORBEON.xforms.Document.setValue( "xformsrtc-event-proxy-error-message-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />", "WebSocket is not supported by your browser: " + navigator.userAgent ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+									ORBEON.xforms.Document.dispatchEvent( "<xsl:value-of select="$varXFormsRTCConnection/@id" />", "xformsrtc-connection-error" );
+								}
+							}
+							
+							function connect() {
+								try {
+									url				= document.getElementById( "xformsrtc-connection-resource-<xsl:value-of select="$varXFormsRTCConnectionIndex" />" ).getAttribute( "resource" );		
+									//console.log( "Connect to " + url );
+									ws				= new WebSocket( url ); 
+						
+						 			ws.onopen		= function( event ) {
+										//console.log( event );
+										//console.log( "Connection opened" );
+										ORBEON.xforms.Document.dispatchEvent( "<xsl:value-of select="$varXFormsRTCConnection/@id" />", "xformsrtc-connection-connect" );
+						            };
+						            
+									ws.onclose		= function( event ) { 
+										//console.log( event );
+										var code	= event.code;
+										var reason	= event.reason;
+										//console.log( "Connection closed (code: " + code + ", reason: \"" + reason + "\")" );
+										ORBEON.xforms.Document.setValue( "xformsrtc-event-proxy-disconnect-code-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />", code ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+										ORBEON.xforms.Document.setValue( "xformsrtc-event-proxy-disconnect-reason-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />", reason ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+										ORBEON.xforms.Document.dispatchEvent( "<xsl:value-of select="$varXFormsRTCConnection/@id" />", "xformsrtc-connection-disconnect" );
+						            };
+						            
+						            ws.onmessage	= function( event ) {
+										//console.log( event );
+										var message = event.data;
+										//console.log( "Message received: \"" + message + "\"" );
+										ORBEON.xforms.Document.setValue( "xformsrtc-event-proxy-data-receive-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />", message ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+										ORBEON.xforms.Document.dispatchEvent( "<xsl:value-of select="$varXFormsRTCConnection/@id" />", "xformsrtc-connection-data" );
+						            };
+						            
+									ws.onerror		= function( event ) {
+										//console.log( event ); // Generic error event. See "onclose" event handler for error details 
+										//console.log( "Unexpected error occurred" );
+										// Reset error code and error message as the true reasons are given as part of the disconnect event
+										ORBEON.xforms.Document.setValue( "xformsrtc-event-proxy-error-code-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />", "" ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+										ORBEON.xforms.Document.setValue( "xformsrtc-event-proxy-error-message-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />", "" ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+										ORBEON.xforms.Document.dispatchEvent( "<xsl:value-of select="$varXFormsRTCConnection/@id" />", "xformsrtc-connection-error" );
+						            };			            
+						    	} catch ( ex ) {
+									//console.log( "Connect exception: " + ex );
+									ORBEON.xforms.Document.setValue( "xformsrtc-event-proxy-error-code-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />", ex.code ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+									ORBEON.xforms.Document.setValue( "xformsrtc-event-proxy-error-message-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />", ex.message ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+									ORBEON.xforms.Document.dispatchEvent( "<xsl:value-of select="$varXFormsRTCConnection/@id" />", "xformsrtc-connection-error" );
+						    	}
+						    }
+						
+							function disconnect() {
+								try {
+									//console.log( "Disconnect from " + url );
+									ws.close();
+									//ws.close( 1000, "Normal closure; the connection successfully completed whatever purpose for which it was created." );
+						    	} catch ( ex ) {
+									//console.log( "Disconnect exception: " + ex );
+									ORBEON.xforms.Document.setValue( "xformsrtc-event-proxy-error-code-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />", ex.code ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+									ORBEON.xforms.Document.setValue( "xformsrtc-event-proxy-error-message-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />", ex.message ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+									ORBEON.xforms.Document.dispatchEvent( "<xsl:value-of select="$varXFormsRTCConnection/@id" />", "xformsrtc-connection-error" );
+						    	}
+							}
+						
+							function send() {
+								try {
+									var message	= ORBEON.xforms.Document.getValue( "xformsrtc-event-proxy-data-send-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />" ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+									//console.log( "Send: \"" + message + "\"" );
+									ws.send( message );
+									ORBEON.xforms.Document.dispatchEvent( "<xsl:value-of select="$varXFormsRTCConnection/@id" />", "xformsrtc-connection-send" );
+						    	} catch ( ex ) {
+									//console.log( "Send exception: " + ex );
+									ORBEON.xforms.Document.setValue( "xformsrtc-event-proxy-error-code-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />", ex.code ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+									ORBEON.xforms.Document.setValue( "xformsrtc-event-proxy-error-message-input-<xsl:value-of select="$varXFormsRTCConnectionIndex" />", ex.message ); // Hack due to the lack of including properties in events: http://doc.orbeon.com/xforms/client-side-javascript-api.html
+									ORBEON.xforms.Document.dispatchEvent( "<xsl:value-of select="$varXFormsRTCConnection/@id" />", "xformsrtc-connection-error" );
+						    	}					
+							}
+							
+							// Reveal public pointers to selected private variables and functions
+							return {
+								support:	support,
+								connect:	connect,
+								disconnect:	disconnect,
+								send:		send
+							};
+						})();
+					</xsl:element>
+				</xsl:element>
+			</xsl:for-each>
+    	</xsl:copy>
+	</xsl:template>
+
+
+	<!-- Transform the <xformsrtc:connect> element -->
+	<xsl:template match="//xformsrtc:connect">
+		<!-- Parse the XML document -->
+ 		<xsl:variable name="varXFormsRTCConnects" select="saxon:parse( $paramXFormsRTCConnectsXMLString )/xformsrtc:connects" />
+		<!-- Calculate the index/position of the matched <xformsrtc:connect> element -->
+ 		<xsl:variable name="varXFormsRTCConnectIndex" select="count( preceding::xformsrtc:connect ) + 1" />
+		<!-- Transform the <xformsrtc:connect> element -->
+		<!-- Rename the element -->
+		<xsl:variable name="xxformsScriptElementName">
+			<xsl:text>xxforms:script</xsl:text>
+		</xsl:variable>
+		<xsl:variable name="xxformsScriptElementNamespaceURI">
+			<xsl:value-of select="'http://orbeon.org/oxf/xml/xforms'" />
+		</xsl:variable>
+		<xsl:element name="{ $xxformsScriptElementName }" namespace="{ $xxformsScriptElementNamespaceURI }" >
+			<!-- Iterate over all attributes -->
+ 			<xsl:for-each select="@*">
+ 				<xsl:choose>
+	 				<!-- Remove the connection attribute -->
+	 				<xsl:when test="name() = 'connection'">
+	 				</xsl:when>
+	 				<!-- Copy other attributes -->
+	 				<xsl:otherwise>
+						<xsl:attribute name="{ name() }">
+							<xsl:value-of select="." />
+						</xsl:attribute>
+	 				</xsl:otherwise>
+	 			</xsl:choose>
+ 			</xsl:for-each>
+			<!-- Add the element-specific script content -->
+			<xsl:if test="$varXFormsRTCConnects/xformsrtc:connect[ $varXFormsRTCConnectIndex ]/@xformsrtcconnectionindex">
+				<xsl:value-of select="concat( $paramXFormsRTCVariable, $varXFormsRTCConnects/xformsrtc:connect[ $varXFormsRTCConnectIndex ]/@xformsrtcconnectionindex )" />.connect();
+			</xsl:if>
+		</xsl:element>
+	</xsl:template>
+
+
+	<!-- Transform the <xformsrtc:disconnect> element -->
+	<xsl:template match="//xformsrtc:disconnect">
+		<!-- Parse the XML document -->
+ 		<xsl:variable name="varXFormsRTCDisconnects" select="saxon:parse( $paramXFormsRTCDisconnectsXMLString )/xformsrtc:disconnects" />
+		<!-- Calculate the index/position of the matched <xformsrtc:disconnect> element -->
+ 		<xsl:variable name="varXFormsRTCDisconnectIndex" select="count( preceding::xformsrtc:disconnect ) + 1" />
+		<!-- Transform the <xformsrtc:disconnect> element -->
+		<!-- Rename the element -->
+		<xsl:variable name="xxformsScriptElementName">
+			<xsl:text>xxforms:script</xsl:text>
+		</xsl:variable>
+		<xsl:variable name="xxformsScriptElementNamespaceURI">
+			<xsl:value-of select="'http://orbeon.org/oxf/xml/xforms'" />
+		</xsl:variable>
+		<xsl:element name="{ $xxformsScriptElementName }" namespace="{ $xxformsScriptElementNamespaceURI }" >
+			<!-- Iterate over all attributes -->
+ 			<xsl:for-each select="@*">
+ 				<xsl:choose>
+	 				<!-- Remove the connection attribute -->
+	 				<xsl:when test="name() = 'connection'">
+	 				</xsl:when>
+	 				<!-- Copy other attributes -->
+	 				<xsl:otherwise>
+						<xsl:attribute name="{ name() }">
+							<xsl:value-of select="." />
+						</xsl:attribute>
+	 				</xsl:otherwise>
+	 			</xsl:choose>
+ 			</xsl:for-each>
+			<!-- Add the element-specific script content -->
+			<xsl:if test="$varXFormsRTCDisconnects/xformsrtc:disconnect[ $varXFormsRTCDisconnectIndex ]/@xformsrtcconnectionindex">
+				<xsl:value-of select="concat( $paramXFormsRTCVariable, $varXFormsRTCDisconnects/xformsrtc:disconnect[ $varXFormsRTCDisconnectIndex ]/@xformsrtcconnectionindex )" />.disconnect();
+			</xsl:if>
+		</xsl:element>
+	</xsl:template>
+
+
+	<!-- Transform the <xformsrtc:send> element -->
+	<xsl:template match="//xformsrtc:send">
+		<!-- Parse the XML document -->
+ 		<xsl:variable name="varXFormsRTCSends" select="saxon:parse( $paramXFormsRTCSendsXMLString )/xformsrtc:sends" />
+		<!-- Calculate the index/position of the matched <xformsrtc:send> element -->
+ 		<xsl:variable name="varXFormsRTCSendIndex" select="count( preceding::xformsrtc:send ) + 1" />
+		<!-- Transform the <xformsrtc:send> element -->
+		<!-- Rename the element -->
+		<xsl:variable name="xxformsScriptElementName">
+			<xsl:text>xxforms:script</xsl:text>
+		</xsl:variable>
+		<xsl:variable name="xxformsScriptElementNamespaceURI">
+			<xsl:value-of select="'http://orbeon.org/oxf/xml/xforms'" />
+		</xsl:variable>
+		<xsl:element name="{ $xxformsScriptElementName }" namespace="{ $xxformsScriptElementNamespaceURI }" >
+			<!-- Iterate over all attributes -->
+ 			<xsl:for-each select="@*">
+ 				<xsl:choose>
+	 				<!-- Remove the connection attribute -->
+	 				<xsl:when test="name() = 'connection'">
+	 				</xsl:when>
+	 				<!-- Copy other attributes -->
+	 				<xsl:otherwise>
+						<xsl:attribute name="{ name() }">
+							<xsl:value-of select="." />
+						</xsl:attribute>
+	 				</xsl:otherwise>
+	 			</xsl:choose>
+ 			</xsl:for-each>
+			<!-- Add the element-specific script content -->
+			<xsl:if test="$varXFormsRTCSends/xformsrtc:send[ $varXFormsRTCSendIndex ]/@xformsrtcconnectionindex">
+				<xsl:value-of select="concat( $paramXFormsRTCVariable, $varXFormsRTCSends/xformsrtc:send[ $varXFormsRTCSendIndex ]/@xformsrtcconnectionindex )" />.send();
+			</xsl:if>
+		</xsl:element>
+	</xsl:template>
+			
 			
 	<!-- Handle the <xforms:send> element -->
 	<xsl:template match="//xforms:send">

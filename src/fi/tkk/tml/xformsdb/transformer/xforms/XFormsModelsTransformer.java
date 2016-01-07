@@ -24,7 +24,7 @@ import fi.tkk.tml.xformsdb.error.TransformerException;
  * an appropriate transformation result.
  *
  * @author Markku Laine
- * @version 1.0	 Created on November 18, 2009
+ * @version 1.0	 Created on January 7, 2016
  */
 public class XFormsModelsTransformer {
 
@@ -52,7 +52,16 @@ public class XFormsModelsTransformer {
 			Element xformsModelElement		= null;
 			for ( int i = 0; i < xformsModelElements.size(); i++ ) {
 				xformsModelElement			= xformsModelElements.get( i );
-				
+
+				// Update xxforms:external-events to include the XFormsRTC-specific events
+				if ( xformsModelElement.getAttribute( "external-events", "http://orbeon.org/oxf/xml/xforms" ) != null ) {
+					xformsModelElement.addAttribute( new Attribute( "xxforms:external-events", "http://orbeon.org/oxf/xml/xforms", xformsModelElement.getAttributeValue( "external-events", "http://orbeon.org/oxf/xml/xforms"  ) + " xformsrtc-connection-connect xformsrtc-connection-disconnect xformsrtc-connection-send xformsrtc-connection-data xformsrtc-connection-error" ) );
+				}
+				// Add xxforms:external-events that includes the XFormsRTC-specific events
+				else {
+					xformsModelElement.addAttribute( new Attribute( "xxforms:external-events", "http://orbeon.org/oxf/xml/xforms", "xformsrtc-connection-connect xformsrtc-connection-disconnect xformsrtc-connection-send xformsrtc-connection-data xformsrtc-connection-error" ) );					
+				}
+
 				// Add proxyinstance
 				xformsModelElement.addAttribute( new Attribute( "proxyinstance", Constants.XFORMSDB_RESPONSE_PROXY_INSTANCE + "-" + ( i + 1 ) ) );
 			}

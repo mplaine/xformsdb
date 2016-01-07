@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.UUID;
 
 import nu.xom.Attribute;
 import nu.xom.Document;
@@ -21,8 +22,6 @@ import nu.xom.Elements;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-
-import com.eaio.uuid.UUID;
 
 import fi.tkk.tml.xformsdb.core.Constants;
 import fi.tkk.tml.xformsdb.dao.DAOFactory;
@@ -39,7 +38,7 @@ import fi.tkk.tml.xformsdb.xml.to.xformsdb.XFormsDBConfigTO;
  * 
  *
  * @author Markku Laine
- * @version 1.0	 Created on October 23, 2009
+ * @version 1.0	 Created on January 5, 2016
  */
 public class XFormsDBFileInsertHandler extends ResponseHandler {
 	
@@ -193,7 +192,7 @@ public class XFormsDBFileInsertHandler extends ResponseHandler {
 
 				// Add the ID attribute if needed
 				if ( fileId == null ) {
-					fileId								= new UUID().toString();
+					fileId								= UUID.randomUUID().toString();
 					xformsdbFileElement.addAttribute( new Attribute( "id", fileId ) );
 				}
 				

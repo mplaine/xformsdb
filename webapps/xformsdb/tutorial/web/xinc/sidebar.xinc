@@ -135,6 +135,13 @@
 			<xforms:load resource="deletefiles.xformsdb" show="replace" />
 		</xforms:action>
 	</xforms:trigger>
+	<h4>Real-Time Communication</h4>
+	<xforms:trigger class="navigation" appearance="minimal">
+		<xforms:label>WebSocket</xforms:label>
+		<xforms:action ev:event="DOMActivate">
+			<xforms:load resource="websocket.xformsdb" show="replace" />
+		</xforms:action>
+	</xforms:trigger>	
 	<h4>Miscellaneous</h4>
 	<xforms:trigger class="navigation" appearance="minimal">
 		<xforms:label>Include</xforms:label>

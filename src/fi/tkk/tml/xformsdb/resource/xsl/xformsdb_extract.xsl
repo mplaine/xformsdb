@@ -2,8 +2,10 @@
 <xsl:stylesheet version="2.0"
 				xmlns:xforms="http://www.w3.org/2002/xforms"
 				xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+				xmlns:xformsrtc="http://cs.aalto.fi/2016/xformsrtc"
 				xmlns:xhtml="http://www.w3.org/1999/xhtml"
-				xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+				xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+				xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
 	<!-- Define the output format -->
 	<xsl:output method="xml" version="1.0" />
  	<!-- Define the parameters -->
@@ -35,6 +37,42 @@
 				<xsl:if test="/xhtml:html/xhtml:head/xforms:model/xformsdb:submission">
 					<xsl:for-each select="/xhtml:html/xhtml:head/xforms:model/xformsdb:submission">
 						<xsl:call-template name="xformsdbSubmission">
+							<xsl:with-param name="pContext" select="." />
+						</xsl:call-template>
+					</xsl:for-each>
+				</xsl:if>
+			</xsl:element>
+			<xsl:element name="xformsrtc:connections" namespace="http://cs.aalto.fi/2016/xformsrtc">
+				<xsl:if test="/xhtml:html/xhtml:head/xforms:model/xformsrtc:connection">
+					<xsl:for-each select="/xhtml:html/xhtml:head/xforms:model/xformsrtc:connection">
+						<xsl:call-template name="xformsrtcConnection">
+							<xsl:with-param name="pContext" select="." />
+						</xsl:call-template>
+					</xsl:for-each>
+				</xsl:if>
+			</xsl:element>
+			<xsl:element name="xformsrtc:connects" namespace="http://cs.aalto.fi/2016/xformsrtc">
+				<xsl:if test="//xformsrtc:connect">
+					<xsl:for-each select="//xformsrtc:connect">
+						<xsl:call-template name="xformsrtcConnect">
+							<xsl:with-param name="pContext" select="." />
+						</xsl:call-template>
+					</xsl:for-each>
+				</xsl:if>
+			</xsl:element>
+			<xsl:element name="xformsrtc:disconnects" namespace="http://cs.aalto.fi/2016/xformsrtc">
+				<xsl:if test="//xformsrtc:disconnect">
+					<xsl:for-each select="//xformsrtc:disconnect">
+						<xsl:call-template name="xformsrtcDisconnect">
+							<xsl:with-param name="pContext" select="." />
+						</xsl:call-template>
+					</xsl:for-each>
+				</xsl:if>
+			</xsl:element>
+			<xsl:element name="xformsrtc:sends" namespace="http://cs.aalto.fi/2016/xformsrtc">
+				<xsl:if test="//xformsrtc:send">
+					<xsl:for-each select="//xformsrtc:send">
+						<xsl:call-template name="xformsrtcSend">
 							<xsl:with-param name="pContext" select="." />
 						</xsl:call-template>
 					</xsl:for-each>
@@ -86,6 +124,11 @@
 			<xsl:if test="$pContext/@id">
 				<xsl:attribute name="id">
 					<xsl:value-of select="$pContext/@id" />
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="$pContext/@xxforms:external-events">
+				<xsl:attribute name="external-events" namespace="http://orbeon.org/oxf/xml/xforms">
+					<xsl:value-of select="$pContext/@xxforms:external-events" />
 				</xsl:attribute>
 			</xsl:if>
 		</xsl:element>
@@ -568,6 +611,100 @@
 			<xsl:if test="$pContext/parent::xforms:model">
 				<xsl:attribute name="proxyinstance">
 					<xsl:value-of select="concat( $paramXFormsDBResponseProxyInstance, '-', count( $pContext/parent::xforms:model/preceding-sibling::xforms:model ) + 1 )" />
+				</xsl:attribute>
+			</xsl:if>
+		</xsl:element>
+	</xsl:template>
+
+
+	<xsl:template name="xformsrtcConnection">
+		<xsl:param name="pContext" />
+		<xsl:element name="{ $pContext/name() }" namespace="http://cs.aalto.fi/2016/xformsrtc">
+ 			<xsl:for-each select="@*">
+				<xsl:attribute name="{ name() }">
+					<xsl:value-of select="." />
+				</xsl:attribute>
+ 			</xsl:for-each>
+			<xsl:if test="$pContext/@id">
+				<xsl:attribute name="id">
+					<xsl:value-of select="$pContext/@id" />
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="$pContext/@resource">
+				<xsl:attribute name="resource">
+					<xsl:value-of select="$pContext/@resource" />
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="$pContext/xforms:resource/@value">
+				<xsl:attribute name="resourcechild">
+					<xsl:value-of select="$pContext/xforms:resource/@value" />
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="$pContext/@ref">
+				<xsl:attribute name="ref">
+					<xsl:value-of select="$pContext/@ref" />
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="$pContext/@replace">
+				<xsl:attribute name="replace">
+					<xsl:value-of select="$pContext/@replace" />
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="$pContext/@instance">
+				<xsl:attribute name="instance">
+					<xsl:value-of select="$pContext/@instance" />
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="$pContext/parent::xforms:model/@id">
+				<xsl:attribute name="model">
+					<xsl:value-of select="$pContext/parent::xforms:model/@id" />
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="$pContext/parent::xforms:model">
+				<xsl:attribute name="xformsrtcconnectionindex">
+					<xsl:value-of select="( count( $pContext/preceding::xformsrtc:connection ) + 1 )" />
+					<!-- <xsl:value-of select="( count( $pContext/preceding-sibling::xformsrtc:connection ) + count( $pContext/parent::xforms:model/preceding-sibling::xforms:model/xformsrtc:connection ) + 1 )" /> -->
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="$pContext/parent::xforms:model/*[ local-name() = 'instance' and ( namespace-uri() = 'http://www.w3.org/2002/xforms' or namespace-uri() = 'http://www.tml.tkk.fi/2007/xformsdb' ) ]">
+				<xsl:attribute name="xformsfirstinstance">
+					<xsl:value-of select="$pContext/parent::xforms:model/*[ local-name() = 'instance' and ( namespace-uri() = 'http://www.w3.org/2002/xforms' or namespace-uri() = 'http://www.tml.tkk.fi/2007/xformsdb' ) ][ 1 ]/@id" />
+				</xsl:attribute>
+			</xsl:if>
+		</xsl:element>	
+	</xsl:template>
+
+
+	<xsl:template name="xformsrtcConnect">
+		<xsl:param name="pContext" />
+		<xsl:element name="{ $pContext/name() }" namespace="http://cs.aalto.fi/2016/xformsrtc">
+			<xsl:if test="$pContext/@connection">
+				<xsl:attribute name="connection">
+					<xsl:value-of select="$pContext/@connection" />
+				</xsl:attribute>
+			</xsl:if>
+		</xsl:element>
+	</xsl:template>
+
+
+	<xsl:template name="xformsrtcDisconnect">
+		<xsl:param name="pContext" />
+		<xsl:element name="{ $pContext/name() }" namespace="http://cs.aalto.fi/2016/xformsrtc">
+			<xsl:if test="$pContext/@connection">
+				<xsl:attribute name="connection">
+					<xsl:value-of select="$pContext/@connection" />
+				</xsl:attribute>
+			</xsl:if>
+		</xsl:element>
+	</xsl:template>
+
+
+	<xsl:template name="xformsrtcSend">
+		<xsl:param name="pContext" />
+		<xsl:element name="{ $pContext/name() }" namespace="http://cs.aalto.fi/2016/xformsrtc">
+			<xsl:if test="$pContext/@connection">
+				<xsl:attribute name="connection">
+					<xsl:value-of select="$pContext/@connection" />
 				</xsl:attribute>
 			</xsl:if>
 		</xsl:element>

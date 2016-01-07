@@ -6,7 +6,7 @@ package fi.tkk.tml.xformsdb.core;
  * 
  *
  * @author Markku Laine
- * @version 1.0	 Created on November 19, 2009
+ * @version 1.0	 Created on January 5, 2016
  */
 public class Constants {
 	
@@ -183,6 +183,14 @@ public class Constants {
 	// XFormsDB error element
 	public static final String XFORMSDB_ERROR_ELEMENT										= Constants.NAMESPACE_PREFIX_XFORMSDB + ":error";
 
+
+	// XFormsRTC event proxy
+	public static final String XFORMSRTC_EVENT_PROXY_INSTANCE								= "xformsrtc-event-proxy-instance";
+
+	
+	// XFormsRTC variable
+	public static final String XFORMSRTC_VARIABLE											= "xformsrtc";
+
 		
 	// MIME types
 	public static final String MIME_TYPE_APPLICATION_XML									= "application/xml";
@@ -217,6 +225,7 @@ public class Constants {
 	public static final String NAMESPACE_URI_XFORMS											= "http://www.w3.org/2002/xforms";
 	public static final String NAMESPACE_URI_XFORMSDB										= "http://www.tml.tkk.fi/2007/xformsdb";
 	public static final String NAMESPACE_URI_XFORMSDB_XSL_FUNCTIONS							= "http://www.tml.tkk.fi/2007/xformsdb/xsl/functions";
+	public static final String NAMESPACE_URI_XFORMSRTC										= "http://cs.aalto.fi/2016/xformsrtc";
 	// XMLNSs
 	public static final String NAMESPACE_XMLNS_EMPTY										= "xmlns" + ( ( "".equals( Constants.NAMESPACE_PREFIX_EMPTY ) == true ) ? "" : ":" + Constants.NAMESPACE_PREFIX_EMPTY ) + "=\"" + Constants.NAMESPACE_URI_EMPTY + "\"";
 	public static final String NAMESPACE_XMLNS_XHTML										= "xmlns" + ( ( "".equals( Constants.NAMESPACE_PREFIX_XHTML ) == true ) ? "" : ":" + Constants.NAMESPACE_PREFIX_XHTML ) + "=\"" + Constants.NAMESPACE_URI_XHTML + "\"";
