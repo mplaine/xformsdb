@@ -1,0 +1,135 @@
+@charset "UTF-8";
+
+
+/* ------------ MAJOR BLOCKS --------------- */
+html,
+body {
+  font-family: Arial;
+  font-size: 14px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+#xforms-form {
+  min-height: 100%;
+  position: relative;
+}
+#container {
+}
+#header {
+  background: #FCFCFC;
+  border-bottom: 1px solid #DADADA;
+  height: 36px;   /* Height of the header */
+  padding: 0px;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  width: 100%;
+}
+#body {
+  padding: 10px;
+  padding-bottom: 51px;   /* Total height of the footer */
+  padding-top: 37px;   /* Total height of the header */
+  text-align: center;
+}
+#footer {
+  background: #FCFCFC;
+  border-top: 1px solid #DADADA;
+  bottom: 0;
+  height: 50px;   /* Height of the footer */
+  padding: 0px;
+  position: fixed;
+  text-align: center;
+  width: 100%;
+}
+
+
+/* --------------- CLASSES ----------------- */
+.form {
+  margin: 10px;
+}
+.message-container {
+  margin-bottom: 30px;
+  margin-top: 30px;
+  overflow: hidden;
+  text-align: left;
+  width: 100%;
+}
+.subsequent-message-container {
+  margin-top: -30px;
+}
+.message {
+  width: 100%;
+}
+.system-message {
+  color: #BFBFBF;
+  text-align: center;
+}
+.client-message {
+  float: left;
+  width: 70%;
+}
+.my-message {
+  float: right;
+}
+.subsequent-message-container .header {
+  display: none;
+}
+.client-message .header {
+  color: #BFBFBF;
+  margin-left: 20px;
+}
+.client-message .nickname {
+  color: #000000;
+}
+.client-message .value {
+  background-color: #DADFE1;
+  border-radius: 15px;
+  color: #000000;
+  margin: 4px 0px 4px 0px;
+  padding: 10px;
+}
+.my-message .value {
+  background-color: #4183D7;
+  border-radius: 15px;
+  color: #FFFFFF;
+  margin: 4px 0px 4px 0px;
+  padding: 10px;
+}
+.subsequent-message-container .client-message .value,
+.subsequent-message-container .my-message .value {
+  margin-top: 0px;
+}
+
+
+/* -------------- ELEMENTS ----------------- */
+h1 {
+  font-family: Arial;
+  font-size: 14px;
+  margin: 10px;
+  padding: 0px;
+}
+input {
+  font-family: Arial;
+  font-size: 14px;
+  margin: 0px;
+  padding: 5px;
+  width: 200px;
+}
+button {
+  background-color: #4183D7;
+  border: 1px solid #4183D7;
+  border-radius: 5px;
+  color: #FFFFFF;
+  font-family: Arial;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0px;
+  padding: 6px;
+  width: 70px;
+}
+button:disabled {
+  background-color: #FFFFFF;
+  border: 1px solid #DADADA;
+  color: #DADADA;
+}

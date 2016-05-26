@@ -1,10 +1,11 @@
 #!/usr/bin/perl
 #
-# Copyright 2001,2004 The Apache Software Foundation
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
+#  Licensed to the Apache Software Foundation (ASF) under one or more
+#  contributor license agreements.  See the NOTICE file distributed with
+#  this work for additional information regarding copyright ownership.
+#  The ASF licenses this file to You under the Apache License, Version 2.0
+#  (the "License"); you may not use this file except in compliance with
+#  the License.  You may obtain a copy of the License at
 #
 #      http://www.apache.org/licenses/LICENSE-2.0
 #
@@ -18,7 +19,7 @@
 #
 # To install for Bash 2.0 or better, add the following to ~/.bashrc:
 # 
-#     $ complete -C complete-ant-cmd ant build.sh
+#     complete -C complete-ant-cmd.pl ant build.sh
 #
 # To install for Z-Shell 2.5 or better, add the following to ~/.zshrc:
 #
@@ -26,20 +27,18 @@
 #         local args_line args
 #         read -l args_line
 #         set -A args $args_line
-#         set -A reply $(COMP_LINE=$args_line complete-ant-cmd ${args[1]} $1)
+#         set -A reply $(COMP_LINE=$args_line complete-ant-cmd.pl ${args[1]} $1)
 #     }
 #     compctl -K ant_complete ant build.sh
-#     
-# @author Mike Williams <mikew@cortexebusiness.com.au>
 
-my $cmdLine = $ENV{'COMP_LINE'};
+my $cmdLine = "$ENV{'ANT_ARGS'} $ENV{'COMP_LINE'}";
 my $antCmd = $ARGV[0];
 my $word = $ARGV[1];
 
 my @completions;
 if ($word =~ /^-/) {
     list( restrict( $word, getArguments() ));
-} elsif ($cmdLine =~ /-(f|buildfile)\s+\S*$/) {
+} elsif ($cmdLine =~ /-(f|file|buildfile)\s+\S*$/) {
     list( getBuildFiles($word) );
 } else {
     list( restrict( $word, getTargets() ));
@@ -59,7 +58,7 @@ sub restrict {
 }
 
 sub getArguments {
-    qw(-buildfile -debug -emacs -f -find -help -listener -logfile 
+    qw(-buildfile -debug -emacs -f -file -find -help -listener -logfile 
        -logger -projecthelp -quiet -verbose -version); 
 }
 
@@ -73,21 +72,24 @@ sub getTargets {
 
     # Look for build-file
     my $buildFile = 'build.xml';
-    if ($cmdLine =~ /-(f|buildfile)\s+(\S+)/) {
+    if ($cmdLine =~ /-(f|file|buildfile)\s+(\S+)(?!.*\s-(f|file|buildfile)\s)/) {
         $buildFile = $2;
     }
     return () unless (-f $buildFile);
 
-    # Run "ant -projecthelp" to list targets.  Keep a cache of results in a
-    # cache-file.
+    # Run "ant -projecthelp -debug" to list targets (-debug is required to get
+    # "Other targets", i.e. targets without a description).  Keep a cache of
+    # results in a cache-file.
     my $cacheFile = $buildFile;
     $cacheFile =~ s|(.*/)?(.*)|${1}.ant-targets-${2}|;
-    if ((!-e $cacheFile) || (-M $buildFile) < (-M $cacheFile)) {
+    if ((!-e $cacheFile) || (-z $cacheFile) || (-M $buildFile) < (-M $cacheFile)) {
         open( CACHE, '>'.$cacheFile ) || die "can\'t write $cacheFile: $!\n";
-        open( HELP, "$antCmd -projecthelp -f '$buildFile'|" ) || return(); 
+        open( HELP, "$antCmd -projecthelp -debug -buildfile '$buildFile'|" ) || return(); 
         my %targets;
         while( <HELP> ) {
-            if (/^\s+(\S+)/) {
+            # Exclude target names starting with dash, because they cannot be
+            # specified on the command line.
+            if (/^\s+\+Target:\s+(?!-)(\S+)/) {
                 $targets{$1}++;
             }
         }

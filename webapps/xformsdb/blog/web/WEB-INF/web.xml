@@ -17,8 +17,8 @@
 			<param-value>/orbeon</param-value>
 		</init-param>
 	</filter>
-	
-	
+
+
 	<!-- Filter Mappings -->
 	<!-- Any web resource with the *.xformsdb suffix is processed by the XForms engine -->
 	<filter-mapping>
@@ -34,8 +34,8 @@
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
-	
-	
+
+
 	<!-- Servlets -->
 	<servlet>
 		<display-name>XFormsDB core servlet.</display-name>
@@ -54,11 +54,12 @@
 		<servlet-name>XFormsDB_servlet</servlet-name>
 		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
-	
+
 
 	<!-- Session Config -->
 	<session-config>
 		<session-timeout>30</session-timeout>
+        <tracking-mode>COOKIE</tracking-mode>
 	</session-config>
 
 
@@ -285,7 +286,7 @@
     </mime-mapping>
     <mime-mapping>
         <extension>mathml</extension>
-        <mime-type>application/mathml+xml</mime-type> 
+        <mime-type>application/mathml+xml</mime-type>
     </mime-mapping>
     <mime-mapping>
         <extension>me</extension>
@@ -680,7 +681,7 @@
         <extension>zip</extension>
         <mime-type>application/zip</mime-type>
     </mime-mapping>
-	
+
 
 	<!-- Welcome File List -->
 	<welcome-file-list>

@@ -1,10 +1,11 @@
 #!/usr/bin/perl
 #
-# Copyright 2000-2004 The Apache Software Foundation
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
+# Licensed to the Apache Software Foundation (ASF) under one or more
+#  contributor license agreements.  See the NOTICE file distributed with
+#  this work for additional information regarding copyright ownership.
+#  The ASF licenses this file to You under the Apache License, Version 2.0
+#  (the "License"); you may not use this file except in compliance with
+#  the License.  You may obtain a copy of the License at
 #
 #      http://www.apache.org/licenses/LICENSE-2.0
 #
@@ -27,9 +28,6 @@
 # issues. oops. (NB, use File::Spec::Functions  will help and the code is
 # structured for the catfile() call, but because of perl version funnies
 # the code is not included. 
-#
-# created:         2000-8-24
-# author:          Steve Loughran steve_l@sourceforge.net
 #######################################################################
 #
 # Assumptions:

@@ -3,7 +3,7 @@
 <!--
 
 	Describes a set of targets that may be requested when Ant is executed.
-	
+
 	name		The name of the project.
 	default		The default target to use when no target is supplied.
 	basedir		The base directory from which all path calculations are done.
@@ -14,10 +14,10 @@
 
 
 	<!-- ====================== DESCRIPTION =============================== -->
-	<!-- 
-	
+	<!--
+
 		The description of the project.
-		
+
 	 -->
 	<description>The XFormsDB Framework</description>
 
@@ -29,22 +29,22 @@
 		Each of the following properties are used in the build script.
 		Values for these properties are set by the first place they are
 		defined, from the following list:
-		
+
 		* Definitions on the "ant" command line (ant -Dfoo=bar compile).
-		
+
 		* Definitions from a "build.properties" file in the top level
 		  source directory of this application.
-		
+
 		* Definitions from a "build.properties" file in the developer's
 		  home directory.
-		
+
 		* Default definitions in this build.xml file.
 
 		file		The filename of the property file.
 		environment	The prefix to use when retrieving environment variables.
 		name		The name of the property to set.
 		value		The value of the property.
-		
+
 	-->
 	<!-- Environment related property -->
 	<property environment="env" />
@@ -64,69 +64,66 @@
 	<property name="compile.debug"        value="true" />
 	<property name="compile.deprecation"  value="false" />
 	<property name="compile.optimize"     value="true" />
-	<property name="compile.source"       value="1.5" />
-	<property name="compile.target"       value="1.5" />
-	
+	<property name="compile.source"       value="1.8" />
+	<property name="compile.target"       value="1.8" />
+
 	<!-- Build environment related properties -->
 	<!-- NOTE: DO NOT CHANGE THESE VALUES. DEFINE/OVERRIDE DEFAULT
 	     (DEVELOPMENT ENVIRONMENT) VALUES IN YOUR OWN
 	     dev-env.properties FILE -->
 	<property name="catalina.home" value="${env.CATALINA_HOME}" />
 	<property name="tomcat.url" value="http://localhost:8080" />
-	<property name="tomcat.manager.path" value="/manager" />
+	<property name="tomcat.manager.path" value="/manager/text" />
 	<property name="tomcat.manager.username" value="admin" />
-	<property name="tomcat.manager.password" value="" />
+	<!-- <property name="tomcat.manager.password" value="" /> -->
 
 
 
 	<!-- ====================== TASKDEFS ================================== -->
 	<!--
-	
+
 		These properties define custom tasks for the Ant build tool.
-		
+
 		Some of the tasks interact with the "/manager" web application
 		installed with Apache Tomcat and some of the tasks provide a collection
 		of additional tasks. Before they can be successfully utilized, you must
 		perform the following steps:
-		
-		* Copy the file "server/lib/catalina-ant.jar" from your Apache Tomcat
-		  installation into the "lib" directory of your Ant installation.
 
-		* Copy the file "ant-contrib-1.0b3.jar" from your Ant Contrib
-		  installation into the "lib" directory of your Ant installation.
-		
+		* Copy the files "lib/catalina-ant.jar" and "lib/tomcat-util.jar" from
+		  your Apache Tomcat installation into the "lib" directory of your Ant
+		  installation.
+
+		* Copy the file "ant-contrib-1.0b3.jar" from your Ant Contrib lib
+		  folder into the "lib" directory of your Ant installation.
+
 		* Create a "dev-env.properties" file in your application's top-level
 		  source directory (or your user login home directory) that defines
 		  appropriate values for the "catalina.home", "tomcat.url",
 		  "tomcat.manager.path", "tomcat.manager.username", and
 		  "tomcat.manager.password" properties described above.
-		
+
 		For more information about the Manager web application, and the
 		functionality of these tasks, see:
-		http://localhost:8080/tomcat-docs/manager-howto.html
+		http://localhost:8080/docs/manager-howto.html
 
 		name		The name of the task.
 		classname	The full class name implementing the task.
 
 	-->
 	<!-- Catalina taskdef names -->
-	<taskdef name="start"    classname="org.apache.catalina.ant.StartTask" />
-	<taskdef name="list"     classname="org.apache.catalina.ant.ListTask" />
-	<taskdef name="deploy"   classname="org.apache.catalina.ant.DeployTask" />
-	<taskdef name="reload"   classname="org.apache.catalina.ant.ReloadTask" />
-	<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" />
-	<taskdef name="stop"     classname="org.apache.catalina.ant.StopTask" />
+	<!-- Configure the custom Ant tasks for the Manager application -->
+  <import file="${tools.home}/tomcat/bin/catalina-tasks.xml" />
 
 	<!-- eXist-db taskdef names -->
 	<typedef resource="org/exist/ant/antlib.xml" uri="http://exist-db.org/ant">
 		<classpath>
 			<path>
-				<fileset dir="lib/exist_1-2-4-rev8072">  
-					<include name="*.jar"/>  
+				<fileset dir="lib/exist_1-2-4-rev8072">
+					<include name="*.jar"/>
 				</fileset>
-			</path>  
+			</path>
 		</classpath>
-	</typedef>  
+	</typedef>
 
 	<!-- Ant Contrib taskdef names -->
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
@@ -139,13 +136,13 @@
 
 	<!-- ====================== PATH ====================================== -->
 	<!--
-	
+
 		Constructs the compile classpath to include the servlet.jar file, as
 		well as the other components that Apache Tomcat makes available to web
 		applications automatically, plus anything that you explicitly added.
 
 		id			The ID of the path.
-		
+
 	-->
 	<path id="compile.classpath">
 		<!-- Include all JAR files that are located at
@@ -156,26 +153,21 @@
 
 		<!-- Include all elements that Apache Tomcat exposes to
 		     applications -->
-		<pathelement location="${catalina.home}/common/classes" />
-		<fileset dir="${catalina.home}/common/endorsed">
+		<fileset dir="${catalina.home}/endorsed">
 			<include name="*.jar" />
 		</fileset>
-		<fileset dir="${catalina.home}/common/lib">
-			<include name="*.jar" />
-		</fileset>
-		<pathelement location="${catalina.home}/shared/classes" />
-		<fileset dir="${catalina.home}/shared/lib">
+		<fileset dir="${catalina.home}/lib">
 			<include name="*.jar" />
 		</fileset>
 	</path>
 
-		
-	
+
+
 	<!-- ================================================================== -->
 	<!-- ====================== DEVELOPMENT ENVIRONMENT TARGETS =========== -->
 	<!-- ================================================================== -->
-	
-	
+
+
 	<!-- ====================== INIT TARGET =============================== -->
 	<!--
 
@@ -184,12 +176,12 @@
 
 		name		The name of the target.
 		description	The description of the target.
-		
+
 	-->
 	<target name="init"
 		description="Check initial conditions.">
 		<echo message="Checking initial conditions..." />
-		
+
 		<fail message="The &quot;webapp.name&quot; and &quot;webapp.displayname&quot; properties in the build properties file need to be set first in order to run this Ant build target successfully.">
 			<condition>
 				<not>
@@ -200,11 +192,11 @@
 				</not>
 			</condition>
 		</fail>
-		
+
 		<echo message="Initial conditions have been successfully checked." />
 	</target>
-	
-	
+
+
 
 	<!-- ====================== HELP TARGET =============================== -->
 	<!--
@@ -213,11 +205,11 @@
 
 		name		The name of the target.
 		description	The description of the target.
-		
+
 	-->
 	<target name="help"
 		description="Show Ant instructions.">
-		
+
 		<!-- Show the XFormsDB framework Ant instructions. -->
 		<echo message="=========================================" />
 		<echo message="THE XFORMSDB FRAMEWORK - ANT INSTRUCTIONS" />
@@ -258,8 +250,8 @@
 		<echo message="Example: ant -propertyfile dev-env.properties -propertyfile build_exist.properties build" />
 	</target>
 
-	
-	
+
+
 	<!-- ====================== DEV-ENV-INFO TARGET ======================= -->
 	<!--
 
@@ -272,14 +264,14 @@
 		unless		The name of the property that cannot be set before running
 					this task.
 		description	The description of the target.
-		
+
 	-->
 	<target name="dev-env-info"
 		depends="init"
 		unless="show-dev-env-info"
 		description="Show information about the development environment.">
 		<property name="show-dev-env-info" value="false" />
-		
+
 		<!-- Show useful information about the development environment. -->
 		<echo message="=============================================" />
 		<echo message="INFORMATION ABOUT THE DEVELOPMENT ENVIRONMENT" />
@@ -318,14 +310,14 @@
 		<echo message="Src home:        ${src.home}" />
 		<echo message="Test-env home:   ${test-env.home}" />
 		<echo message="Tools home:      ${tools.home}" />
-		<echo message="Webapps home:    ${webapps.home}" />		
+		<echo message="Webapps home:    ${webapps.home}" />
 		<echo message=" " />
 		<echo message="Web Application" />
-		<echo message="---------------" />		
+		<echo message="---------------" />
 		<if>
 			<not>
 				<or>
-					<equals arg1="${webapp.name}" arg2="exist" />				
+					<equals arg1="${webapp.name}" arg2="exist" />
 					<equals arg1="${webapp.name}" arg2="orbeon" />
 				</or>
 			</not>
@@ -344,8 +336,8 @@
 		</if>
 	</target>
 
-	
-	
+
+
 	<!-- ====================== CLEAN TARGET ============================== -->
 	<!--
 
@@ -357,22 +349,22 @@
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="clean"
 		depends="init, dev-env-info"
 		description="Clean all build products.">
 		<echo message="Cleaning all build products..." />
-		
+
 		<!-- Delete the ${build.home} and ${dist.home} directory trees -->
 		<delete dir="${build.home}" />
 		<delete dir="${dist.home}" />
-		
+
 		<echo message="All build products have been successfully cleaned." />
 	</target>
 
 
-	
+
 	<!-- ====================== INIT-BUILD TARGET ========================= -->
 	<!--
 
@@ -381,29 +373,29 @@
 		${build.home}/WEB-INF/lib directory. In addition, it compiles XFormsDB
 		Java source files and copies XFormsDB resources from the ${src.home}
 		directory to the ${build.home}/WEB-INF/classes directory.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="init-build"
 		depends="init, dev-env-info"
 		description="Initialize build.">
 		<echo message="Initializing build..." />
-		
+
 		<!-- Create the ${build.home} directory and its sub directories -->
 		<mkdir dir="${build.home}" />
 		<mkdir dir="${build.home}/WEB-INF" />
 		<mkdir dir="${build.home}/WEB-INF/classes" />
 		<mkdir dir="${build.home}/WEB-INF/lib" />
-		
+
 		<if>
 			<not>
 				<or>
 					<equals arg1="${webapp.name}" arg2="orbeon" />
-					<equals arg1="${webapp.name}" arg2="exist" />				
+					<equals arg1="${webapp.name}" arg2="exist" />
 				</or>
 			</not>
 			<then>
@@ -415,7 +407,7 @@
 						<include name="**/*.jar" />
 					</fileset>
 				</copy>
-				
+
 				<!-- Compile XFormsDB Java source files from the ${src.home} directory -->
 				<javac srcdir="${src.home}"
 					destdir="${build.home}/WEB-INF/classes"
@@ -423,19 +415,20 @@
 					deprecation="${compile.deprecation}"
 					optimize="${compile.optimize}"
 					source="${compile.source}"
-					target="${compile.target}">
+					target="${compile.target}"
+					includeantruntime="no">
 					<!-- Use this CLASSPATH -->
 					<classpath refid="compile.classpath" />
 				</javac>
-		
+
 				<!-- Copy XFormsDB resources from the ${src.home} directory -->
 				<copy todir="${build.home}/WEB-INF/classes">
 					<fileset dir="${src.home}" excludes="**/*.java" />
 				</copy>
 			</then>
 			<else />
-		</if>		
-				
+		</if>
+
 		<echo message="Build has been successfully initialized." />
 	</target>
 
@@ -446,74 +439,70 @@
 
 		The "init-build-lite" target initializes the build-lite target by
 		copying	XFormsDB libraries from the ${lib.home} directory to the
-		${catalina.home}/shared/lib directory. In addition, it compiles
+		${catalina.home}/lib directory. In addition, it compiles
 		XFormsDB Java source files and copies XFormsDB resources from the
-		${src.home} directory to the ${catalina.home}/shared/classes directory.
-		
+		${src.home} directory to the ${catalina.home}/lib directory.
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="init-build-lite"
 		depends="init, dev-env-info"
 		description="Initialize build Lite.">
 		<echo message="Initializing build Lite..." />
-		
+
 		<!-- Create the ${build.home} directory and its sub directories -->
 		<mkdir dir="${build.home}" />
 		<mkdir dir="${build.home}/WEB-INF" />
 		<mkdir dir="${build.home}/WEB-INF/classes" />
 		<mkdir dir="${build.home}/WEB-INF/lib" />
 
-		<!-- Create the ${catalina.home}/shared directory and its sub directories -->
-		<mkdir dir="${catalina.home}/shared" />
-		<mkdir dir="${catalina.home}/shared/classes" />
-		<mkdir dir="${catalina.home}/shared/lib" />
-		
 		<if>
 			<not>
 				<or>
 					<equals arg1="${webapp.name}" arg2="orbeon" />
-					<equals arg1="${webapp.name}" arg2="exist" />				
+					<equals arg1="${webapp.name}" arg2="exist" />
 				</or>
 			</not>
 			<then>
 				<!-- Copy XFormsDB libraries from the ${lib.home} directory -->
-				<copy todir="${catalina.home}/shared/lib">
+				<copy todir="${catalina.home}/lib">
 					<!-- Ignore the directory structure -->
 					<flattenmapper />
 					<fileset dir="${lib.home}">
 						<include name="**/*.jar" />
 					</fileset>
 				</copy>
-				
+
 				<!-- Compile XFormsDB Java source files from the ${src.home} directory -->
 				<javac srcdir="${src.home}"
-					destdir="${catalina.home}/shared/classes"
+					destdir="${catalina.home}/lib"
 					debug="${compile.debug}"
 					deprecation="${compile.deprecation}"
 					optimize="${compile.optimize}"
 					source="${compile.source}"
-					target="${compile.target}">
+					target="${compile.target}"
+					includeantruntime="no">
 					<!-- Use this CLASSPATH -->
 					<classpath refid="compile.classpath" />
 				</javac>
-		
+
 				<!-- Copy XFormsDB resources from the ${src.home} directory -->
-				<copy todir="${catalina.home}/shared/classes">
+				<copy todir="${catalina.home}/lib">
 					<fileset dir="${src.home}" excludes="**/*.java" />
 				</copy>
 			</then>
 			<else />
-		</if>		
-				
+		</if>
+
 		<echo message="Build Lite has been successfully initialized." />
 	</target>
 
-	
-	
+
+
 	<!-- ====================== BUILD TARGET ============================== -->
 	<!--
 
@@ -521,12 +510,12 @@
 		copies Web application resources to the ${build.home}/WEB-INF/classes
 		directory. In addition, it copies Web application static contents to
 		the ${build.home} directory.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="build"
 		depends="init, dev-env-info, init-build"
@@ -537,7 +526,7 @@
 			<not>
 				<or>
 					<equals arg1="${webapp.name}" arg2="orbeon" />
-					<equals arg1="${webapp.name}" arg2="exist" />				
+					<equals arg1="${webapp.name}" arg2="exist" />
 				</or>
 			</not>
 			<then>
@@ -548,7 +537,8 @@
 					deprecation="${compile.deprecation}"
 					optimize="${compile.optimize}"
 					source="${compile.source}"
-					target="${compile.target}">
+					target="${compile.target}"
+					includeantruntime="no">
 					<!-- Use this CLASSPATH -->
 					<classpath refid="compile.classpath" />
 				</javac>
@@ -557,7 +547,7 @@
 				<copy todir="${build.home}/WEB-INF/classes">
 					<fileset dir="${webapps.home}/xformsdb/${webapp.name}/src" excludes="**/*.java" />
 				</copy>
-		
+
 				<!-- Copy Web application static content from the ${webapps.home}/xformsdb/${webapp.name}/web directory -->
 				<copy todir="${build.home}">
 					<fileset dir="${webapps.home}/xformsdb/${webapp.name}/web" excludes="README.txt" />
@@ -571,7 +561,8 @@
 					deprecation="${compile.deprecation}"
 					optimize="${compile.optimize}"
 					source="${compile.source}"
-					target="${compile.target}">
+					target="${compile.target}"
+					includeantruntime="no">
 					<!-- Use this CLASSPATH -->
 					<classpath refid="compile.classpath" />
 				</javac>
@@ -580,14 +571,14 @@
 				<copy todir="${build.home}/WEB-INF/classes">
 					<fileset dir="${webapps.home}/thirdparty/${webapp.name}/src" excludes="**/*.java" />
 				</copy>
-		
+
 				<!-- Copy Web application static content from the ${webapps.home}/thirdparty/${webapp.name}/web directory -->
 				<copy todir="${build.home}">
 					<fileset dir="${webapps.home}/thirdparty/${webapp.name}/web" />
 				</copy>
 			</else>
 		</if>
-	
+
 		<echo message="Web application has been successfully built." />
 	</target>
 
@@ -600,12 +591,12 @@
 		and copies Web application Lite resources to the
 		${build.home}/WEB-INF/classes directory. In addition, it copies Web
 		application Lite static contents to the ${build.home} directory.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="build-lite"
 		depends="init, dev-env-info, init-build-lite"
@@ -616,7 +607,7 @@
 			<not>
 				<or>
 					<equals arg1="${webapp.name}" arg2="orbeon" />
-					<equals arg1="${webapp.name}" arg2="exist" />				
+					<equals arg1="${webapp.name}" arg2="exist" />
 				</or>
 			</not>
 			<then>
@@ -627,7 +618,8 @@
 					deprecation="${compile.deprecation}"
 					optimize="${compile.optimize}"
 					source="${compile.source}"
-					target="${compile.target}">
+					target="${compile.target}"
+					includeantruntime="no">
 					<!-- Use this CLASSPATH -->
 					<classpath refid="compile.classpath" />
 				</javac>
@@ -636,7 +628,7 @@
 				<copy todir="${build.home}/WEB-INF/classes">
 					<fileset dir="${webapps.home}/xformsdb/${webapp.name}/src" excludes="**/*.java" />
 				</copy>
-		
+
 				<!-- Copy Web application Lite static content from the ${webapps.home}/xformsdb/${webapp.name}/web directory -->
 				<copy todir="${build.home}">
 					<fileset dir="${webapps.home}/xformsdb/${webapp.name}/web" excludes="README.txt" />
@@ -650,7 +642,8 @@
 					deprecation="${compile.deprecation}"
 					optimize="${compile.optimize}"
 					source="${compile.source}"
-					target="${compile.target}">
+					target="${compile.target}"
+					includeAntRuntime="no">
 					<!-- Use this CLASSPATH -->
 					<classpath refid="compile.classpath" />
 				</javac>
@@ -659,30 +652,30 @@
 				<copy todir="${build.home}/WEB-INF/classes">
 					<fileset dir="${webapps.home}/thirdparty/${webapp.name}/src" excludes="**/*.java" />
 				</copy>
-		
+
 				<!-- Copy Web application Lite static content from the ${webapps.home}/thirdparty/${webapp.name}/web directory -->
 				<copy todir="${build.home}">
 					<fileset dir="${webapps.home}/thirdparty/${webapp.name}/web" />
 				</copy>
 			</else>
 		</if>
-	
+
 		<echo message="Web application Lite has been successfully built." />
 	</target>
-	
-	
-	
+
+
+
 	<!-- ====================== JAVADOC TARGET ============================ -->
 	<!--
 
 		The "javadoc" target generates Java API documentation from XFormsDB
 		Java source files located in the ${src.home} directory.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="javadoc"
 		depends="init, dev-env-info, clean, init-build"
@@ -691,7 +684,7 @@
 
 		<!-- Create the ${dist.home}/doc/api directory -->
 		<mkdir dir="${dist.home}/doc/api" />
-		
+
 		<!-- Generate Java API documentation from XFormsDB Java source files located in the ${src.home} directory -->
 		<javadoc destdir="${dist.home}/doc/api" windowtitle="XFormsDB API Specification">
 			<doctitle><![CDATA[<h1>XFormsDB API Specification</h1>]]></doctitle>
@@ -699,8 +692,8 @@
 				<include name="**" />
 			</packageset>
 			<classpath refid="compile.classpath" />
-		</javadoc>				
-		
+		</javadoc>
+
 		<echo message="Java API documentation has been successfully generated." />
 	</target>
 
@@ -712,12 +705,12 @@
 		The "jar" target creates a package, which contains compiled XFormsDB
 		Java source files and copied XFormsDB resources from the ${src.home}
 		directory, to the ${dist.home} directory.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="jar"
 		depends="init, dev-env-info, clean, init-build"
@@ -732,7 +725,7 @@
 			<format property="timestamp.string" pattern="MMMM dd, yyyy HH:mm:ss" />
 			<format property="timestamp.integer" pattern="yyyyMMddHHmmss" />
 		</tstamp>
-				
+
 		<!-- Create JAR file -->
 		<jar destfile="${dist.home}/xformsdb_${timestamp.integer}.jar" basedir="${build.home}/WEB-INF/classes">
 			<manifest>
@@ -744,7 +737,7 @@
 
 		<echo message="JAR file has been successfully created." />
 	</target>
-		
+
 
 
 	<!-- ====================== WAR TARGET ================================ -->
@@ -752,12 +745,12 @@
 
 		The "war" target creates a binary distribution of the Web application
 		to the ${dist.home} directory.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="war"
 		depends="init, dev-env-info, clean, init-build, build"
@@ -766,12 +759,12 @@
 
 		<!-- Create the ${dist.home} directory -->
 		<mkdir dir="${dist.home}" />
-		
+
 		<!-- Activate the tstamp task -->
 		<tstamp>
 			<format property="timestamp.integer" pattern="yyyyMMddHHmmss" />
 		</tstamp>
-		
+
 		<!-- Create WAR file -->
 		<war destfile="${dist.home}/${webapp.name}_${timestamp.integer}.war" webxml="${build.home}/WEB-INF/web.xml">
 			<fileset dir="${build.home}" excludes="WEB-INF/web.xml" />
@@ -781,19 +774,19 @@
 		<echo message="WAR file has been successfully created." />
 	</target>
 
-	
-	
+
+
 	<!-- ====================== WAR-LITE TARGET =========================== -->
 	<!--
 
 		The "war-lite" target creates a binary distribution of the Web
 		application Lite to the ${dist.home} directory.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="war-lite"
 		depends="init, dev-env-info, clean, init-build-lite, build-lite"
@@ -802,12 +795,12 @@
 
 		<!-- Create the ${dist.home} directory -->
 		<mkdir dir="${dist.home}" />
-		
+
 		<!-- Activate the tstamp task -->
 		<tstamp>
 			<format property="timestamp.integer" pattern="yyyyMMddHHmmss" />
 		</tstamp>
-		
+
 		<!-- Create WAR file Lite -->
 		<war destfile="${dist.home}/${webapp.name}_lite_${timestamp.integer}.war" webxml="${build.home}/WEB-INF/web.xml">
 			<fileset dir="${build.home}" excludes="WEB-INF/web.xml" />
@@ -824,12 +817,12 @@
 
 		The "dist" target creates a full distribution of the Web application to
 		the ${dist.home} directory.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="dist"
 		depends="init, dev-env-info, clean, init-build, build, javadoc, jar, war"
@@ -838,7 +831,7 @@
 
 		<echo message="Full distribution has been successfully created." />
 	</target>
-	
+
 
 
 	<!-- ====================== DIST-LITE TARGET ========================== -->
@@ -846,12 +839,12 @@
 
 		The "dist-lite" target creates a full distribution of the Web
 		application Lite to the ${dist.home} directory.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="dist-lite"
 		depends="init, dev-env-info, clean, init-build-lite, build-lite, javadoc, jar, war-lite"
@@ -865,14 +858,14 @@
 
 	<!-- ====================== TOMCAT-STARTUP TARGET ===================== -->
 	<!--
-	
+
 		The "tomcat-startup" target starts up Apache Tomcat.
 
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="tomcat-startup"
 		depends="init, dev-env-info"
@@ -899,12 +892,11 @@
 					<then>
 						<!-- Unix & CVS hack: Create required empty folders -->
 						<mkdir dir="${catalina.home}/logs" />
-						<mkdir dir="${catalina.home}/common/endorsed" />
-						<mkdir dir="${catalina.home}/shared/lib" />
-						
+						<mkdir dir="${catalina.home}/endorsed" />
+
 						<!-- Unix hack: Modify permissions -->
 						<chmod dir="${catalina.home}" perm="ug+x" includes="**/*.sh" />
-					
+
 						<exec dir="${catalina.home}/bin" executable="sh" spawn="true">
 							<env key="CATALINA_HOME" value="${catalina.home}" />
 							<arg line="startup.sh" />
@@ -924,33 +916,33 @@
 					</else>
 				</if>
 				<waitfor>
-					<http url="${tomcat.url}" />					
+					<http url="${tomcat.url}" />
 				</waitfor>
 			</then>
 			<else />
 		</if>
-								
+
 		<echo message="Apache Tomcat has been successfully started up." />
 	</target>
 
 
-	
+
 	<!-- ====================== TOMCAT-SHUTDOWN TARGET ==================== -->
 	<!--
-	
+
 		The "tomcat-shutdown" target shuts down Apache Tomcat.
 
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="tomcat-shutdown"
 		depends="init, dev-env-info"
 		description="Shut down Apache Tomcat.">
 		<echo message="Shutting down Apache Tomcat..." />
-				
+
 		<if>
 			<http url="${tomcat.url}" />
 			<then>
@@ -963,18 +955,17 @@
 						<fail message="Apache Tomcat does not exist at ${catalina.home}." />
 					</else>
 				</if>
-				
+
 				<if>
 					<os family="unix" />
 					<then>
 						<!-- Unix & CVS hack: Create required empty folders -->
 						<mkdir dir="${catalina.home}/logs" />
-						<mkdir dir="${catalina.home}/common/endorsed" />
-						<mkdir dir="${catalina.home}/shared/lib" />
-						
+						<mkdir dir="${catalina.home}/endorsed" />
+
 						<!-- Unix hack: Modify permissions -->
 						<chmod dir="${catalina.home}" perm="ug+x" includes="**/*.sh" />
-					
+
 						<exec dir="${catalina.home}/bin" executable="sh" spawn="true">
 							<env key="CATALINA_HOME" value="${catalina.home}" />
 							<arg line="shutdown.sh" />
@@ -997,19 +988,19 @@
 					<not>
 						<http url="${tomcat.url}" />
 					</not>
-				</waitfor>				
+				</waitfor>
 			</then>
 			<else />
 		</if>
-		
+
 		<echo message="Apache Tomcat has been successfully shut down." />
 	</target>
 
 
 
 	<!-- ====================== LIST TARGET =============================== -->
-	<!--	
-	
+	<!--
+
 		The "list" target asks the specified Apache Tomcat installation to
 		list the currently running Web applications, either loaded at startup
 		time or installed dynamically.
@@ -1018,25 +1009,25 @@
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="list"
 		depends="init, dev-env-info, tomcat-startup"
 		description="List installed Web applications on Apache Tomcat.">
 		<echo message="Listing installed Web applications on Apache Tomcat..." />
-		
+
 		<list url="${tomcat.url}${tomcat.manager.path}"
 			username="${tomcat.manager.username}"
 			password="${tomcat.manager.password}" />
-			
-		<echo message="Installed Web applications on Apache Tomcat have been successfully listed." />	
+
+		<echo message="Installed Web applications on Apache Tomcat have been successfully listed." />
 	</target>
 
-	
-	
+
+
 	<!-- ====================== DEPLOY TARGET ============================= -->
 	<!--
-	
+
 		The "deploy" target tells the specified Apache Tomcat installation to
 		dynamically install this Web application and make it available for
 		execution.
@@ -1045,7 +1036,7 @@
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="deploy"
 		depends="init, dev-env-info, init-build, build, tomcat-startup"
@@ -1066,7 +1057,7 @@
 
 	<!-- ====================== DEPLOY-LITE TARGET ======================== -->
 	<!--
-	
+
 		The "deploy-lite" target tells the specified Apache Tomcat installation
 		to dynamically install this Web application Lite and make it available
 		for execution.
@@ -1075,7 +1066,7 @@
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="deploy-lite"
 		depends="init, dev-env-info, init-build-lite, build-lite, tomcat-startup"
@@ -1096,7 +1087,7 @@
 
 	<!-- ====================== UNDEPLOY TARGET =========================== -->
 	<!--
-	
+
 		The "undeploy" target tells the specified Apache Tomcat installation to
 		dynamically remove this Web application from service.
 
@@ -1116,7 +1107,7 @@
 			username="${tomcat.manager.username}"
 			password="${tomcat.manager.password}"
 			path="/${webapp.name}" />
-					
+
 		<echo message="Web application has been successfully undeployed on Apache Tomcat." />
 	</target>
 
@@ -1124,7 +1115,7 @@
 
 	<!-- ====================== UNDEPLOY-WINDOWS TARGET =================== -->
 	<!--
-	
+
 		The "undeploy-windows" target tells the specified Apache Tomcat
 		installation running on Windows to dynamically remove this Web
 		application from service.
@@ -1159,7 +1150,7 @@
 		<!-- Delete Web application (Lite) on Apache Tomcat running on Windows -->
 		<delete dir="${catalina.home}/webapps/${webapp.name}" />
 		<delete file="${catalina.home}/webapps/${webapp.name}.war" />
-		
+
 		<!-- Start up the development environment -->
 		<antcall target="tomcat-startup">
 			<param name="webapp.name" value="" />
@@ -1167,7 +1158,7 @@
 			<param name="catalina.home" value="${catalina.home}" />
 			<param file="dev-env.properties" />
 		</antcall>
-					
+
 		<echo message="Web application has been successfully undeployed on Apache Tomcat running on Windows." />
 	</target>
 
@@ -1178,7 +1169,7 @@
 
 		The "redeploy" target is a shortcut for running the "undeploy" target
 		followed by the "deploy" target, to force a complete deploy.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
@@ -1189,7 +1180,7 @@
 		depends="init, dev-env-info, tomcat-startup, undeploy, init-build, build, tomcat-startup, deploy"
 		description="Redeploy Web application to Apache Tomcat.">
 		<echo message="Redeploying Web application to Apache Tomcat..." />
-		
+
 		<echo message="Web application has been successfully redeployed to Apache Tomcat." />
 	</target>
 
@@ -1201,7 +1192,7 @@
 		The "redeploy-windows" target is a shortcut for running the
 		"undeploy-windows" target followed by the "deploy" target, to force a
 		complete deploy.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
@@ -1212,7 +1203,7 @@
 		depends="init, dev-env-info, tomcat-startup, undeploy-windows, init-build, build, tomcat-startup, deploy"
 		description="Redeploy Web application to Apache Tomcat running on Windows.">
 		<echo message="Redeploying Web application to Apache Tomcat running on Windows..." />
-		
+
 		<echo message="Web application has been successfully redeployed to Apache Tomcat running on Windows." />
 	</target>
 
@@ -1224,7 +1215,7 @@
 		The "redeploy-lite" target is a shortcut for running the "undeploy"
 		target followed by the "deploy-lite" target, to force a complete
 		deploy.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
@@ -1235,7 +1226,7 @@
 		depends="init, dev-env-info, tomcat-startup, undeploy, init-build-lite, build-lite, tomcat-startup, deploy-lite"
 		description="Redeploy Web application Lite to Apache Tomcat.">
 		<echo message="Redeploying Web application Lite to Apache Tomcat..." />
-		
+
 		<echo message="Web application Lite has been successfully redeployed to Apache Tomcat." />
 	</target>
 
@@ -1247,7 +1238,7 @@
 		The "redeploy-windows-lite" target is a shortcut for running the
 		"undeploy-windows" target followed by the "deploy-lite" target, to
 		force a complete deploy.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
@@ -1258,15 +1249,15 @@
 		depends="init, dev-env-info, tomcat-startup, undeploy-windows, init-build-lite, build-lite, tomcat-startup, deploy-lite"
 		description="Redeploy Web application Lite to Apache Tomcat running on Windows.">
 		<echo message="Redeploying Web application Lite to Apache Tomcat running on Windows..." />
-		
+
 		<echo message="Web application Lite has been successfully redeployed to Apache Tomcat running on Windows." />
 	</target>
 
 
-	
+
 	<!-- ====================== START TARGET ============================== -->
-	<!--	
-	
+	<!--
+
 		The "start" signals the specified Web application on Apache Tomcat to
 		start itself up.
 
@@ -1274,13 +1265,13 @@
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="start"
 		depends="init, dev-env-info, tomcat-startup"
 		description="Start Web application on Apache Tomcat.">
 		<echo message="Starting Web application on Apache Tomcat..." />
-		
+
 		<start url="${tomcat.url}${tomcat.manager.path}"
 			username="${tomcat.manager.username}"
 			password="${tomcat.manager.password}"
@@ -1292,8 +1283,8 @@
 
 
 	<!-- ====================== STOP TARGET =============================== -->
-	<!--	
-	
+	<!--
+
 		The "stop" signals the specified Web application on Apache Tomcat to
 		shut itself down.
 
@@ -1301,7 +1292,7 @@
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="stop"
 		depends="init, dev-env-info, tomcat-startup"
@@ -1316,19 +1307,19 @@
 		<echo message="Web application has been successfully stopped on Apache Tomcat." />
 	</target>
 
-	
+
 
 	<!-- ====================== RELOAD TARGET ============================= -->
 	<!--
-	
+
 		The "reload" signals the specified Web application on Apache Tomcat to
 		shut itself down and reload.
-		
+
 		name		The name of the target.
 		depends		A comma-separated list of names of targets on which this
 					target depends.
 		description	The description of the target.
-		
+
 	-->
 	<target name="reload"
 		depends="init, dev-env-info, tomcat-startup"
@@ -1348,17 +1339,17 @@
 	<!-- ================================================================== -->
 	<!-- ====================== TEST ENVIRONMENT TARGETS ================== -->
 	<!-- ================================================================== -->
-	
-	
+
+
 	<!-- ====================== TEST-ENV-INFO TARGET ====================== -->
 	<!--
-	
+
 		The "test-env-info" target shows useful information about the test
 		environment.
 
 		name		The name of the target.
 		description	The description of the target.
-		
+
 	-->
 	<target name="test-env-info"
 		description="Show information about the test environment.">
@@ -1412,7 +1403,7 @@
 		<echo message="Src home:         ${src.home}" />
 		<echo message="Test-env home:    ${test-env.home}" />
 		<echo message="Tools home:       ${tools.home}" />
-		<echo message="Webapps home:     ${webapps.home}" />		
+		<echo message="Webapps home:     ${webapps.home}" />
 
 		<!-- Show information about the eXist-db -->
 		<antcall target="webapp-info">
@@ -1441,7 +1432,7 @@
 			<param file="build_tutorial.properties" />
 			<param file="test-env.properties" />
 		</antcall>
-		
+
 		<!-- Show information about the XFormsDB PIM -->
 		<antcall target="webapp-info">
 			<param name="catalina.home" value="${test-env.home}" />
@@ -1455,18 +1446,32 @@
 			<param file="build_blog.properties" />
 			<param file="test-env.properties" />
 		</antcall>
+
+		<!-- Show information about the XFormsDB Notes -->
+		<antcall target="webapp-info">
+			<param name="catalina.home" value="${test-env.home}" />
+			<param file="build_notes.properties" />
+			<param file="test-env.properties" />
+		</antcall>
+
+		<!-- Show information about the XFormsRTC Chat -->
+		<antcall target="webapp-info">
+			<param name="catalina.home" value="${test-env.home}" />
+			<param file="build_chat.properties" />
+			<param file="test-env.properties" />
+		</antcall>
 	</target>
 
-	
-	
+
+
 	<!-- ====================== WEBAPP INFO TARGET ======================== -->
 	<!--
-	
+
 		The "webapp-info" target shows information about the Web application.
 
 		name		The name of the target.
 		description	The description of the target.
-		
+
 	-->
 	<target name="webapp-info"
 		description="Show information about the Web application.">
@@ -1549,11 +1554,33 @@
 					<echo message="Web:              ${webapps.home}/xformsdb/${webapp.name}/web" />
 				</then>
 			</elseif>
+			<elseif>
+				<equals arg1="${webapp.name}" arg2="notes" />
+				<then>
+					<echo message="Name:             ${webapp.name}" />
+					<echo message="Display name:     ${webapp.displayname}" />
+					<echo message="URL:              ${tomcat.url}/${webapp.name}" />
+					<echo message="Home:             ${catalina.home}/webapps/${webapp.name}" />
+					<echo message="Src:              ${webapps.home}/xformsdb/${webapp.name}/src" />
+					<echo message="Web:              ${webapps.home}/xformsdb/${webapp.name}/web" />
+				</then>
+			</elseif>
+			<elseif>
+				<equals arg1="${webapp.name}" arg2="chat" />
+				<then>
+					<echo message="Name:             ${webapp.name}" />
+					<echo message="Display name:     ${webapp.displayname}" />
+					<echo message="URL:              ${tomcat.url}/${webapp.name}" />
+					<echo message="Home:             ${catalina.home}/webapps/${webapp.name}" />
+					<echo message="Src:              ${webapps.home}/xformsdb/${webapp.name}/src" />
+					<echo message="Web:              ${webapps.home}/xformsdb/${webapp.name}/web" />
+				</then>
+			</elseif>
 			<else>
 				<fail message="The Web application &quot;${webapp.name} has not yet been added to the build scripts of the test environment." />
 			</else>
 		</if>
-		
+
 		<!--<echo message="Information about the Web application has been successfully shown." />-->
 	</target>
 
@@ -1561,18 +1588,18 @@
 
 	<!-- ====================== RESET-WEBAPP TARGET ================================== -->
 	<!--
-	
+
 		The "reset-webapp" target resets the persistent data of the Web application.
 
 		name		The name of the target.
 		description	The description of the target.
-		
+
 	-->
 	<target name="reset-webapp"
 		description="Reset the persistent data of the Web application.">
 		<property name="show-dev-env-info" value="false" />
 		<echo message="Resetting the persistent data of the Web application..." />
-		
+
 		<if>
 			<equals arg1="${webapp.name}" arg2="exist" />
 			<then>
@@ -1581,7 +1608,7 @@
 					<then>
 						<!-- Change admin's password -->
 						<xdb:adduser xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db" user="${webapp.user.admin.username}" password="" name="${webapp.user.admin.username}" secret="${webapp.user.admin.password}" primaryGroup="${webapp.user.admin.group}" />
-				
+
 						<!-- Add user: xformsdb -->
 						<xdb:adduser xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" secret="${webapp.user.xformsdb.password}" primaryGroup="${webapp.user.xformsdb.group}" />
 					</then>
@@ -1590,29 +1617,33 @@
 						<xdb:remove xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db" user="${webapp.user.xformsdb.username}" password="${webapp.user.xformsdb.password}" collection="xformsdb" />
 					</else>
 				</if>
-			
+
 				<!-- Store test documents -->
 				<xdb:store xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/tutorial/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" createcollection="true" srcfile="${webapps.home}/xformsdb/tutorial/web/WEB-INF/data/test/db/xformsdb/tutorial/data/users.xml" />
 				<xdb:store xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/tutorial/files" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" createcollection="true" srcfile="${webapps.home}/xformsdb/tutorial/web/WEB-INF/data/test/db/xformsdb/tutorial/files/xformsdb_files.xml" />
 				<xdb:store xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/pim/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" createcollection="true" srcfile="${webapps.home}/xformsdb/pim/web/WEB-INF/data/test/db/xformsdb/pim/data/pim.xml" />
 				<xdb:store xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/blog/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" createcollection="true" srcfile="${webapps.home}/xformsdb/blog/web/WEB-INF/data/test/db/xformsdb/blog/data/blog.xml" />
 				<xdb:store xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/blog/realm" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" createcollection="true" srcfile="${webapps.home}/xformsdb/blog/web/WEB-INF/data/test/db/xformsdb/blog/realm/xformsdb_users.xml" />
-			
+				<xdb:store xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/notes/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" createcollection="true" srcfile="${webapps.home}/xformsdb/notes/web/WEB-INF/data/test/db/xformsdb/notes/data/notes.xml" />
+
 				<!-- Change colletions and documents permissions -->
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/tutorial" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/tutorial/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/tutorial/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" resource="users.xml" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/tutorial/files" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/tutorial/files" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" resource="xformsdb_files.xml" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/pim" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/pim/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/pim/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" resource="pim.xml" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/blog" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/blog/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/blog/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" resource="blog.xml" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/blog/realm" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
-				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/blog/realm" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" resource="xformsdb_users.xml" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />  
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/tutorial" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/tutorial/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/tutorial/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" resource="users.xml" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/tutorial/files" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/tutorial/files" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" resource="xformsdb_files.xml" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/pim" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/pim/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/pim/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" resource="pim.xml" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/blog" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/blog/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/blog/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" resource="blog.xml" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/blog/realm" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/blog/realm" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" resource="xformsdb_users.xml" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/notes" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/notes/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
+				<xdb:chown xmlns:xdb="http://exist-db.org/ant" uri="${webapp.url.xmldb}/${webapp.name}/xmlrpc/db/xformsdb/notes/data" user="${webapp.user.admin.username}" password="${webapp.user.admin.password}" resource="notes.xml" name="${webapp.user.xformsdb.username}" group="${webapp.user.xformsdb.group}" />
 			</then>
 			<elseif>
 				<equals arg1="${webapp.name}" arg2="orbeon" />
@@ -1629,7 +1660,7 @@
 					<delete includeemptydirs="true">
 						<fileset dir="${catalina.home}/webapps/${webapp.name}/WEB-INF/files/test" includes="**/*" />
 					</delete>
-			
+
 					<!-- Copy files to the files folder -->
 			  		<copy todir="${catalina.home}/webapps/${webapp.name}/WEB-INF/files/test">
 						<fileset dir="${webapps.home}/xformsdb/${webapp.name}/web/WEB-INF/files/test" includes="**/*" />
@@ -1646,14 +1677,22 @@
 					<!-- Copy XQuery module to Apache Tomcat -->
 					<copy todir="${catalina.home}/bin/xqm">
 						<fileset file="${webapps.home}/xformsdb/${webapp.name}/web/xqm/functx_blog.xqm" />
-					</copy>		
+					</copy>
 				</then>
+			</elseif>
+			<elseif>
+				<equals arg1="${webapp.name}" arg2="notes" />
+				<then />
+			</elseif>
+			<elseif>
+				<equals arg1="${webapp.name}" arg2="chat" />
+				<then />
 			</elseif>
 			<else>
 				<fail message="The Web application &quot;${webapp.name} has not yet been added to the build scripts of the test environment." />
 			</else>
 		</if>
-		
+
 		<echo message="The persistent data of the Web application has been successfully reset." />
 	</target>
 
@@ -1661,20 +1700,28 @@
 
 	<!-- ====================== INFO TARGET =============================== -->
 	<!--
-	
+
 		The "info" target shows information about the test environment.
 
 		name		The name of the target.
 		description	The description of the target.
-		
+
 	-->
 	<target name="info"
 		description="Show information about the test environment.">
 		<property name="show-dev-env-info" value="false" />
 		<echo message="Showing information about the test environment..." />
-	
-		<echo message="Information about the test environment has been successfully shown." />
-	
+
+		<!-- Check the existence of the test environment -->
+		<available file="${test-env.home}" type="dir" property="test-env.exists" />
+		<if>
+			<equals arg1="true" arg2="${test-env.exists}" />
+			<then />
+			<else>
+				<fail message="The test environment has not yet been installed." />
+			</else>
+		</if>
+
 		<!-- Show information about the test environment -->
 		<antcall target="test-env-info">
 			<param name="catalina.home" value="${test-env.home}" />
@@ -1686,18 +1733,18 @@
 
 	<!-- ====================== INSTALL TARGET ============================ -->
 	<!--
-	
+
 		The "install" target installs the test environment.
 
 		name		The name of the target.
 		description	The description of the target.
-		
+
 	-->
 	<target name="install"
 		description="Install the test environment.">
 		<property name="show-dev-env-info" value="false" />
 		<echo message="Installing the test environment..." />
-				
+
 		<!-- Check the existence of the ${test-env.home} directory -->
 		<available file="${test-env.home}" type="dir" property="test-env.exists" />
 		<if>
@@ -1710,7 +1757,7 @@
 					<then>
 						<fail message="The test environment installation has been successfully aborted." />
 					</then>
-				</if>				
+				</if>
 			</then>
 		</if>
 
@@ -1721,23 +1768,22 @@
 			<param name="catalina.home" value="${test-env.home}" />
 			<param file="test-env.properties" />
 		</antcall>
-		
+
 		<!-- Delete the old ${test-env.home} directory -->
 		<delete dir="${test-env.home}" />
-		
+
 		<!-- Create the ${test-env.home} directory -->
 		<mkdir dir="${test-env.home}" />
-		
+
 		<!-- Copy Apache Tomcat -->
 		<copy todir="${test-env.home}">
 			<fileset dir="${tools.home}/tomcat" />
 		</copy>
-				
+
 		<!-- Unix & CVS hack: Create required empty folders -->
 		<mkdir dir="${test-env.home}/logs" />
-		<mkdir dir="${test-env.home}/common/endorsed" />
-		<mkdir dir="${test-env.home}/shared/lib" />
-		
+		<mkdir dir="${test-env.home}/endorsed" />
+
 		<!-- Unix hack: Modify permissions -->
 		<chmod dir="${test-env.home}" perm="ug+x" includes="**/*.sh" />
 
@@ -1748,7 +1794,7 @@
 			<param name="catalina.home" value="${test-env.home}" />
 			<param file="test-env.properties" />
 		</antcall>
-		
+
 		<!-- Deploy eXist-db -->
 		<antcall target="clean">
 			<param name="catalina.home" value="${test-env.home}" />
@@ -1762,7 +1808,7 @@
 		</antcall>
 		<antcall target="reset-webapp">
 			<param name="catalina.home" value="${test-env.home}" />
-			<param name="webapp.initialize" value="true" />			
+			<param name="webapp.initialize" value="true" />
 			<param file="build_exist.properties" />
 			<param file="test-env.properties" />
 		</antcall>
@@ -1780,7 +1826,7 @@
 		</antcall>
 		<antcall target="reset-webapp">
 			<param name="catalina.home" value="${test-env.home}" />
-			<param name="webapp.initialize" value="true" />			
+			<param name="webapp.initialize" value="true" />
 			<param file="build_orbeon.properties" />
 			<param file="test-env.properties" />
 		</antcall>
@@ -1798,7 +1844,7 @@
 		</antcall>
 		<antcall target="reset-webapp">
 			<param name="catalina.home" value="${test-env.home}" />
-			<param name="webapp.initialize" value="true" />			
+			<param name="webapp.initialize" value="true" />
 			<param file="build_template.properties" />
 			<param file="test-env.properties" />
 		</antcall>
@@ -1816,7 +1862,7 @@
 		</antcall>
 		<antcall target="reset-webapp">
 			<param name="catalina.home" value="${test-env.home}" />
-			<param name="webapp.initialize" value="true" />			
+			<param name="webapp.initialize" value="true" />
 			<param file="build_tutorial.properties" />
 			<param file="test-env.properties" />
 		</antcall>
@@ -1834,7 +1880,7 @@
 		</antcall>
 		<antcall target="reset-webapp">
 			<param name="catalina.home" value="${test-env.home}" />
-			<param name="webapp.initialize" value="true" />			
+			<param name="webapp.initialize" value="true" />
 			<param file="build_pim.properties" />
 			<param file="test-env.properties" />
 		</antcall>
@@ -1852,8 +1898,44 @@
 		</antcall>
 		<antcall target="reset-webapp">
 			<param name="catalina.home" value="${test-env.home}" />
-			<param name="webapp.initialize" value="true" />			
+			<param name="webapp.initialize" value="true" />
 			<param file="build_blog.properties" />
+			<param file="test-env.properties" />
+		</antcall>
+
+		<!-- Deploy XFormsDB Notes -->
+		<antcall target="clean">
+			<param name="catalina.home" value="${test-env.home}" />
+			<param file="build_notes.properties" />
+			<param file="test-env.properties" />
+		</antcall>
+		<antcall target="deploy">
+			<param name="catalina.home" value="${test-env.home}" />
+			<param file="build_notes.properties" />
+			<param file="test-env.properties" />
+		</antcall>
+		<antcall target="reset-webapp">
+			<param name="catalina.home" value="${test-env.home}" />
+			<param name="webapp.initialize" value="true" />
+			<param file="build_notes.properties" />
+			<param file="test-env.properties" />
+		</antcall>
+
+		<!-- Deploy XFormsRTC Chat -->
+		<antcall target="clean">
+			<param name="catalina.home" value="${test-env.home}" />
+			<param file="build_chat.properties" />
+			<param file="test-env.properties" />
+		</antcall>
+		<antcall target="deploy">
+			<param name="catalina.home" value="${test-env.home}" />
+			<param file="build_chat.properties" />
+			<param file="test-env.properties" />
+		</antcall>
+		<antcall target="reset-webapp">
+			<param name="catalina.home" value="${test-env.home}" />
+			<param name="webapp.initialize" value="true" />
+			<param file="build_chat.properties" />
 			<param file="test-env.properties" />
 		</antcall>
 
@@ -1863,19 +1945,19 @@
 		<antcall target="test-env-info">
 			<param name="catalina.home" value="${test-env.home}" />
 			<param file="test-env.properties" />
-		</antcall>		
+		</antcall>
 	</target>
 
 
-	
+
 	<!-- ====================== UNINSTALL TARGET ========================== -->
 	<!--
-	
+
 		The "uninstall" target uninstalls the test environment.
 
 		name		The name of the target.
 		description	The description of the target.
-		
+
 	-->
 	<target name="uninstall"
 		description="Uninstall the test environment.">
@@ -1911,26 +1993,26 @@
 
 		<!-- Delete the ${test-env.home} directory -->
 		<delete dir="${test-env.home}" />
-		
+
 		<echo message="The test environment has been successfully uninstalled." />
-		
+
 		<!-- Show information about the test environment -->
 		<antcall target="test-env-info">
 			<param name="catalina.home" value="${test-env.home}" />
 			<param file="test-env.properties" />
-		</antcall>		
+		</antcall>
 	</target>
-	
-	
-	
+
+
+
 	<!-- ====================== STARTUP TARGET ============================ -->
 	<!--
-	
+
 		The "startup" target starts up the test environment.
 
 		name		The name of the target.
 		description	The description of the target.
-		
+
 	-->
 	<target name="startup"
 		description="Start up the test environment.">
@@ -1954,9 +2036,9 @@
 			<param name="catalina.home" value="${test-env.home}" />
 			<param file="test-env.properties" />
 		</antcall>
-		
+
 		<echo message="The test environment has been successfully started up." />
-		
+
 		<!-- Show information about the test environment -->
 		<antcall target="test-env-info">
 			<param name="catalina.home" value="${test-env.home}" />
@@ -1964,16 +2046,16 @@
 		</antcall>
 	</target>
 
-	
-	
+
+
 	<!-- ====================== SHUTDOWN TARGET =========================== -->
 	<!--
-	
+
 		The "shutdown" target shuts down the test environment.
 
 		name		The name of the target.
 		description	The description of the target.
-		
+
 	-->
 	<target name="shutdown"
 		description="Shut down the test environment.">
@@ -2007,16 +2089,16 @@
 		</antcall>
 	</target>
 
-	
-	
+
+
 	<!-- ====================== RESETDB TARGET ============================ -->
 	<!--
-	
+
 		The "resetdb" target resets the test environment database.
 
 		name		The name of the target.
 		description	The description of the target.
-		
+
 	-->
 	<target name="resetdb"
 		description="Reset the test environment database.">
@@ -2053,7 +2135,7 @@
 		<!-- Reset eXist-db -->
 		<antcall target="reset-webapp">
 			<param name="catalina.home" value="${test-env.home}" />
-			<param name="webapp.initialize" value="false" />			
+			<param name="webapp.initialize" value="false" />
 			<param file="build_exist.properties" />
 			<param file="test-env.properties" />
 		</antcall>
@@ -2061,7 +2143,7 @@
 		<!-- Reset Orbeon Forms -->
 		<antcall target="reset-webapp">
 			<param name="catalina.home" value="${test-env.home}" />
-			<param name="webapp.initialize" value="false" />			
+			<param name="webapp.initialize" value="false" />
 			<param file="build_orbeon.properties" />
 			<param file="test-env.properties" />
 		</antcall>
@@ -2069,7 +2151,7 @@
 		<!-- Reset XFormsDB Template -->
 		<antcall target="reset-webapp">
 			<param name="catalina.home" value="${test-env.home}" />
-			<param name="webapp.initialize" value="false" />			
+			<param name="webapp.initialize" value="false" />
 			<param file="build_template.properties" />
 			<param file="test-env.properties" />
 		</antcall>
@@ -2077,7 +2159,7 @@
 		<!-- Reset XFormsDB Tutorial -->
 		<antcall target="reset-webapp">
 			<param name="catalina.home" value="${test-env.home}" />
-			<param name="webapp.initialize" value="false" />			
+			<param name="webapp.initialize" value="false" />
 			<param file="build_tutorial.properties" />
 			<param file="test-env.properties" />
 		</antcall>
@@ -2085,7 +2167,7 @@
 		<!-- Reset XFormsDB PIM -->
 		<antcall target="reset-webapp">
 			<param name="catalina.home" value="${test-env.home}" />
-			<param name="webapp.initialize" value="false" />			
+			<param name="webapp.initialize" value="false" />
 			<param file="build_pim.properties" />
 			<param file="test-env.properties" />
 		</antcall>
@@ -2093,13 +2175,29 @@
 		<!-- Reset XFormsDB Blog -->
 		<antcall target="reset-webapp">
 			<param name="catalina.home" value="${test-env.home}" />
-			<param name="webapp.initialize" value="false" />			
+			<param name="webapp.initialize" value="false" />
 			<param file="build_blog.properties" />
 			<param file="test-env.properties" />
 		</antcall>
 
+		<!-- Reset XFormsDB Notes -->
+		<antcall target="reset-webapp">
+			<param name="catalina.home" value="${test-env.home}" />
+			<param name="webapp.initialize" value="false" />
+			<param file="build_notes.properties" />
+			<param file="test-env.properties" />
+		</antcall>
+
+		<!-- Reset XFormsRTC Chat -->
+		<antcall target="reset-webapp">
+			<param name="catalina.home" value="${test-env.home}" />
+			<param name="webapp.initialize" value="false" />
+			<param file="build_chat.properties" />
+			<param file="test-env.properties" />
+		</antcall>
+
 		<echo message="The test environment database has been successfully reset." />
-		
+
 		<!-- Show information about the test environment -->
 		<antcall target="test-env-info">
 			<param name="catalina.home" value="${test-env.home}" />
@@ -2107,6 +2205,6 @@
 		</antcall>
 	</target>
 
-	
+
 
 </project>

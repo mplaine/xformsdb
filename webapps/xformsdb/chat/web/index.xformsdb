@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html SYSTEM "xformsdb1.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:ev="http://www.w3.org/2001/xml-events"
+      xmlns:exforms="http://www.exforms.org/exf/1-0"
+      xmlns:xs="http://www.w3.org/2001/XMLSchema"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xforms="http://www.w3.org/2002/xforms"
+      xmlns:xformsdb="http://www.tml.tkk.fi/2007/xformsdb"
+      xmlns:xformsrtc="http://cs.aalto.fi/2016/xformsrtc"
+      xmlns:xxforms="http://orbeon.org/oxf/xml/xforms">
+	<head>
+		<title>XFormsRTC Chat</title>
+		<meta name="keywords" content="XFormsDB, XFormsRTC, Chat" />
+		<meta name="description" content="XFormsRTC Chat" />
+		<meta name="robots" content="all" />
+		<meta name="author" content="Markku Laine" />
+		<meta name="copyright" content="2016, XFormsDB" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" type="text/css" href="css/chat.css" media="all" />
+		<xforms:model>
+			<!-- Instances -->
+			<!-- Nickname instance -->
+			<xforms:instance id="nickname-instance">
+				<nickname xmlns="" />
+			</xforms:instance>
+			<!-- Resource instance -->
+			<xforms:instance id="resource-instance">
+				<resource xmlns="" />
+			</xforms:instance>
+			<!-- Send data instance -->
+			<xforms:instance id="send-data-instance">
+				<send-data xmlns="" />
+			</xforms:instance>
+			<!-- Receive data instance -->
+			<xforms:instance id="receive-data-instance">
+				<receive-data xmlns="" />
+			</xforms:instance>
+			<!-- Message instance -->
+			<xforms:instance id="message-instance">
+				<message xmlns="">
+					<type />
+					<nickname />
+					<value />
+					<datetime />
+				</message>
+			</xforms:instance>
+			<!-- Messages instance -->
+			<xforms:instance id="messages-instance">
+				<messages xmlns="" />
+			</xforms:instance>
+			<!-- Util instance -->
+			<xforms:instance id="util-instance">
+				<util xmlns="">
+					<supported>true</supported>
+					<connected>false</connected>
+					<connect-trigger-disabled>true</connect-trigger-disabled>
+					<send-trigger-disabled>true</send-trigger-disabled>
+					<connect-trigger />
+					<send-trigger />
+				</util>
+			</xforms:instance>
+			<!-- XFormsRTC connection -->
+			<xformsrtc:connection id="rtc-conn" resource="{instance( 'resource-instance' )}" ref="instance( 'send-data-instance' )" replace="instance" instance="receive-data-instance">
+				<xforms:action ev:event="xformsrtc-connection-connect">
+					<xforms:setvalue ref="instance( 'util-instance' )/connected" value="'true'" />
+					<xforms:setvalue ref="instance( 'send-data-instance' )" value="instance( 'nickname-instance' )" />
+					<xforms:dispatch name="DOMActivate" target="send-trigger" />
+				</xforms:action>
+				<xforms:action ev:event="xformsrtc-connection-disconnect">
+					<xforms:setvalue ref="instance( 'message-instance' )/type" value="'system'" />
+					<xforms:setvalue ref="instance( 'message-instance' )/nickname" value="instance( 'nickname-instance' )" />
+					<xforms:setvalue ref="instance( 'message-instance' )/value" value="concat( instance( 'nickname-instance' ), ' has disconnected.' )" />
+					<xforms:setvalue ref="instance( 'message-instance' )/datetime" value="current-dateTime()" />
+					<xforms:insert origin="instance( 'message-instance' )" context="instance( 'messages-instance' )" nodeset="*" />
+					<xxforms:script>
+						// Scroll to bottom
+						window.scrollTo( 0, document.body.scrollHeight || document.documentElement.scrollHeight );
+					</xxforms:script>
+					<xforms:setvalue ref="instance( 'send-data-instance' )" value="''" />
+					<xforms:setvalue ref="instance( 'util-instance' )/connected" value="'false'" />
+					<xforms:setfocus control="nickname-input" />
+				</xforms:action>
+				<xforms:action ev:event="xformsrtc-connection-send">
+					<xforms:setvalue ref="instance( 'send-data-instance' )" value="''" />
+					<xforms:setfocus control="message-input" />
+				</xforms:action>
+				<xforms:action ev:event="xformsrtc-connection-data">
+					<xforms:revalidate />
+  		  	<xforms:insert if="xxforms:valid( instance( 'receive-data-instance' ) )" origin="saxon:parse( instance( 'receive-data-instance' ) )" nodeset="*" context="instance( 'messages-instance' )" />
+					<xforms:setvalue ref="instance( 'receive-data-instance' )" value="''" />
+					<xxforms:script>
+						// Scroll to bottom
+						window.scrollTo( 0, document.body.scrollHeight || document.documentElement.scrollHeight );
+					</xxforms:script>
+				</xforms:action>
+				<xforms:action ev:event="xformsrtc-connection-error">
+					<xforms:setvalue ref="instance( 'util-instance' )/supported" value="'false'" if="instance( 'xformsrtc-event-proxy-instance-1' )/error-code = 'undefined'" />
+					<xforms:message level="modal" if="not( instance( 'xformsrtc-event-proxy-instance-1' )/error-message = '' )"><xforms:output value="concat( 'ERROR: Unexpected error (code: ', instance( 'xformsrtc-event-proxy-instance-1' )/error-code, ', message: &quot;', instance( 'xformsrtc-event-proxy-instance-1' )/error-message, '&quot;)' )" /></xforms:message>
+				</xforms:action>
+			</xformsrtc:connection>
+			<!-- Bindings -->
+			<xforms:bind ref="instance( 'resource-instance' )" calculate="if ( starts-with( instance( 'xformsdb-request-base-uri-instance' ), 'http://' ) ) then concat( 'ws://', substring-after( instance( 'xformsdb-request-base-uri-instance' ), 'http://' ), '/websocket/chat' ) else ( if ( starts-with( instance( 'xformsdb-request-base-uri-instance' ), 'https://' ) ) then concat( 'wss://', substring-after( instance( 'xformsdb-request-base-uri-instance' ), 'https://' ), '/websocket/chat' ) else '' )" />
+			<xforms:bind ref="instance( 'util-instance' )/connect-trigger-disabled" calculate="if( string-length( instance( 'nickname-instance' ) ) = 0 or instance( 'util-instance' )/supported = 'false' ) then 'true' else 'false'" />
+			<xforms:bind ref="instance( 'util-instance' )/connect-trigger" readonly="instance( 'util-instance' )/connect-trigger-disabled = 'true'" />
+			<xforms:bind ref="instance( 'util-instance' )/send-trigger-disabled" calculate="if( string-length( instance( 'send-data-instance' ) ) = 0 or instance( 'util-instance' )/supported = 'false' ) then 'true' else 'false'" />
+			<xforms:bind ref="instance( 'util-instance' )/send-trigger" readonly="instance( 'util-instance' )/send-trigger-disabled = 'true'" />
+			<xforms:bind ref="instance( 'receive-data-instance' )" type="xxforms:xml" />
+			<!-- Actions -->
+			<xforms:setfocus control="nickname-input" ev:event="xforms-ready" />
+		</xforms:model>
+	</head>
+	<body>
+		<div id="container">
+		  <div id="header">
+		  	<h1>XFormsRTC Chat</h1>
+		  </div> <!-- #header -->
+		  <div id="body">
+				<xforms:repeat nodeset="instance( 'messages-instance' )/message" id="messages-message-repeat">
+					<xxforms:variable name="message-position" select="position()" />
+					<xforms:group ref=".[ type = 'system' ]">
+						<div class="message-container">
+							<div class="message system-message">
+								<div class="value"><xforms:output ref="value" /></div>
+							</div>
+						</div>
+					</xforms:group>
+					<xforms:group ref=".[ type = 'client' ]">
+						<xforms:group ref=".[ nickname = instance( 'nickname-instance' ) ]">
+							<div class="message-container {if ( instance( 'messages-instance' )/message[ $message-position - 1 ]/type = type and instance( 'messages-instance' )/message[ $message-position - 1 ]/nickname = nickname ) then 'subsequent-message-container' else ''}">
+								<div class="message client-message my-message">
+									<div class="header"><xforms:output class="nickname" ref="nickname" /> &middot; <xforms:output ref="datetime" xxforms:format="format-dateTime( xs:dateTime( . ), '[D] [MNn] [H]:[m]', 'en', (), () )" /></div>
+									<div class="value"><xforms:output ref="value" /></div>
+								</div>
+							</div>
+						</xforms:group>
+						<xforms:group ref=".[ not( nickname = instance( 'nickname-instance' ) ) ]">
+							<div class="message-container {if ( instance( 'messages-instance' )/message[ $message-position - 1 ]/type = type and instance( 'messages-instance' )/message[ $message-position - 1 ]/nickname = nickname ) then 'subsequent-message-container' else ''}">
+								<div class="message client-message">
+									<div class="header"><xforms:output class="nickname" ref="nickname" /> &middot; <xforms:output ref="datetime" xxforms:format="format-dateTime( xs:dateTime( . ), '[D] [MNn] [H]:[m]', 'en', (), () )" /></div>
+									<div class="value"><xforms:output ref="value" /></div>
+								</div>
+							</div>
+						</xforms:group>
+					</xforms:group>
+				</xforms:repeat>
+				<!-- Orbeon Forms XForms Instance Inspector -->
+				<!-- <widget:xforms-instance-inspector xmlns:widget="http://orbeon.org/oxf/xml/widget" /> -->
+		  </div> <!-- #body -->
+		  <div id="footer">
+				<xforms:group ref=".[ instance( 'util-instance' )/connected = 'false' ]">
+					<div class="form">
+			      <xforms:group ref="instance( 'nickname-instance' )">
+							<xforms:action ev:event="DOMActivate">
+								<xforms:dispatch name="DOMActivate" target="connect-trigger" if="instance( 'util-instance' )/connect-trigger-disabled = 'false'" />
+							</xforms:action>
+						<xforms:input id="nickname-input" ref="instance( 'nickname-instance' )" incremental="true" />
+						</xforms:group>
+						<xforms:trigger id="connect-trigger" ref="instance( 'util-instance' )/connect-trigger">
+							<xforms:label>Join</xforms:label>
+							<xforms:action ev:event="DOMActivate">
+								<xformsrtc:connect connection="rtc-conn" />
+							</xforms:action>
+						</xforms:trigger>
+					</div>
+				</xforms:group>
+				<xforms:group ref=".[ instance( 'util-instance' )/connected = 'true' ]">
+					<div class="form">
+			      <xforms:group ref="instance( 'send-data-instance' )">
+							<xforms:action ev:event="DOMActivate">
+								<xforms:dispatch name="DOMActivate" target="send-trigger" if="instance( 'util-instance' )/send-trigger-disabled = 'false'" />
+							</xforms:action>
+							<xforms:input id="message-input" ref="instance( 'send-data-instance' )" incremental="true" />
+						</xforms:group>
+						<xforms:trigger id="send-trigger" ref="instance( 'util-instance' )/send-trigger">
+							<xforms:label>Send</xforms:label>
+							<xforms:action ev:event="DOMActivate">
+								<xformsrtc:send connection="rtc-conn" />
+							</xforms:action>
+						</xforms:trigger>
+					</div>
+				</xforms:group>
+		  </div> <!-- #footer -->
+		</div> <!-- #container -->
+		<script type="text/javascript">
+			// A workaround for using a placeholder as the old version of XFormsDB/Orbeon Forms does not support it.
+			var nicknameElement = document.querySelector( '#nickname-input > input' );
+			nicknameElement.setAttribute( 'placeholder', 'Type a nickname...' );
+
+			var messageElement = document.querySelector( '#message-input > input' );
+			messageElement.setAttribute( 'placeholder', 'Type a message...' );
+		</script>
+	</body>
+</html>

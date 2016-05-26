@@ -17,7 +17,7 @@ if [ -z "$JAVA_HOME" ]; then
 fi
 
 # Set JAVA_OPTS
-export JAVA_OPTS="-Xms448m -Xmx448m -XX:PermSize=32m -XX:MaxPermSize=256m -XX:+CMSClassUnloadingEnabled"
+export JAVA_OPTS="-Xms512m -Xmx512m -XX:+CMSClassUnloadingEnabled"
 
 # Set ANT_HOME
 export ANT_HOME=$(pwd)/../tools/ant

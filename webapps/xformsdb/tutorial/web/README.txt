@@ -9,12 +9,12 @@ The /WEB-INF/data/init (or /WEB-INF/data/test) folder contains XML documents tha
 The XML documents should be stored in eXist-db under the following paths:
  * /db/xformsdb/tutorial/data/users.xml
  * /db/xformsdb/tutorial/files/xformsdb_files.xml
- 
+
 In addition, the following eXist-db user has to be created:
  * Username: xformsdb
  * Password: xformsdb1234
  * Group:    xformsdb
- 
+
 Finally, change the owners, groups, and permissions for all the stored aforementioned resources (collections and XML documents) to the following:
  * New owner:       xformsdb
  * New group:       xformsdb
@@ -31,10 +31,15 @@ This file can be removed from the Web server after a successful deployment.
 Users
 -----
 Username: xformsdb
-Password: 
+Password:
 
 Username: worker
 Password: secret
 
 Username: boss
 Password: topsecret
+
+
+Finally
+-------
+This file can be removed from the web server after a successful deployment.

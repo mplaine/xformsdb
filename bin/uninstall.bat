@@ -17,7 +17,7 @@ if not "%JAVA_HOME%" == "" goto gotJavaHome
 
 :gotJavaHome
 rem Set JAVA_OPTS
-set JAVA_OPTS=-Xms448m -Xmx448m -XX:PermSize=32m -XX:MaxPermSize=256m -XX:+CMSClassUnloadingEnabled
+set JAVA_OPTS=-Xms512m -Xmx512m -XX:+CMSClassUnloadingEnabled
 
 rem Set ANT_HOME
 set ANT_HOME=%CD%\..\tools\ant

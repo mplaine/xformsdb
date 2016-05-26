@@ -5,7 +5,7 @@
 =================================================
 
 
-Last updated for XFormsDB 1.1 on January 7, 2016.
+Last updated for XFormsDB 1.2 on May 29, 2016.
 
 This README.txt file covers the following topics:
 
@@ -20,8 +20,8 @@ This README.txt file covers the following topics:
      9. Known Issues
     10. Third-Party Software
     11. Changelog
-     
-     
+
+
 *************************************************
  1. About XFormsDB
 *************************************************
@@ -32,7 +32,7 @@ application development.
 XFormsDB allows software developers and even non-programmers to build useful,
 highly interactive multi-user Web applications quickly and easily using
 purely declarative languages--does not require users to write any client-side
-scripting or server-side programming code at all. 
+scripting or server-side programming code at all.
 
 For more information about XFormsDB, please see Markku Laine's Master's
 Thesis presentation and Markku Laine's Master's Thesis (especially
@@ -40,7 +40,7 @@ Chapters 1 and 8), which are available at:
 
      /doc/theses/Markku_Laine_2010_-_Masters_Thesis_Presentation_with_Details.pdf
      /doc/theses/Markku_Laine_2010_-_Masters_Thesis.pdf
-     
+
 
 *************************************************
  2. Licenses
@@ -60,14 +60,14 @@ included third-party software.
  3. System Requirements
 *************************************************
 
-JDK 1.5.0 or later. The JDK can be downloaded from:
+JDK 8 or later. The JDK can be downloaded from:
 
-     http://java.sun.com/javase/downloads/index_jdk5.jsp
-     
-     
+     http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+
+
 The installation instructions can be found from:
 
-     http://java.sun.com/j2se/1.5.0/install.html
+     http://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html
 
 
 In addition, the JAVA_HOME environment variable needs to be set to point to
@@ -77,7 +77,7 @@ e.g., /Library/Java/Home
 Detailed instructions for setting the JAVA_HOME environment variable can be
 found from:
 
-     http://www.advancedwebstats.com/user-guide/html/en/ch05.html
+     http://www.sajeconsultants.com/how-to-set-java_home-on-mac-os-x/
 
 
 *************************************************
@@ -88,7 +88,7 @@ By installing the test environment, you can quickly and easily try out
 XFormsDB and several sample Web applications bundled with it.
 
 The available commands for managing the test environment are:
- 
+
      * Install the test environment:
        /bin/install.bat (Windows)
        /bin/install.sh (Unix)
@@ -131,68 +131,67 @@ Instructions for installing the development environment:
 
      * First, shut down the test environment and/or other servers running on
        port 8080.
-     * JDK 1.5.0 or later:
-       JDK 1.5.0 can be downloaded from:
-       http://java.sun.com/javase/downloads/index_jdk5.jsp
-     
+     * JDK 8 or later:
+       JDK 8 can be downloaded from:
+       http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+
        Follow the installation instructions available at:
-       http://java.sun.com/j2se/1.5.0/install.html
-       
+       http://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html
+
        Set the JAVA_HOME environment variable to point to the pathname of the
        directory into which you installed the JDK (not JRE!!!),
        e.g., /Library/Java/Home
-       
+
        Follow the detailed instructions available at:
-       http://www.advancedwebstats.com/user-guide/html/en/ch05.html
-     
+       http://www.sajeconsultants.com/how-to-set-java_home-on-mac-os-x/
+
        Set the JAVA_OPTS environment variable:
-       JAVA_OPTS="-Xms448m -Xmx448m -XX:PermSize=32m -XX:MaxPermSize=256m -XX:+CMSClassUnloadingEnabled"
+       JAVA_OPTS="-Xms512m -Xmx512m -XX:+CMSClassUnloadingEnabled"
 
        Set/modify the PATH (add ;. and ;%JAVA_HOME%\bin) and CLASSPATH
        (add ;.) environment variables (Windows only).
-     * Apache Tomcat 5.5.27:
-       Apache Tomcat 5.5.27 can be copied from:
+     * Apache Tomcat 8.0.35:
+       Apache Tomcat 8.0.35 can be copied from:
        /tools/tomcat
-       
+
        Copy Apache Tomcat to a directory of your choice on your computer.
        It's important to use specifically this instance of Apache Tomcat as
-       it contains some ready-made modifications (an Apache Tomcat user with
-       correct roles) and it works together with all the installation
-       scripts.
+       it contains some ready-made modifications (tomcat-users.xml with
+       correct roles and catalina-tasks.xml with correct base dir) and it
+       works together with all the installation scripts.
 
        Follow the installation instructions available at:
        /tools/tomcat/RUNNING.txt
-       
+
        Set the CATALINA_HOME environment variable to point to the pathname
        of the directory into which you installed Apache Tomcat,
        e.g., /Applications/tomcat
-       
+
        Set/modify the PATH (add ;%CATALINA_HOME%\bin) environment variable
        (Windows only).
-       
+
        Finally, make sure that the directory into which you installed Apache
        Tomcat contains the following subfolders:
        $CATALINA_HOME/logs
-       $CATALINA_HOME/common/endorsed
-       $CATALINA_HOME/shared/lib
-       
+       $CATALINA_HOME/endorsed
+
        And that all shell scripts within that directory are executable. To do
        this run the following command in the directory into which you
        installed Apache Tomcat (Unix only):
        chmod ug+x **/*.sh
-     * Apache Ant 1.6.5:
-       Apache Ant 1.6.5 can be copied from:
+     * Apache Ant 1.9.7:
+       Apache Ant 1.9.7 can be copied from:
        /tools/ant
-       
+
        Copy Apache Ant to a folder of your choice on your computer. It's
        important to use specifically this instance of Apache Ant as it
-       contains some ready-made modifications (added catalina-ant.jar and
-       ant-contrib-1.0b3.jar packages in the lib folder) and it works
-       together with all the installation scripts.
-       
+       contains some ready-made modifications (added catalina-ant.jar,
+       tomcat-util.jar, and ant-contrib-1.0b3.jar packages in the lib folder)
+       and it works together with all the installation scripts.
+
        Follow the installation instructions available at:
        /tools/ant/INSTALL
-       
+
        Set the ANT_HOME environment variable to point to the pathname
        of the directory into which you installed Apache Ant,
        e.g., /Applications/ant
@@ -252,6 +251,8 @@ applications:
         /webapps/xformsdb/tutorial/web/README.txt
         /webapps/xformsdb/pim/web/README.txt
         /webapps/xformsdb/blog/web/README.txt
+        /webapps/xformsdb/notes/web/README.txt
+        /webapps/xformsdb/chat/web/README.txt
 
 
 Instructions for deploying bundled XFormsDB-based Web applications using
@@ -287,6 +288,18 @@ Apache Ant:
         ant -propertyfile dev-env.properties -propertyfile build_blog.properties deploy-lite
     13) Verify that XFormsDB Blog is running:
         http://localhost:8080/blog
+    14) Clean all build products
+        ant -propertyfile dev-env.properties -propertyfile build_notes.properties clean
+    15) Deploy XFormsDB Notes (Notes, sample XFormsDB-based Web application) to Apache Tomcat
+        ant -propertyfile dev-env.properties -propertyfile build_notes.properties deploy-lite
+    16) Verify that XFormsDB Notes is running:
+        http://localhost:8080/notes
+    17) Clean all build products
+        ant -propertyfile dev-env.properties -propertyfile build_chat.properties clean
+    18) Deploy XFormsRTC Chat (Chat, sample XFormsDB-based Web application) to Apache Tomcat
+        ant -propertyfile dev-env.properties -propertyfile build_chat.properties deploy-lite
+    19) Verify that XFormsRTC Chat is running:
+        http://localhost:8080/chat
 
 
 *************************************************
@@ -309,12 +322,12 @@ Instructions for building XFormsDB-based Web applications:
         can be whatever you like, e.g.,
         # XFormsDB Test related properties
         webapp.name=test
-        webapp.displayname=XFormsDB Test       
+        webapp.displayname=XFormsDB Test
 
 
 Now, you can start using Apache Ant commands for compiling, running, etc.
 your new XFormsDB-based Web application. The same Apache Ant commands can
-be used for compiling, running, etc. bundled XFormsSB-based sample Web
+be used for compiling, running, etc. bundled XFormsDB-based sample Web
 applications, too.
 
 If you are developing an XFormsDB-based Web application and you need to see
@@ -364,7 +377,7 @@ eXist-db:
 
 
 Orbeon Forms:
- 
+
      * To modify logging properties:
        /webapps/thirdparty/orbeon/web/WEB-INF/resources/config/log4j.xml
      * To read logs:
@@ -372,7 +385,7 @@ Orbeon Forms:
 
 
 XFormsDB-based Web applications:
-     
+
      * To modify logging properties:
        /webapps/xformsdb/<webapp.name>/src/log4j.properties
      * To read logs:
@@ -399,7 +412,7 @@ The list of known issues:
 
      * Use the following JAVA_OPTS in order to avoid "OutOfMemoryError:
        PermGen space" error:
-       -Xms448m -Xmx448m -XX:PermSize=32m -XX:MaxPermSize=256m -XX:+CMSClassUnloadingEnabled
+       -Xms512m -Xmx512m -XX:+CMSClassUnloadingEnabled
      * If clicking the button on the select.xformsdb Web page of the XFormsDB
        Tutorial Web application gives you an error message that's because
        your operating system for some reason reads JAR files found in the
@@ -420,7 +433,7 @@ The list of known issues:
        the $WEBAPP_HOME/META-INF/context.xml file --> Uses URL rewriting
        instead of cookies for session management
      * XQuery Update is not supported yet in Saxon-B (is supported in
-       Saxon-A, though) 
+       Saxon-A, though)
      * Shell scripts need to be modified a bit if one wants to use Cygwin
        (uncomment cygwin lines in /bin/*.sh files)
      * The xforms-ready event used with the XFormsDB-related cookie request
@@ -446,11 +459,13 @@ The list of known issues:
 10. Third-Party Software
 *************************************************
 
-This product includes the following software:
- 
+This product includes the following third-party software:
+
      * 3dm 0.1.5b1 (http://developer.berlios.de/projects/tdm/)
        GNU Lesser General Public License, version 2.1
-     * Apache Ant 1.6.5 (http://ant.apache.org/)
+     * Ant-Contrib 1.0b3 (http://ant-contrib.sourceforge.net/)
+       Apache License, version 2.0
+     * Apache Ant 1.9.7 (http://ant.apache.org/)
        Apache License, version 2.0
      * Apache Commons Lang 2.4 (http://commons.apache.org/lang/)
        Apache License, version 2.0
@@ -458,7 +473,7 @@ This product includes the following software:
        Apache License, version 2.0
      * Apache Log4J 1.2.15 (http://logging.apache.org/log4j/)
        Apache License, version 2.0
-     * Apache Tomcat 5.5.27 (http://tomcat.apache.org/)
+     * Apache Tomcat 8.0.35 (http://tomcat.apache.org/)
        Apache License, version 2.0
      * Apache Xerces-J 2.9.1 (http://xerces.apache.org/xerces2-j/)
        Apache License, version 2.0
@@ -484,6 +499,18 @@ individual licenses.
 *************************************************
 
 Changelog for XFormsDB:
+
+Version 1.2 (May 29, 2016)
+     * Updated Apache Tomcat to version 8.0.35
+     * Updated Apache Ant to version 1.9.7
+     * Added Ant-Contrib 1.0b3
+     * Modified eXist-db to work with Apache Tomcat 8.0.35
+     * Modified Orbeon Forms to work with Apache Tomcat 8.0.35
+     * Modified XFormsDB web applications to work with Apache Tomcat 8.0.35
+     * Added the XFormsRTC Chat web application
+     * Updated JAVA_OPTS
+     * Modified properties files to work with Apache Tomcat 8.0.35
+     * Modified build.xml to work with Apache Ant 1.9.7 and Apache Tomcat 8.0.35
 
 Version 1.1 (January 7, 2016)
      * Added support for XFormsRTC

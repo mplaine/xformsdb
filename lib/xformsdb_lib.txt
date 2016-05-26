@@ -7,6 +7,15 @@ Files (1 jar file):
  * 3dm-0.1.5b1.jar
 
 
+Ant-Contrib 1.0b3
+=================
+Description:
+ * Apache Ant tasks.
+Files (1 jar file):
+ * %HOME%/LICENSE.txt
+ * https://sourceforge.net/projects/ant-contrib/files/ant-contrib/1.0b3/XOM/xom-1.2.2.jar
+
+
 Apache HttpComponents Client 4.0
 ================================
 Description:
